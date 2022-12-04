@@ -1,0 +1,58 @@
+last modified: 221202 13:44:29
+Listing packages here so I can add them all at once with
+install_all_packages.py
+
+- Start looking for packages after encountering the first line that starts
+  with #.
+
+- Change the package directory when any line starting with a # has a string
+  starting with "pack/". If you change the package directory once, that change
+  will persist until the next line starting with a # and containing "pack/".
+
+- Create and run a command f"git submodule add https://github.com/{package}
+  {package_directory}/{package_name}" for each package.
+
+- Ignore all lines above the first `# ... pack/...` line.
+
+- Ignore all lines that start with `"`.
+
+# lsp for autocomplete pack/plugins/start
+prabirshrestha/vim-lsp
+mattn/vim-lsp-settings
+prabirshrestha/asyncomplete.vim
+prabirshrestha/asyncomplete-lsp.vim
+
+# AI pack/plugins/start
+github/copilot.vim
+
+# snippets pack/plugins/start
+SirVer/ultisnips
+
+# the usual suspects pack/plugins/start
+vim-airline/vim-airline
+tpope/vim-fugitive
+tpope/vim-sensible
+tpope/vim-obsession
+tpope/vim-commentary
+tpope/vim-dispatch
+jremmen/vim-ripgrep
+junegunn/fzf
+junegunn/fzf.vim
+
+# low-star projects that seem to work OK pack/plugins/start
+moll/vim-bbye
+
+# ft, low-star projects that seem to work OK pack/plugins/opt
+tmhedberg/SimpylFold
+EgZvor/vim-black
+davidszotten/isort-vim-2
+
+# colorschemes pack/colors/start
+morhetz/gruvbox
+lifepillar/vim-solarized8
+NLKNguyen/papercolor-theme
+vim-airline/vim-airline-themes
+
+# nerdtree pack/plugins/start
+preservim/nerdtree
+PhilRunninger/nerdtree-buffer-ops

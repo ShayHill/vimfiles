@@ -1,0 +1,40 @@
+snippet pyright  
+[tool.pyright]
+include = ["src"]
+exclude = ["**/__pycache__.py"]
+
+pythonVersion = "3.10"
+pythonPlatform = "Any"
+
+typeCheckingMode = "strict"
+reportShadowedImports = true
+reportCallInDefaultInitializer = true
+reportImplicitStringConcatenation = true
+reportMissingSuperCall = true
+reportPropertyTypeMismatch = true
+reportUninitializedInstanceVariable = true
+reportUnnecessaryTypeIgnoreComment = true
+reportUnusedCallResult = true
+endsnippet
+
+snippet pylint  
+[tool.pylint."MESSAGES CONTROL"]
+disable = "too-many-instance-attributes,too-many-locals"
+
+[tool.pylint."BASIC"]
+good-names = "i,j,k,x,y,_"
+include-naming-hint = true
+
+[tool.pylint."PARAMETERS"]
+disable = "protected-access,c-extension-no-member,too-many-instance-attributes,too-many-locals"
+accept-no-param-doc = false
+accept-no-raise-doc = false
+accept-no-return-doc = false
+accept-no-yields-doc = false
+endsnippet
+
+snippet linters
+pyright${1}
+
+pylint
+endsnippet

@@ -1,0 +1,78 @@
+
+" My own Python folding code, which isn't perfect, but I'm happy with it.
+" Commented out while I try some Python folding plugins.
+
+" PYTHON FOLDING
+" =============================================================================
+" filetype options
+
+"function! DoPythonFoldDef()
+    "" only fold functions and methods when preceeded by:
+    ""
+    "" <blankline>
+    "" <blankline> or comment
+    "" @any number of decorators
+    "" def
+    ""
+    "" to prevent folding--for, perhaps, a small internal function--only leave one blank line above the def
+
+    """let blankline = '^\s*$'
+    """let optional_comment = '^\s*$\|^\s*#.*$'
+
+    """let prev_lnum = v:lnum-1
+    """while getline(prev_lnum) =~ '^\s*@.*'
+	"""let prev_lnum = prev_lnum - 1
+    """endwhile
+
+    """return getline(prev_lnum) =~ optional_comment && getline(prev_lnum-1) =~ blankline
+""endfunction
+
+
+""function! PythonFoldLevel()
+    """ explicit fold markers will only work around commented-out text
+    """if getline(v:lnum) =~ '{{{4'
+	"""return ">4"
+    """elseif getline(v:lnum) =~ '4}}}'
+	"""return "<4"
+
+    """ fold triple-quoted strings (comments)--first triple followed by text
+    """" """ one-line description of function
+    """ more description
+    """" """
+    ""elseif getline(v:lnum) =~ '^\s*""".*\w\+'
+	"""return ">3"
+    ""elseif getline(v:lnum) =~ '^\s*"""'
+	"""return "<3"
+
+    """ fold functions and methods
+    """elseif getline(v:lnum) =~ '^\s*def' && DoPythonFoldDef()
+	"""return ">2"
+
+    """ fold classes
+    """elseif getline(v:lnum) =~ '^class'
+	"""return ">1"
+
+    """ stop folds at if __name__ == "__main__":
+    """elseif getline(v:lnum) =~ '^if'
+	"""return ">2"
+
+    """elseif getline(v:lnum+1) =~ '^if'
+	"""return "<1"
+
+    """ fold special headings (logical sections)
+    """ # ==========================================
+    """ # name of logical section
+    """elseif getline(v:lnum) =~ '^# \w' && getline(v:lnum-1) =~ '# ===='
+	"""return ">1"
+
+    """ fold non-def areas (like imports) under headings
+    """elseif getline(v:lnum-1) =~ '^# \w' && getline(v:lnum-2) =~ '^# ===='
+	"""return ">2"
+
+    """else
+	"""return "="
+    """endif
+""endfunction
+
+""au filetype python setlocal foldmethod=expr
+""au filetype python setlocal foldexpr=PythonFoldLevel()

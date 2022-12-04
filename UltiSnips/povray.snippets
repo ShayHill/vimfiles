@@ -1,0 +1,29 @@
+snippet head  
+// ============================================================================ 
+// ${1:Heading} 
+endsnippet
+
+snippet deb "append \n to any debug string" 
+#debug concat(${1:output}, "\n")$0 
+endsnippet
+
+snippet debs "view macro call and returned string" 
+#debug concat("> ${1:call_macro}\n", $1, "\n")$0 
+endsnippet
+
+snippet debn "view macro call and returned number" 
+#debug concat("> ${1:call_macro}\n", str($1, 0, 6), "\n")$0 
+endsnippet
+
+snippet debv2 "view macro call and returned 2d vector" 
+#debug concat("> ${1:call_macro}\n", "<", str($1.x, 0, 6), ", ", str($1.y, 0, 6), ">", "\n")$0 
+endsnippet
+
+snippet ife "if else" 
+#if ${1:condition} 
+${2:code} 
+#else // if $1 
+${3:code} 
+#end // if $1 
+$0 
+endsnippet
