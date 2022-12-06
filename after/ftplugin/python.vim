@@ -29,12 +29,12 @@ setlocal formatoptions-=t  " do not autowrap text
 au filetype python setlocal foldlevel=3
 
 " run Black and MyPy
-nmap <buffer> <leader>b :update<CR>:Black<CR>:e!<CR>
-imap <buffer> <leader>b <esc>:update<CR>:Black<CR>:e!<CR>
-nmap <buffer> <leader>i :update<CR>:Isort<CR>:e!<CR>
-imap <buffer> <leader>i <esc>:update<CR>:Isort<CR>:e!<CR>
+nmap <buffer> <leader>b :update<CR>:Black<CR>:w<CR>
+imap <buffer> <leader>b <esc>:update<CR>:Black<CR>:w<CR>
+nmap <buffer> <leader>i :update<CR>:Isort<CR>:w<CR>
+imap <buffer> <leader>i <esc>:update<CR>:Isort<CR>:w<CR>
 
-nnoremap <buffer> <A-M> :update<CR>:!~\vimfiles\vim-env\Scripts\mypy.exe --ignore-missing-import %<CR>:e!<CR>
+nnoremap <buffer> <A-M> :update<CR>:!~\vimfiles\vim-env\Scripts\mypy.exe --ignore-missing-import %<CR>:w<CR>
 
 " run Pyright in LSP mode
 if executable('pyright')
