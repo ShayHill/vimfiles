@@ -7,6 +7,7 @@ A pretty standard medium-weight, Python-focused Vim config. The most atypical th
 * a nerd font from [Powerline](https://github.com/powerline/fonts) or [Nerd-Fonts](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts). I like DejaVu Sans Mono.
 * a subscription to [GitHub Copilot](https://github.com/features/copilot)
 * a compiled binary of [gvim_fullscreen](https://github.com/movsb/gvim_fullscreen) in the vimfiles folder
+* pyright (pip install) somewhere on your path or in your virtual environment
 * a 32-bit Python environment, named `vim-env` in the vimfiles folder. This is where I install black, isort, pylint, etc. to keep my global Python install pristine.
 
 ~~~
