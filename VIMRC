@@ -126,17 +126,6 @@ let g:fzf_command_prefix = 'Fzf'
 
 
 " =============================================================================
-" Integrated Terminal
-" =============================================================================
-
-" open integrated terminal on bottom split
-nnoremap <leader>t :botright term ++rows=15<CR>
-
-" enter terminal normal mode with <leader>n
-tnoremap <leader>n <C-w>N
-
-
-" =============================================================================
 " Colorscheme
 " =============================================================================
 
@@ -155,13 +144,15 @@ if filereadable(b:spellfile)
     setlocal spell
     setlocal spelllang=en_us
 else
-   setlocal spellfile=
+   setlocal spellfile="go fisjj"
 endif
 
 
 " =============================================================================
 " Behaviors
 " =============================================================================
+
+set termwinsize=24*0 " set the terminal window size to 24 lines
 
 " Keep The Working Directory Clean:
 function! MakeDirIfNoExists(path)
@@ -275,6 +266,9 @@ inoremap <F8> <ESC>:term<t_ku>
 " it's so easy to mistype :w that even my mech keyboard somehow does it
 " with autoshift.
 command! W w
+
+" enter terminal normal mode with <leader>n
+tnoremap <leader>n <C-w>N
 
 " remove trailing whitespace
 nnoremap <leader>_ :%s/\s\+$//e<CR>
