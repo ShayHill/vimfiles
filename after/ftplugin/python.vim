@@ -2,8 +2,8 @@
 packadd SimpylFold
 packadd vim-black
 packadd isort-vim-2
-let g:black_virtualenv='~/vimfiles/vim-env'
-let g:isort_virtualenv='~/vimfiles/vim-env'
+let g:black_virtualenv='$VIMFILES/vim-env'
+let g:isort_virtualenv='$VIMFILES/vim-env'
 
 " pylint
 compiler pylint_vim_env
@@ -33,8 +33,6 @@ nmap <buffer> <leader>b :update<CR>:Black<CR>:w<CR>
 imap <buffer> <leader>b <esc>:update<CR>:Black<CR>:w<CR>
 nmap <buffer> <leader>i :update<CR>:Isort<CR>:w<CR>
 imap <buffer> <leader>i <esc>:update<CR>:Isort<CR>:w<CR>
-
-nnoremap <buffer> <A-M> :update<CR>:!~\vimfiles\vim-env\Scripts\mypy.exe --ignore-missing-import %<CR>:w<CR>
 
 " run Pyright in LSP mode
 if executable('pyright')
