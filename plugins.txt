@@ -1,6 +1,5 @@
-last modified: 221202 13:44:29
 Listing packages here so I can add them all at once with
-install_all_packages.py
+:!python sync_plugins.py  [--replace-all]
 
 - Start looking for packages after encountering the first line that starts
   with #.
@@ -12,7 +11,7 @@ install_all_packages.py
 - Create and run a command f"git submodule add https://github.com/{package}
   {package_directory}/{package_name}" for each package.
 
-- Ignore all lines above the first `# ... pack/...` line.
+- Ignore all lines above the first `^# ... pack/...` line.
 
 - Ignore all lines that start with `"`.
 
@@ -39,12 +38,14 @@ jremmen/vim-ripgrep
 junegunn/fzf
 junegunn/fzf.vim
 
+# the usual suspects pack/plugins/opt
+psf/black
+
 # low-star projects that seem to work OK pack/plugins/start
 moll/vim-bbye
 
 # ft, low-star projects that seem to work OK pack/plugins/opt
 tmhedberg/SimpylFold
-EgZvor/vim-black
 davidszotten/isort-vim-2
 
 # colorschemes pack/colors/start

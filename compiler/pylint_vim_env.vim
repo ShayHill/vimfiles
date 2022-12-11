@@ -14,5 +14,9 @@ if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=~\vimfiles\vim-env\Scripts\pylint\ --output-format=text\ --msg-template=\"{path}:{line}:{column}:{C}:\ [{symbol}]\ {msg}\"\ --reports=no
+if has('win32')
+    CompilerSet makeprg=~/vimfiles/vim-env/Scripts/pylint " --output-format=text\ --msg-template=\"{path}:{line}:{column}:{C}:\ [{symbol}]\ {msg}\"\ --reports=no
+else
+    CompilerSet makeprg=~/.vim/vim-env/bin/pylint " --output-format=text\ 
+endif
 CompilerSet errorformat=%A%f:%l:%c:%t:\ %m,%A%f:%l:\ %m,%A%f:(%l):\ %m,%-Z%p^%.%#,%-G%.%#
