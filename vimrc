@@ -1,13 +1,20 @@
-
 filetype plugin on " Indent and plugins by filetype
 let mapleader=','  " for <leader> shortcuts.
 set encoding=utf-8 " setup the encoding to UTF-8
 scriptencoding utf-8 " Encoding for this script (to allow Unicode characters)
 
+if has('win32')
+    let $VIMFILES = "~/vimfiles"
+else
+    let $VIMFILES = "~/.vim"
+endif
+
 if has("win32")
-    " breaks plenty of things, so disable it to debug :make etc. lowercase
-    " :make won't work with pwsh, at least not without some obscure
-    " configuration I haven't found yet, but tpope/dispatch :Make works fine.
+    source $VIMRUNTIME\..\_vimrc " will contain some diff / Windows nuance
+    " pwsh (Powershell 7+) breaks plenty of things, so disable it to debug
+    " :make etc. Lowercase :make won't work with pwsh, at least not without
+    " some obscure configuration I haven't found yet, but tpope/dispatch :Make
+    " works fine.
 	set shell=pwsh
 	" interpreter for Python plugins
     set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32
@@ -19,9 +26,8 @@ endif
 " Other Config Files
 " =============================================================================
 
-source $VIMRUNTIME\..\_vimrc " will contain some diff / Windows nuance
 if has('gui_running')
-	source ~/vimfiles/gvim.vimrc
+	source $VIMFILES/gvim.vimrc
 endif
 
 
@@ -41,7 +47,6 @@ let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
 
 " Vim Lsp:
-
 " use pyright for Python instead of default pylsp
 let g:lsp_settings_filetype_python = ['pyright-langserver']
 
