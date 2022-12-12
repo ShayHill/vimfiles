@@ -38,12 +38,14 @@ jremmen/vim-ripgrep
 junegunn/fzf
 junegunn/fzf.vim
 
+# the usual suspects pack/plugins/opt
+psf/black
+
 # low-star projects that seem to work OK pack/plugins/start
 moll/vim-bbye
 
 # ft, low-star projects that seem to work OK pack/plugins/opt
 tmhedberg/SimpylFold
-EgZvor/vim-black
 davidszotten/isort-vim-2
 
 # colorschemes pack/colors/start

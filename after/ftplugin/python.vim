@@ -1,9 +1,15 @@
 
 packadd SimpylFold
-packadd vim-black
+packadd black
 packadd isort-vim-2
-let g:black_virtualenv='$VIMFILES/vim-env'
-let g:isort_virtualenv='$VIMFILES/vim-env'
+
+if has("win32")
+    let g:black_virtualenv='~/vimfiles/vim-env'
+    let g:isort_virtualenv='~/vimfiles/vim-env'
+else
+    let g:black_virtualenv='~/.vim/vim-env'
+    let g:isort_virtualenv='~/.vim/vim-env'
+endif
 
 " pylint
 compiler pylint_vim_env
