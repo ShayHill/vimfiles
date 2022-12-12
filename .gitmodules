@@ -1,75 +1,75 @@
-[submodule "pack/plugins/start/vim-lsp"]
-	path = pack/plugins/start/vim-lsp
-	url = https://github.com/prabirshrestha/vim-lsp
-[submodule "pack/plugins/start/asyncomplete.vim"]
-	path = pack/plugins/start/asyncomplete.vim
-	url = https://github.com/prabirshrestha/asyncomplete.vim
-[submodule "pack/plugins/start/vim-airline"]
-	path = pack/plugins/start/vim-airline
-	url = https://github.com/vim-airline/vim-airline
-[submodule "pack/plugins/start/asyncomplete-lsp.vim"]
-	path = pack/plugins/start/asyncomplete-lsp.vim
-	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim
-[submodule "pack/plugins/start/vim-sensible"]
-	path = pack/plugins/start/vim-sensible
-	url = https://github.com/tpope/vim-sensible
-[submodule "pack/plugins/start/vim-ripgrep"]
-	path = pack/plugins/start/vim-ripgrep
-	url = https://github.com/jremmen/vim-ripgrep
-[submodule "pack/plugins/start/vim-commentary"]
-	path = pack/plugins/start/vim-commentary
-	url = https://github.com/tpope/vim-commentary
-[submodule "pack/plugins/start/nerdtree"]
-	path = pack/plugins/start/nerdtree
-	url = https://github.com/preservim/nerdtree
-[submodule "pack/plugins/start/nerdtree-buffer-ops"]
-	path = pack/plugins/start/nerdtree-buffer-ops
-	url = https://github.com/PhilRunninger/nerdtree-buffer-ops
-[submodule "pack/plugins/start/fzf"]
-	path = pack/plugins/start/fzf
-	url = https://github.com/junegunn/fzf
-[submodule "pack/plugins/start/vim-obsession"]
-	path = pack/plugins/start/vim-obsession
-	url = https://github.com/tpope/vim-obsession
-[submodule "pack/plugins/start/fzf.vim"]
-	path = pack/plugins/start/fzf.vim
-	url = https://github.com/junegunn/fzf.vim
-[submodule "pack/plugins/opt/isort-vim-2"]
-	path = pack/plugins/opt/isort-vim-2
-	url = https://github.com/davidszotten/isort-vim-2
-[submodule "pack/plugins/opt/SimpylFold"]
-	path = pack/plugins/opt/SimpylFold
-	url = https://github.com/tmhedberg/SimpylFold
-[submodule "pack/plugins/start/vim-fugitive"]
-	path = pack/plugins/start/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive
-[submodule "pack/plugins/start/vim-dispatch"]
-	path = pack/plugins/start/vim-dispatch
-	url = https://github.com/tpope/vim-dispatch
-[submodule "pack/plugins/start/vim-lsp-settings"]
-	path = pack/plugins/start/vim-lsp-settings
-	url = https://github.com/mattn/vim-lsp-settings
-[submodule "pack/plugins/opt/vim-black"]
-	path = pack/plugins/opt/vim-black
-	url = https://github.com/EgZvor/vim-black
-[submodule "pack/plugins/start/ultisnips"]
-	path = pack/plugins/start/ultisnips
-	url = https://github.com/SirVer/ultisnips
-[submodule "pack/colors/start/gruvbox"]
-	path = pack/colors/start/gruvbox
-	url = https://github.com/morhetz/gruvbox
-[submodule "pack/colors/start/vim-airline-themes"]
-	path = pack/colors/start/vim-airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "pack/plugins/start/copilot.vim"]
 	path = pack/plugins/start/copilot.vim
 	url = https://github.com/github/copilot.vim
-[submodule "pack/colors/start/vim-solarized8"]
-	path = pack/colors/start/vim-solarized8
-	url = https://github.com/lifepillar/vim-solarized8
-[submodule "pack/colors/start/papercolor-theme"]
-	path = pack/colors/start/papercolor-theme
-	url = https://github.com/NLKNguyen/papercolor-theme
+[submodule "pack/plugins/start/asyncomplete.vim"]
+	path = pack/plugins/start/asyncomplete.vim
+	url = https://github.com/prabirshrestha/asyncomplete.vim
+[submodule "pack/plugins/start/nerdtree"]
+	path = pack/plugins/start/nerdtree
+	url = https://github.com/preservim/nerdtree
+[submodule "pack/plugins/start/vim-lsp-settings"]
+	path = pack/plugins/start/vim-lsp-settings
+	url = https://github.com/mattn/vim-lsp-settings
+[submodule "pack/colors/start/gruvbox"]
+	path = pack/colors/start/gruvbox
+	url = https://github.com/morhetz/gruvbox
+[submodule "pack/plugins/start/vim-fugitive"]
+	path = pack/plugins/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/plugins/start/fzf"]
+	path = pack/plugins/start/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "pack/plugins/start/vim-lsp"]
+	path = pack/plugins/start/vim-lsp
+	url = https://github.com/prabirshrestha/vim-lsp
+[submodule "pack/plugins/opt/vim-black"]
+	path = pack/plugins/opt/vim-black
+	url = https://github.com/EgZvor/vim-black
 [submodule "pack/plugins/start/vim-bbye"]
 	path = pack/plugins/start/vim-bbye
 	url = https://github.com/moll/vim-bbye
+[submodule "pack/plugins/start/vim-obsession"]
+	path = pack/plugins/start/vim-obsession
+	url = https://github.com/tpope/vim-obsession
+[submodule "pack/colors/start/vim-solarized8"]
+	path = pack/colors/start/vim-solarized8
+	url = https://github.com/lifepillar/vim-solarized8
+[submodule "pack/plugins/start/vim-commentary"]
+	path = pack/plugins/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "pack/plugins/start/vim-sensible"]
+	path = pack/plugins/start/vim-sensible
+	url = https://github.com/tpope/vim-sensible
+[submodule "pack/colors/start/vim-airline-themes"]
+	path = pack/colors/start/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "pack/plugins/start/asyncomplete-lsp.vim"]
+	path = pack/plugins/start/asyncomplete-lsp.vim
+	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim
+[submodule "pack/plugins/opt/SimpylFold"]
+	path = pack/plugins/opt/SimpylFold
+	url = https://github.com/tmhedberg/SimpylFold
+[submodule "pack/plugins/opt/isort-vim-2"]
+	path = pack/plugins/opt/isort-vim-2
+	url = https://github.com/davidszotten/isort-vim-2
+[submodule "pack/plugins/start/vim-ripgrep"]
+	path = pack/plugins/start/vim-ripgrep
+	url = https://github.com/jremmen/vim-ripgrep
+[submodule "pack/plugins/start/vim-airline"]
+	path = pack/plugins/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule "pack/plugins/start/nerdtree-buffer-ops"]
+	path = pack/plugins/start/nerdtree-buffer-ops
+	url = https://github.com/PhilRunninger/nerdtree-buffer-ops
+[submodule "pack/plugins/start/ultisnips"]
+	path = pack/plugins/start/ultisnips
+	url = https://github.com/SirVer/ultisnips
+[submodule "pack/colors/start/papercolor-theme"]
+	path = pack/colors/start/papercolor-theme
+	url = https://github.com/NLKNguyen/papercolor-theme
+[submodule "pack/plugins/start/vim-dispatch"]
+	path = pack/plugins/start/vim-dispatch
+	url = https://github.com/tpope/vim-dispatch
+[submodule "pack/plugins/start/fzf.vim"]
+	path = pack/plugins/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
