@@ -41,6 +41,10 @@ junegunn/fzf.vim
 # the usual suspects pack/plugins/opt
 psf/black
 
+# markdown pack/plugins/opt
+preservim/vim-markdown
+iamcco/markdown-preview.nvim
+
 # low-star projects that seem to work OK pack/plugins/start
 moll/vim-bbye
 
