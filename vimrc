@@ -136,6 +136,7 @@ let g:fzf_command_prefix = 'Fzf'
 
 set t_Co=256 " 256 colors for the terminal
 set background=dark " set a dark background
+let g:gruvbox_italic = 0 " disable italic comments and keywords
 colorscheme gruvbox
 
 
