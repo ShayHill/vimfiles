@@ -1,9 +1,6 @@
 [submodule "pack/plugins/start/ultisnips"]
 	path = pack/plugins/start/ultisnips
 	url = https://github.com/SirVer/ultisnips
-[submodule "pack/plugins/opt/black"]
-	path = pack/plugins/opt/black
-	url = https://github.com/psf/black
 [submodule "pack/colors/start/gruvbox"]
 	path = pack/colors/start/gruvbox
 	url = https://github.com/morhetz/gruvbox
@@ -79,3 +76,6 @@
 [submodule "pack/plugins/start/vim-lsp"]
 	path = pack/plugins/start/vim-lsp
 	url = https://github.com/prabirshrestha/vim-lsp
+[submodule "pack/plugins/opt/black"]
+	path = pack/plugins/opt/black
+	url = https://github.com/psf/black
