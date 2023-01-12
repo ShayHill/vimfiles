@@ -221,7 +221,7 @@ set wildmenu  " Command line autocompletion
 set wildmode=list:longest,full  " Shows all the options
 
 " Vim Options:
-set synmaxcol=120 " speed up by only highlighting first 120 chars
+set synmaxcol=176 " speed up by only highlighting first 176 chars
 set cursorline " highlight the line under the cursor
 set ttyfast " better screen redraw
 set showcmd " shows partial commands
