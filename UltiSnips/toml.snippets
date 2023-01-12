@@ -15,6 +15,9 @@ reportPropertyTypeMismatch = true
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnusedCallResult = true
+
+venvPath = "C:\\Users\\shaya\\AppData\\Local\\pypoetry\\Cache\\virtualenvs"
+# venv = "C:\\Users\\shaya\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\docx2python-fuFHBYOz-py3.11"
 endsnippet
 
 snippet pylint  
@@ -42,4 +45,14 @@ snippet linters
 pyright${1}
 
 pylint
+endsnippet
+
+snippet cz
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "$version"
+version_files = [
+    "pyproject.toml:^version"
+]
 endsnippet
