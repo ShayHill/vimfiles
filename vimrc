@@ -237,15 +237,14 @@ set visualbell " turn on the visual bell
 " Mappings
 " =============================================================================
 
-nmap <F1> :NERDTreeFocus<CR>
-imap <F1> <ESC>:NERDTreeFocus<CR>
 
-nmap <F2> :NERDTreeToggle<CR>
-imap <F2> <esc>:NERDTreeToggle<CR>
+" vertical split to netrw
+nmap <F2> :Vex<CR>
+imap <F2> <esc>:Vex<CR>
 
-" refresh NERDTree (for making screencasts)
-nmap <F3> :NERDTreeFocus<CR>R<C-w>p
-imap <F3> <esc>:NERDTreeFocus<CR>R<C-w>pi
+" vertical split to FZF
+nmap <F3> :vsplit<CR>:FZF<CR>
+imap <F3> <esc>:vsplit<CR>:FZF<CR>
 
 " hard close the integrated terminal with python (started with `:term python`
 " or `:term python %`) running by pressing <F4>. ! is required, because
@@ -334,6 +333,13 @@ tmap <C-S-Tab> <C-w>:bprevious<cr>
 " won't work without this mapping.
 map <C-k6> <C-6>
 
+" Stargate:
+" For 1 character to search before showing hints
+noremap <leader>f <Cmd>call stargate#OKvim(1)<CR>
+" For 2 consecutive characters to search
+noremap <leader>F <Cmd>call stargate#OKvim(2)<CR>
+" switch panes
+nnoremap <leader>w <Cmd>call stargate#Galaxy()<CR>
 
 " =============================================================================
 " CRB

@@ -31,9 +31,6 @@
 [submodule "pack/plugins/start/fzf"]
 	path = pack/plugins/start/fzf
 	url = https://github.com/junegunn/fzf
-[submodule "pack/plugins/start/nerdtree"]
-	path = pack/plugins/start/nerdtree
-	url = https://github.com/preservim/nerdtree
 [submodule "pack/plugins/opt/SimpylFold"]
 	path = pack/plugins/opt/SimpylFold
 	url = https://github.com/tmhedberg/SimpylFold
@@ -58,9 +55,6 @@
 [submodule "pack/colors/start/papercolor-theme"]
 	path = pack/colors/start/papercolor-theme
 	url = https://github.com/NLKNguyen/papercolor-theme
-[submodule "pack/plugins/start/nerdtree-buffer-ops"]
-	path = pack/plugins/start/nerdtree-buffer-ops
-	url = https://github.com/PhilRunninger/nerdtree-buffer-ops
 [submodule "pack/plugins/start/asyncomplete-lsp.vim"]
 	path = pack/plugins/start/asyncomplete-lsp.vim
 	url = https://github.com/prabirshrestha/asyncomplete-lsp.vim
@@ -79,3 +73,9 @@
 [submodule "pack/plugins/opt/black"]
 	path = pack/plugins/opt/black
 	url = https://github.com/psf/black
+[submodule "pack/plugins/start/vim9-stargate"]
+	path = pack/plugins/start/vim9-stargate
+	url = https://github.com/monkoose/vim9-stargate
+[submodule "pack/plugins/start/vim-vinegar"]
+	path = pack/plugins/start/vim-vinegar
+	url = https://github.com/tpope/vim-vinegar

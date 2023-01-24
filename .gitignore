@@ -1,2 +1,4 @@
 Session.vim
 vim-env/
+.netrwhist
+pack/plugins/opt/markdown-preview*
