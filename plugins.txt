@@ -34,9 +34,11 @@ tpope/vim-sensible
 tpope/vim-obsession
 tpope/vim-commentary
 tpope/vim-dispatch
+tpope/vim-vinegar
 jremmen/vim-ripgrep
 junegunn/fzf
 junegunn/fzf.vim
+
 
 # the usual suspects pack/plugins/opt
 psf/black
@@ -47,6 +49,7 @@ iamcco/markdown-preview.nvim
 
 # low-star projects that seem to work OK pack/plugins/start
 moll/vim-bbye
+monkoose/vim9-stargate
 
 # ft, low-star projects that seem to work OK pack/plugins/opt
 tmhedberg/SimpylFold
@@ -58,6 +61,3 @@ lifepillar/vim-solarized8
 NLKNguyen/papercolor-theme
 vim-airline/vim-airline-themes
 
-# nerdtree pack/plugins/start
-preservim/nerdtree
-PhilRunninger/nerdtree-buffer-ops
