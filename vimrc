@@ -47,8 +47,6 @@ let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 
 
 " Vim Lsp:
-" use pyright for Python instead of default pylsp
-let g:lsp_settings_filetype_python = ['pyright-langserver']
 
 " copied (almost) directly from the vim-lsp docs:
 function! s:on_lsp_buffer_enabled() abort

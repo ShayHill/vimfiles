@@ -40,20 +40,6 @@ imap <buffer> <leader>b <esc>:update<CR>:Black<CR>:w<CR>
 nmap <buffer> <leader>i :update<CR>:Isort<CR>:w<CR>
 imap <buffer> <leader>i <esc>:update<CR>:Isort<CR>:w<CR>
 
-" run Pyright in LSP mode
-if executable('pyright')
-    " pip install python-language-server
-    " vim-lsp-settings might start pylsp automatically if this is not set. I want
-    " pyright instead.
-    let g:lsp_settings_filetype_python = ['pyright']
-
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyright',
-        \ 'cmd': {server_info->['pyright-langserver', '--stdio']},
-        \ 'allowlist': ['python'],
-        \ })
-endif
-
 " line numbering
 setlocal number " Turn on line numbering
 
