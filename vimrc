@@ -79,6 +79,7 @@ augroup END
 
 " show error information on statusline
 let g:lsp_diagnostics_echo_cursor = get(g:, 'lsp_diagnostics_echo_cursor', 1)
+let g:lsp_diagnostics_virtual_text_enabled = get(g:, 'lsp_diagnostics_virtual_text_enabled', 0)
 
 
 " Vim Airline:
@@ -135,7 +136,7 @@ let g:fzf_command_prefix = 'Fzf'
 set t_Co=256 " 256 colors for the terminal
 set background=dark " set a dark background
 let g:gruvbox_italic = 0 " disable italic comments and keywords
-colorscheme gruvbox
+colorscheme gruvbox8
 
 
 " =============================================================================

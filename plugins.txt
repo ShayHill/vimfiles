@@ -56,8 +56,8 @@ tmhedberg/SimpylFold
 davidszotten/isort-vim-2
 
 # colorschemes pack/colors/start
-morhetz/gruvbox
 lifepillar/vim-solarized8
+lifepillar/vim-gruvbox8
 NLKNguyen/papercolor-theme
 vim-airline/vim-airline-themes
 
