@@ -45,13 +45,20 @@ repos:
   rev: v0.991
   hooks:
   - id: mypy
-    exclude: "tests"
-    args:
-    - --ignore-missing-imports
-    files: ^(src/|tests/)
+    name: mypy
+    language: python
+    language_version: python 3.11
+    types: [python]
+    require_serial: true
+    verbose: true
+    additional_dependencies: ['types-requests']
+    # exclude: "tests"
+    # args:
+    # - --ignore-missing-imports
+    # files: ^(src/|tests/)
 
 - repo: https://github.com/PyCQA/isort
-  rev: 5.11.4
+  rev: 5.12.0
   hooks:
   - id: isort
     args: ["--profile", "black", "--filter-files", "--combine-as"]
@@ -71,14 +78,14 @@ repos:
     id: pyupgrade
 
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.3.1
+  rev: v1.4.2
   hooks:
   - id: remove-tabs
 
-- repo: https://github.com/commitizen-tools/commitizen
-  rev: v2.39.1
-  hooks:
-  - id: commitizen
+# - repo: https://github.com/commitizen-tools/commitizen
+#   rev: v2.40.0
+#   hooks:
+#   - id: commitizen
 
 - repo: https://github.com/pre-commit/mirrors-pylint
   rev: v3.0.0a5
@@ -87,35 +94,25 @@ repos:
     exclude: "tests"
     name: pylint
     args:
-    - --good-names=i,j,_,e,f
-    - --disable=too-many-instance-attributes
-    - --disable=too-many-locals
-    - --disable=too-few-public-methods
+    - --good-names=i,j,_,f
     - --disable=protected-access
-    - --disable=c-extension-no-member
-    - --disable=too-many-instance-attributes
-    - --disable=duplicate-code
-    - --disable=too-many-locals
+    - --disable=no-member
     - --disable=import-error
-    - --disable=too-many-arguments
-    - --disable=broad-except
     - --load-plugins=pylint.extensions.docparams
     - --accept-no-param-doc=n
     - --accept-no-raise-doc=n
     - --accept-no-return-doc=n
     - --accept-no-yields-doc=n
 
-- repo: https://github.com/pycqa/flake8
-  rev: 6.0.0
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  # Ruff version.
+  rev: 'v0.0.238'
   hooks:
-  - id: flake8
-    exclude: "tests"
-    args:
-    - --max-line-length=88
+    - id: ruff
 
 # reads pyproject.toml for additional config
 - repo: https://github.com/RobertCraigie/pyright-python
-  rev: v1.1.287
+  rev: v1.1.291
   hooks:
     - id: pyright
 endsnippet

@@ -59,5 +59,7 @@ davidszotten/isort-vim-2
 lifepillar/vim-solarized8
 lifepillar/vim-gruvbox8
 NLKNguyen/papercolor-theme
+cocopon/iceberg.vim
+arcticicestudio/nord-vim
 vim-airline/vim-airline-themes
 

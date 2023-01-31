@@ -79,3 +79,9 @@
 [submodule "pack/colors/start/vim-gruvbox8"]
 	path = pack/colors/start/vim-gruvbox8
 	url = https://github.com/lifepillar/vim-gruvbox8
+[submodule "pack/colors/start/iceberg.vim"]
+	path = pack/colors/start/iceberg.vim
+	url = https://github.com/cocopon/iceberg.vim
+[submodule "pack/colors/start/nord-vim"]
+	path = pack/colors/start/nord-vim
+	url = https://github.com/arcticicestudio/nord-vim

@@ -83,7 +83,7 @@ let g:lsp_diagnostics_virtual_text_enabled = get(g:, 'lsp_diagnostics_virtual_te
 
 
 " Vim Airline:
-let g:airline#extensions#tabline#enabled = 1 " Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 0 " Enable the list of buffers
 let g:airline_powerline_fonts = 1
 let g:airline_mode_map = {
   \ '__'     : '-',
@@ -135,8 +135,8 @@ let g:fzf_command_prefix = 'Fzf'
 
 set t_Co=256 " 256 colors for the terminal
 set background=dark " set a dark background
-let g:gruvbox_italic = 0 " disable italic comments and keywords
-colorscheme gruvbox8
+let g:gruvbox_italics = 0 " disable italic comments and keywords
+colorscheme iceberg
 
 
 " =============================================================================
