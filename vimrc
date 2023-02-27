@@ -127,7 +127,8 @@ imap <C-p> <Esc>:FZF<CR>
 " avoid accidentally triggering fzf :Windows command with :W. With this
 " setting, fzf commands will all require an 'Fzf' prefix.
 let g:fzf_command_prefix = 'Fzf'
-
+nmap <C-]> <Plug>(fzf_tags)
+noreabbrev <expr> ts getcmdtype() == ":" && getcmdline() == 'ts' ? 'FZFTselect' : 'ts'
 
 " =============================================================================
 " Colorscheme
@@ -228,8 +229,8 @@ set fillchars="fold:" " remove trailing dashes from folds
 set scrolloff=5 " screen space around cursor
 set sidescrolloff=5 " screen space around cursor
 set nowrap " Turn off line wrapping
-set noerrorbells " Turn off error bell
-set visualbell " turn on the visual bell
+set noerrorbells " Turn off error bell - still rings for escape in normal mode
+" set visualbell " turn on the visual bell
 
 
 " =============================================================================
@@ -261,8 +262,8 @@ nnoremap <F4> <C-w>:bd<CR>
 " <F7> reserved for ftplugins
 
 " last :term command, if any. No <CR>
-nnoremap <F8> :term<t_ku>
-inoremap <F8> <ESC>:term<t_ku>
+nnoremap <F8> :update<CR>:term<t_ku>
+inoremap <F8> <ESC>:update<CR>:term<t_ku>
 
 " <F11> gvim fullscreen
 " <F12> gvim translucency
@@ -308,14 +309,14 @@ inoremap <C-j> <t_kd>
 inoremap <C-k> <t_ku>
 inoremap <C-h> <t_kl>
 inoremap <C-l> <t_kr>
-nnoremap <C-j> <t_kd>
-nnoremap <C-k> <t_ku>
-nnoremap <C-h> <t_kl>
-nnoremap <C-l> <t_kr>
-tnoremap <C-j> <t_kd>
-tnoremap <C-k> <t_ku>
-tnoremap <C-h> <t_kl>
-tnoremap <C-l> <t_kr>
+" nnoremap <C-j> <t_kd>
+" nnoremap <C-k> <t_ku>
+" nnoremap <C-h> <t_kl>
+" nnoremap <C-l> <t_kr>
+" tnoremap <C-j> <t_kd>
+" tnoremap <C-k> <t_ku>
+" tnoremap <C-h> <t_kl>
+" tnoremap <C-l> <t_kr>
 
 " Buffers:
 map <C-Tab> :bnext<cr>
@@ -365,3 +366,6 @@ function! DiffCRB()
     set wrap
     set linebreak
 endfunction
+
+
+

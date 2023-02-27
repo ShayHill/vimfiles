@@ -13,16 +13,16 @@ endif
 
 " pylint
 compiler pylint_vim_env
-nnoremap <F5> :update<CR>:Make %<CR>
-inoremap <F5> <esc>:update<CR>:Make %<CR>
+nnoremap <buffer> <F5> :update<CR>:Make %<CR>
+inoremap <buffer> <F5> <esc>:update<CR>:Make %<CR>
 
 " run in integrated terminal
-nnoremap <F6> :update<CR>:term python %<CR>
-inoremap <F6> <esc>:update<CR>:term python %<CR>
+nnoremap <buffer> <F6> :update<CR>:term python %<CR>
+inoremap <buffer> <F6> <esc>:update<CR>:term python %<CR>
 
 " last :term pytest command, if any. No <CR>
-nnoremap <F7> :term pytest<t_ku>
-inoremap <F7> <ESC>:term pytest<t_ku>
+nnoremap <buffer> <F7> :update<CR>:term pytest<t_ku>
+inoremap <buffer> <F7> <ESC>:update<CR>:term pytest<t_ku>
 
 
 setlocal colorcolumn=89
@@ -42,4 +42,8 @@ imap <buffer> <leader>i <esc>:update<CR>:Isort<CR>:w<CR>
 
 " line numbering
 setlocal number " Turn on line numbering
+
+" mappings
+" format a :param: or :return: line in a docstring. Visually select then press
+vmap <leader>f gqV`<j>gvgq
 

@@ -98,6 +98,7 @@ repos:
     - --disable=protected-access
     - --disable=no-member
     - --disable=import-error
+	- --disable=no-name-in-module
     - --load-plugins=pylint.extensions.docparams
     - --accept-no-param-doc=n
     - --accept-no-raise-doc=n
@@ -105,10 +106,30 @@ repos:
     - --accept-no-yields-doc=n
 
 - repo: https://github.com/charliermarsh/ruff-pre-commit
-  # Ruff version.
+  # ignores
+  # ANN101 Missing type annotation for self in method
+  # ANN102 Missing type annotation for cls in classmethod
+  # ANN201 Missing return type annotation for public function
+  # ANN202 Missing return type annotation for private function (wants -> None everywhere)
+  # B905 zip() without an explicit strict= parameter
+  # COM812 Trailing comma missing
+  # D203 1 blank line required before class docstring
+  # D213 multi line summary second line
+  # I001 Inport block is un-sorted or un-formatted
+  # ISC003 Explicitly concatenated string should be implicitly concatenated
+  # N802 Function name should be lowercase
+  # N806 Variable in function should be lowercase
+  # PGH003 Use specific rule codes when ignoring type issues
+  # PLR0913 Too many arguments to function call
+  # PTH108 os.unlink should be replaced by .unlink()
   rev: 'v0.0.238'
   hooks:
     - id: ruff
+      exclude: "tests"
+      args:
+      - --select=ALL
+      - --ignore=ANN101,ANN102,ANN201,ANN202,B905,COM812,D203,D213,I001,ISC003,N802,N806,PGH003,PLR0913,PTH108
+      - --fix
 
 # reads pyproject.toml for additional config
 - repo: https://github.com/RobertCraigie/pyright-python
