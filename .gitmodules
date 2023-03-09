@@ -85,3 +85,9 @@
 [submodule "pack/colors/start/nord-vim"]
 	path = pack/colors/start/nord-vim
 	url = https://github.com/arcticicestudio/nord-vim
+[submodule "pack/plugins/start/vim-gitgutter"]
+	path = pack/plugins/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule "pack/plugins/start/vim-surround"]
+	path = pack/plugins/start/vim-surround
+	url = https://github.com/tpope/vim-surround
