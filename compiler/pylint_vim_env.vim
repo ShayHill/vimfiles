@@ -14,5 +14,11 @@ if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=pre-commit\ run\ ruff\ --files
-CompilerSet errorformat=%f:%l:%c:\ %m
+CompilerSet makeprg=pre-commit\ run\ --files
+
+" errorformats:
+" 1. ruff
+" 2. mypy
+" 3. pyright
+CompilerSet errorformat=%f:%l:%c:\ %m,%f:%l:\ %m,%f:%l:%c\ -\ %m
+

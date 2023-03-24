@@ -13,8 +13,8 @@ endif
 
 " pylint
 compiler pylint_vim_env
-nnoremap <buffer> <F5> :update<CR>:Make %<CR>
-inoremap <buffer> <F5> <esc>:update<CR>:Make %<CR>
+nnoremap <buffer> <F5> :update<CR>:vert Make %<CR>
+inoremap <buffer> <F5> <esc>:update<CR>:vert Make %<CR>
 
 " run in integrated terminal
 nnoremap <buffer> <F6> :update<CR>:term python %<CR>

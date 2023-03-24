@@ -127,10 +127,13 @@ imap <C-p> <Esc>:FZF<CR>
 " avoid accidentally triggering fzf :Windows command with :W. With this
 " setting, fzf commands will all require an 'Fzf' prefix.
 let g:fzf_command_prefix = 'Fzf'
-let g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache'
+let g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
 " git --exclude node_modules --exclude build --exclude dist --exclude .cache --exclude .next --exclude .vscode --exclude .idea --exclude .nuxt --exclude .expo --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache
-nmap <C-]> <Plug>(fzf_tags)
 noreabbrev <expr> ts getcmdtype() == ":" && getcmdline() == 'ts' ? 'FZFTselect' : 'ts'
+
+" GitGutter
+nmap <leader>gg :GitGutterToggle<CR>
+
 
 " =============================================================================
 " Colorscheme
@@ -160,7 +163,7 @@ endif
 " Behaviors
 " =============================================================================
 
-set termwinsize=24*0 " set the terminal window size to 24 lines
+" set termwinsize=24*0 " set the terminal window size to 24 lines
 
 " Keep The Working Directory Clean:
 function! MakeDirIfNoExists(path)
@@ -239,6 +242,8 @@ set noerrorbells " Turn off error bell - still rings for escape in normal mode
 " Mappings
 " =============================================================================
 
+" return to last position in a globally bookmarked file.
+noremap <leader>' <cmd>exec "normal '".getcharstr()."`\""<cr>
 
 " vertical split to netrw
 nmap <F2> :Vex<CR>
@@ -307,10 +312,10 @@ cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
 cnoremap <C-h> <t_kl>
 cnoremap <C-l> <t_kr>
-inoremap <C-j> <t_kd>
-inoremap <C-k> <t_ku>
-inoremap <C-h> <t_kl>
-inoremap <C-l> <t_kr>
+" inoremap <C-j> <t_kd>
+" inoremap <C-k> <t_ku>
+" inoremap <C-h> <t_kl>
+" inoremap <C-l> <t_kr>
 " nnoremap <C-j> <t_kd>
 " nnoremap <C-k> <t_ku>
 " nnoremap <C-h> <t_kl>

@@ -35,29 +35,29 @@
 # endsnippet
 
 
-snippet conf "boilerplate for conftest" b
-"""Test configuration for pytest.
+# snippet conf "boilerplate for conftest" b
+# """Test configuration for pytest.
 
-:author: Shay Hill
-:created: `!v strftime("%Y-%m-%d")`
-"""
+# :author: Shay Hill
+# :created: `!v strftime("%Y-%m-%d")`
+# """
 
-def pytest_assertrepr_compare(config, op, left, right):
-    """See full error diffs"""
-    if op in ("==", "!="):
-        return ["{0} {1} {2}".format(left, op, right)]
-$1
-endsnippet
+# def pytest_assertrepr_compare(config, op, left, right):
+#     """See full error diffs"""
+#     if op in ("==", "!="):
+#         return ["{0} {1} {2}".format(left, op, right)]
+# $1
+# endsnippet
 
 
-snippet docmod "#!usr/bin/env python" b
-"""$1
+# snippet docmod "#!usr/bin/env python" b
+# """$1
 
-:author: Shay Hill
-:created: `!v strftime("%Y-%m-%d")`
-"""
-$2
-endsnippet
+# :author: Shay Hill
+# :created: `!v strftime("%Y-%m-%d")`
+# """
+# $2
+# endsnippet
 
 # snippet docscr "#!usr/bin/env python" b
 # """$1
