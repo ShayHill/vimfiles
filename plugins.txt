@@ -40,6 +40,7 @@ jremmen/vim-ripgrep
 junegunn/fzf
 junegunn/fzf.vim
 airblade/vim-gitgutter
+dyng/ctrlsf.vim
 
 
 

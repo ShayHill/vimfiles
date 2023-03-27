@@ -347,6 +347,8 @@ noremap <leader>f <Cmd>call stargate#OKvim(1)<CR>
 noremap <leader>F <Cmd>call stargate#OKvim(2)<CR>
 " switch panes
 nnoremap <leader>w <Cmd>call stargate#Galaxy()<CR>
+" switch panes in terminal mode
+tnoremap <leader>w <C-w>N<Cmd>call stargate#Galaxy()<CR>
 
 " =============================================================================
 " CRB
