@@ -128,7 +128,6 @@ imap <C-p> <Esc>:FZF<CR>
 " setting, fzf commands will all require an 'Fzf' prefix.
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
-" git --exclude node_modules --exclude build --exclude dist --exclude .cache --exclude .next --exclude .vscode --exclude .idea --exclude .nuxt --exclude .expo --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache --exclude .expo-internal --exclude .expo-home --exclude .expo-asset-cache --exclude .expo-shared --exclude .expo-source --exclude .expo-web --exclude .expo-xdl-cache
 noreabbrev <expr> ts getcmdtype() == ":" && getcmdline() == 'ts' ? 'FZFTselect' : 'ts'
 
 " GitGutter
@@ -242,6 +241,10 @@ set noerrorbells " Turn off error bell - still rings for escape in normal mode
 " Mappings
 " =============================================================================
 
+" switch windows
+nnoremap <C-J> <C-w>w
+nnoremap <C-K> <C-w>W
+
 " return to last position in a globally bookmarked file.
 noremap <leader>' <cmd>exec "normal '".getcharstr()."`\""<cr>
 
@@ -253,16 +256,13 @@ imap <F2> <esc>:Vex<CR>
 nmap <F3> :vsplit<CR>:FZF<CR>
 imap <F3> <esc>:vsplit<CR>:FZF<CR>
 
-" hard close the integrated terminal with python (started with `:term python`
-" or `:term python %`) running by pressing <F4>. ! is required, because
-" otherwise Vim will fail to close the buffer and complain about unsaved
-" changes. Has to be here instead of ftplugin because it will not retain a
-" python filetype if the run fails.  I.e., it's only filetype=plugin when pdb
-" or python is running. When it crashes (e.g., python after a stack trace)
-" will be in Normal mode. Destroy that buffer with F4 as well, but no ! is
-" needed. Safe to close normal-mode buffers. Will ask if unsaved changes.
-tnoremap <F4> <C-w>:bd!<CR>
-nnoremap <F4> <C-w>:bd<CR>
+" Hard close the last open split. This is useful when you have just run a
+" program in the integrated terminal and now want to close that terminal
+" without switching back to it. If the last opened split is not a terminal,
+" the contents will be saved before closing IF THE SPLIT HAS A FILENAME. If
+" not, the split will be closed without saving.
+tnoremap <F4> <C-w>:silent! -w<CR><C-w>:-quit!<CR>
+nnoremap <F4> :silent! -w<CR>:-quit!<CR>
 
 " <F5> reserved for ftplugins
 " <F6> reserved for ftplugins
