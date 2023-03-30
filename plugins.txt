@@ -43,7 +43,6 @@ airblade/vim-gitgutter
 dyng/ctrlsf.vim
 
 
-
 # the usual suspects pack/plugins/opt
 psf/black
 

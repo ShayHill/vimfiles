@@ -55,9 +55,6 @@
 [submodule "pack/plugins/start/vim-commentary"]
 	path = pack/plugins/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary
-[submodule "pack/plugins/start/fzf"]
-	path = pack/plugins/start/fzf
-	url = https://github.com/junegunn/fzf
 [submodule "pack/plugins/opt/markdown-preview.nvim"]
 	path = pack/plugins/opt/markdown-preview.nvim
 	url = https://github.com/iamcco/markdown-preview.nvim
@@ -67,9 +64,6 @@
 [submodule "pack/plugins/start/vim-surround"]
 	path = pack/plugins/start/vim-surround
 	url = https://github.com/tpope/vim-surround
-[submodule "pack/plugins/start/fzf.vim"]
-	path = pack/plugins/start/fzf.vim
-	url = https://github.com/junegunn/fzf.vim
 [submodule "pack/colors/start/vim-solarized8"]
 	path = pack/colors/start/vim-solarized8
 	url = https://github.com/lifepillar/vim-solarized8
@@ -94,3 +88,9 @@
 [submodule "pack/plugins/start/ctrlsf.vim"]
 	path = pack/plugins/start/ctrlsf.vim
 	url = https://github.com/dyng/ctrlsf.vim
+[submodule "pack/plugins/start/fzf.vim"]
+	path = pack/plugins/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "pack/plugins/start/fzf"]
+	path = pack/plugins/start/fzf
+	url = https://github.com/junegunn/fzf
