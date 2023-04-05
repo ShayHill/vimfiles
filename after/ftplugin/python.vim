@@ -17,12 +17,12 @@ nnoremap <buffer> <F5> :update<CR>:vert Make %<CR>
 inoremap <buffer> <F5> <esc>:update<CR>:vert Make %<CR>
 
 " run in integrated terminal
-nnoremap <buffer> <F6> :update<CR>:term python %<CR>
-inoremap <buffer> <F6> <esc>:update<CR>:term python %<CR>
+nnoremap <buffer> <F6> :update<CR>:VRemoteScratchTerm python %<CR>
+inoremap <buffer> <F6> <esc>:update<CR>:VRemoteScratchTerm python %<CR>
 
 " last :term pytest command, if any. No <CR>
-nnoremap <buffer> <F7> :update<CR>:term pytest<t_ku>
-inoremap <buffer> <F7> <ESC>:update<CR>:term pytest<t_ku>
+nnoremap <buffer> <F7> :update<CR>:VRemoteScratchTerm pytest<t_ku>
+inoremap <buffer> <F7> <ESC>:update<CR>:VRemoteScratchTerm pytest<t_ku>
 
 
 setlocal colorcolumn=89
@@ -35,8 +35,8 @@ setlocal formatoptions-=t  " do not autowrap text
 au filetype python setlocal foldlevel=3
 
 " run Black and MyPy
-nmap <buffer> <leader>b :update<CR>:Black<CR>:w<CR>
-imap <buffer> <leader>b <esc>:update<CR>:Black<CR>:w<CR>
+nmap <buffer> <leader>b :update<CR>:RemoteScratch C:\Users\shaya\vimfiles\vim-env\Scripts\black.exe %<CR>:update<CR>
+imap <buffer> <leader>b <ESC>:update<CR>:RemoteScratch C:\Users\shaya\vimfiles\vim-env\Scripts\black.exe %<CR>:update<CR>
 nmap <buffer> <leader>i :update<CR>:Isort<CR>:w<CR>
 imap <buffer> <leader>i <esc>:update<CR>:Isort<CR>:w<CR>
 

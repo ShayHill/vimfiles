@@ -162,6 +162,9 @@ endif
 " Behaviors
 " =============================================================================
 
+" open vertical splits on the right
+set splitright
+
 " set termwinsize=24*0 " set the terminal window size to 24 lines
 
 " Keep The Working Directory Clean:
@@ -241,6 +244,10 @@ set noerrorbells " Turn off error bell - still rings for escape in normal mode
 " Mappings
 " =============================================================================
 
+source $VIMFILES\vim9vimrc.vim
+
+
+
 " switch windows
 nnoremap <C-J> <C-w>w
 nnoremap <C-K> <C-w>W
@@ -252,28 +259,18 @@ noremap <leader>' <cmd>exec "normal '".getcharstr()."`\""<cr>
 nmap <F2> :Vex<CR>
 imap <F2> <esc>:Vex<CR>
 
-" vertical split to FZF
-nmap <F3> :vsplit<CR>:FZF<CR>
-imap <F3> <esc>:vsplit<CR>:FZF<CR>
+" create custom terminals and close all
 
-" Hard close the last open split. This is useful when you have just run a
-" program in the integrated terminal and now want to close that terminal
-" without switching back to it. If the last opened split is not a terminal,
-" the contents will be saved before closing IF THE SPLIT HAS A FILENAME. If
-" not, the split will be closed without saving.
-tnoremap <F4> <C-w>:silent! -w<CR><C-w>:-quit!<CR>
-nnoremap <F4> :silent! -w<CR>:-quit!<CR>
-
-" <F5> reserved for ftplugins
-" <F6> reserved for ftplugins
-" <F7> reserved for ftplugins
+nmap <F3> :ScratchTerm<space>
+tmap <F4> <C-w>:KillScratchTerms<CR>
+nmap <F4> :KillScratchTerms<CR>
 
 " last :term command, if any. No <CR>
 nnoremap <F8> :update<CR>:term<t_ku>
 inoremap <F8> <ESC>:update<CR>:term<t_ku>
 
 " <F11> gvim fullscreen
-" <F12> gvim translucency
+" <F12> gvim translucent
 
 " it's so easy to mistype :w that even my mech keyboard somehow does it
 " with autoshift.
