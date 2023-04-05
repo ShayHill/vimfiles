@@ -1,6 +1,6 @@
 filetype plugin on " Indent and plugins by filetype
 let mapleader=','  " for <leader> shortcuts.
-set encoding=utf-8 " setup the encoding to UTF-8
+se encoding=utf-8 " setup the encoding to UTF-8
 scriptencoding utf-8 " Encoding for this script (to allow Unicode characters)
 
 if has('win32')
@@ -9,8 +9,72 @@ else
     let $VIMFILES = "~/.vim"
 endif
 
+
+function! PackInit() abort
+    packadd minpac
+    call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+    " everything needed for lsp and completion
+    call minpac#add('prabirshrestha/vim-lsp')
+    call minpac#add('mattn/vim-lsp-settings')
+    call minpac#add('prabirshrestha/asyncomplete.vim')
+    call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+    " AI
+    call minpac#add('github/copilot.vim')
+    " snippets
+    call minpac#add('SirVer/ultisnips')
+    " the usual suspects
+    call minpac#add('vim-airline/vim-airline')
+    call minpac#add('vim-airline/vim-airline-themes')
+    call minpac#add('tpope/vim-fugitive')  " git integration
+    call minpac#add('tpope/vim-sensible')  " sensible defaults
+    call minpac#add('tpope/vim-obsession')  " session management
+    call minpac#add('tpope/vim-commentary')  " commenting
+    call minpac#add('tpope/vim-vinegar')  " netrw enhancement
+    call minpac#add('tpope/vim-surround')  " surround text objects
+    call minpac#add('psf/black')
+    " nice to haves
+    call minpac#add('jremmen/vim-ripgrep')  " needs installed ripgrep
+    call minpac#add('airblade/vim-gitgutter')  " show git changes
+    call minpac#add('dyng/ctrlsf.vim')  " like :CocSearch
+    " dispatch's :Make works sometimes when :make won't for PowerShell
+    call minpac#add('tpope/vim-dispatch')  " async build
+    " fuzzy finding
+    call minpac#add('junegunn/fzf')
+    call minpac#add('junegunn/fzf.vim')
+    " markdown
+    call minpac#add('preservim/vim-markdown')  " folding and syntax
+    call minpac#add('iamcco/markdown-preview.nvim')  " requires nodejs
+    " low-star projects that seem to work OK
+    call minpac#add('moll/vim-bbye')  " close a buffer without closing the window
+    call minpac#add('monkoose/vim9-stargate')  " easymotion
+    " Python
+    call minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  " folding
+    call minpac#add('davidszotten/isort-vim-2', {'type': 'opt'})  " isort
+    " colorschemes
+    call minpac#add('lifepillar/vim-solarized8')
+    call minpac#add('lifepillar/vim-gruvbox8')
+    call minpac#add('NLKNguyen/papercolor-theme')
+    call minpac#add('cocopon/iceberg.vim')
+    call minpac#add('arcticicestudio/nord-vim')
+    " my plugins
+    call minpac#add('shayhill/scratch_term')
+endfunction
+
+
+" Define user commands for updating/cleaning the plugins.
+" Each of them calls PackInit() to load minpac and register
+" the information of plugins, then performs the task.
+command! PackUpdate call PackInit() | call minpac#update()
+command! PackClean  call PackInit() | call minpac#clean()
+command! PackStatus packadd minpac | call minpac#status()
+
 if has("win32")
-    source $VIMRUNTIME\..\_vimrc " will contain some diff / Windows nuance
+    " TODO: uncomment _vimrc line below, and remove this line. Was causing
+    " some static when loading my vimrc without airline installed. Have to
+    " take a look at the file to see if it's worth sourcing.
+    " source $VIMRUNTIME\..\_vimrc " will contain some diff / Windows nuance
     " pwsh (Powershell 7+) breaks plenty of things, so disable it to debug
     " :make etc. Lowercase :make won't work with pwsh, at least not without
     " some obscure configuration I haven't found yet, but tpope/dispatch :Make
@@ -82,43 +146,6 @@ let g:lsp_diagnostics_echo_cursor = get(g:, 'lsp_diagnostics_echo_cursor', 1)
 let g:lsp_diagnostics_virtual_text_enabled = get(g:, 'lsp_diagnostics_virtual_text_enabled', 0)
 
 
-" Vim Airline:
-let g:airline#extensions#tabline#enabled = 0 " Enable the list of buffers
-let g:airline_powerline_fonts = 1
-let g:airline_mode_map = {
-  \ '__'     : '-',
-  \ 'c'      : 'C',
-  \ 'i'      : 'I',
-  \ 'ic'     : 'I',
-  \ 'ix'     : 'I',
-  \ 'n'      : 'N',
-  \ 'multi'  : 'M',
-  \ 'ni'     : 'N',
-  \ 'no'     : 'N',
-  \ 'R'      : 'R',
-  \ 'Rv'     : 'R',
-  \ 'S'      : 'S',
-  \ ''     : 'S',
-  \ 't'      : 'T',
-  \ 'v'      : 'V',
-  \ 'V'      : 'V',
-  \ ''     : 'V',
-  \ }
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.whitespace = 'Ξ'
 
 
 " FZF Plugin:
@@ -128,6 +155,8 @@ imap <C-p> <Esc>:FZF<CR>
 " setting, fzf commands will all require an 'Fzf' prefix.
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
+" respect .gitignore
+let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
 noreabbrev <expr> ts getcmdtype() == ":" && getcmdline() == 'ts' ? 'FZFTselect' : 'ts'
 
 " GitGutter
@@ -262,12 +291,12 @@ imap <F2> <esc>:Vex<CR>
 " create custom terminals and close all
 
 nmap <F3> :ScratchTerm<space>
-tmap <F4> <C-w>:KillScratchTerms<CR>
-nmap <F4> :KillScratchTerms<CR>
+tmap <F4> <C-w>:ScratchTermsKill<CR>
+nmap <F4> :ScratchTermsKill<CR>
 
 " last :term command, if any. No <CR>
-nnoremap <F8> :update<CR>:term<t_ku>
-inoremap <F8> <ESC>:update<CR>:term<t_ku>
+" nnoremap <F8> :update<CR>:term<t_ku>
+" inoremap <F8> <ESC>:update<CR>:term<t_ku>
 
 " <F11> gvim fullscreen
 " <F12> gvim translucent
@@ -416,6 +445,4 @@ function! DiffCRB()
     set wrap
     set linebreak
 endfunction
-
-
 
