@@ -82,7 +82,7 @@ if HasPlugin("asyncomplete")
     inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
     # enter always enters, will not autocomplete.
-    # inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() . "\<cr>" : "\<cr>"
+    inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() .. "\<cr>" : "\<cr>"
 endif
 
 
@@ -123,9 +123,9 @@ if HasPlugin("vim-lsp")
         autocmd User lsp_buffer_enabled call OnLspBufferEnabled()
     augroup END
 
-    # show error information on statusline
-    g:lsp_diagnostics_echo_cursor = get(g:, 'lsp_diagnostics_echo_cursor', 1)
-    g:lsp_diagnostics_virtual_text_enabled = get(g:, 'lsp_diagnostics_virtual_text_enabled', 0)
+    # show error information on statusline, no virtual text
+    g:lsp_diagnostics_echo_cursor = 1
+    g:lsp_diagnostics_virtual_text_enabled = 0
 endif
 
 

@@ -29,6 +29,7 @@ if has("win32")
     set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32\python310.dll
 endif
 
+
 # ---------------------------------------------------------------------------- #
 #
 #  other config files
@@ -46,9 +47,10 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
+
 def PackInit(): void
     packadd minpac
-    minpac#init()
+    call minpac#init()
     minpac#add('k-takata/minpac', {'type': 'opt'})
 
     # everything needed for lsp and completion
@@ -59,10 +61,10 @@ def PackInit(): void
     # AI
     minpac#add('github/copilot.vim')
     # snippets
-    minpac#add('SirVer/ultisnips')
+    # minpac#add('SirVer/ultisnips')
     # the usual suspects
-    minpac#add('vim-airline/vim-airline')
-    minpac#add('vim-airline/vim-airline-themes')
+    # minpac#add('vim-airline/vim-airline')
+    # minpac#add('vim-airline/vim-airline-themes')
     minpac#add('tpope/vim-fugitive')  # git integration
     minpac#add('tpope/vim-sensible')  # sensible defaults
     minpac#add('tpope/vim-obsession')  # session management
@@ -115,10 +117,15 @@ command! PackStatus packadd minpac | minpac#status()
 # ---------------------------------------------------------------------------- #
 
 set t_Co=256 # 256 colors for the terminal
-set background=dark # set a dark background
-g:gruvbox_italics = 0 # disable italic comments and keywords
-colorscheme iceberg
 
+g:gruvbox_italics = 0 # disable italic comments and keywords
+try
+    colorscheme iceberg
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme habamax
+endtry
+
+set background=dark # set a dark background
 
 
 # ---------------------------------------------------------------------------- #
