@@ -3,11 +3,11 @@ vim9script
 
 # set by vim-sensible
 # filetype plugin on # Indent and plugins by filetype
-# set scrolloff=5 # screen space around cursor 
+# set scrolloff=5 # screen space around cursor
 # set sidescrolloff=5 # screen space around cursor
 # set wildmenu  # Command line autocompletion
 
-var mapleader = ','  # for <leader> shortcuts.
+g:mapleader = ','  # for <leader> shortcuts.
 set encoding=utf-8 # setup the encoding to UTF-8
 scriptencoding utf-8 # Encoding for this script (to allow Unicode characters)
 
@@ -28,7 +28,6 @@ if has("win32")
     set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32
     set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32\python310.dll
 endif
-
 
 # ---------------------------------------------------------------------------- #
 #
@@ -61,10 +60,10 @@ def PackInit(): void
     # AI
     minpac#add('github/copilot.vim')
     # snippets
-    # minpac#add('SirVer/ultisnips')
+    minpac#add('SirVer/ultisnips')
     # the usual suspects
-    # minpac#add('vim-airline/vim-airline')
-    # minpac#add('vim-airline/vim-airline-themes')
+    minpac#add('vim-airline/vim-airline')
+    minpac#add('vim-airline/vim-airline-themes')
     minpac#add('tpope/vim-fugitive')  # git integration
     minpac#add('tpope/vim-sensible')  # sensible defaults
     minpac#add('tpope/vim-obsession')  # session management
@@ -223,7 +222,7 @@ command! W w
 tnoremap <leader>n <C-w>N
 
 # remove trailing whitespace
-nnoremap <leader>_ :%s/\s\+$//e<CR>
+nnoremap <leader>_ :%s/\s\+$//g<CR>
 
 # clear search highlights with space.
 nnoremap <space> :noh<CR>
