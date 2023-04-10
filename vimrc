@@ -291,39 +291,39 @@ map <C-k6> <C-6>
 # This is useful to copying strings from the file to the search tool
 # Based on this - http://peterodding.com/code/vim/profile/autoload/xolox/escape.vim
 def EscapeString(my_string: string): string
-  var string = my_string
-  # Escape regex characters
-  string = escape(string, '^$.*\/~[]')
-  # Escape the line endings
-  string = substitute(string, '\n', '\\n', 'g')
-  return string
+    var string = my_string
+    # Escape regex characters
+    string = escape(string, '^$.*\/~[]')
+    # Escape the line endings
+    string = substitute(string, '\n', '\\n', 'g')
+    return string
 enddef
 
 # Get the current visual block for search and replaces
 # This function passed the visual block through a string escape function
 # Based on this - https://stackoverflow.com/questions/676600/vim-replace-selected-text/677918#677918
-def GetVisual(): string
-  # Save the current register and clipboard
-  var reg_save = getreg('"')
-  var regtype_save = getregtype('"')
-  var cb_save = &clipboard
-  set clipboard&
+def g:GetVisual(): string
+    # Save the current register and clipboard
+    var reg_save = getreg('"')
+    var regtype_save = getregtype('"')
+    var cb_save = &clipboard
+    set clipboard&
 
-  # Put the current visual selection in the " register
-  normal! ""gvy
-  var selection = getreg('"')
+    # Put the current visual selection in the " register
+    normal! ""gvy
+    var selection = getreg('"')
 
-  # Put the saved registers and clipboards back
-  call setreg('"', reg_save, regtype_save)
-  var clipboard = cb_save
+    # Put the saved registers and clipboards back
+    call setreg('"', reg_save, regtype_save)
+    var clipboard = cb_save
 
-  # Escape any special characters in the selection
-  var escaped_selection = EscapeString(selection)
+    # Escape any special characters in the selection
+    var escaped_selection = EscapeString(selection)
 
-  echo escaped_selection
-  return escaped_selection
+    echo escaped_selection
+    return escaped_selection
 enddef
 
 # Start the find and replace command across the entire file
-vmap <F9> <Esc>:%s/<c-r>=GetVisual()<cr>/
+vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
 
