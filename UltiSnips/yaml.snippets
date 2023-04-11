@@ -5,6 +5,8 @@ ci:
   autofix_commit_msg: 'style: pre-commit fixes'
   autoupdate_commit_msg: 'chore: update pre-commit hooks'
 
+exclude: "tests"
+
 repos:
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -98,7 +100,7 @@ repos:
     - --disable=protected-access
     - --disable=no-member
     - --disable=import-error
-	- --disable=no-name-in-module
+    - --disable=no-name-in-module
     - --load-plugins=pylint.extensions.docparams
     - --accept-no-param-doc=n
     - --accept-no-raise-doc=n

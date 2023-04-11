@@ -1,0 +1,250 @@
+vim9script
+# Configure plugins if installed
+# ---------------------------------------------------------------------------- #
+# Unfortunately, this is not working. Some of these configurations need to be
+# set *before* the plugins are loaded, but I cannot find a way to determine if
+# plugins are installed before the plugins are loaded. Their directories are
+# not in the &rtp and they do not appear in :scriptnames until after it is too
+# late to set their global config variables.
+#
+# So, HasPlugin() is not working. I have set it up to always return true and
+# may revisit this in the future.
+
+
+def HasPlugin(name: string): bool
+    # search for plugin/name.vim or autoload/name.vim in runtimepath. If not
+    # found, print error.
+    return v:true
+    # var in_plugin = 'plugin/' .. name .. '.vim'
+    # var in_autoload = 'autoload/' .. name .. '.vim'
+    # if (
+    #         ! empty(globpath(&rtp, in_autoload)) ||
+    #         ! empty(globpath(&rtp, in_plugin))
+    #     )
+    #     return true
+    # else
+    #     echo 'failed to load configuration for plugin ' .. name
+    #     echo 'searched for ' .. in_plugin .. ' in &rtp'
+    #     echo 'searched for ' .. in_autoload .. ' in &rtp'
+    #     return false
+    # endif
+enddef
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  vim-airline
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("airline")
+     g:airline_powerline_fonts = 1
+     g:airline_mode_map = {
+       \ '__': '-',
+       \ 'c': 'C',
+       \ 'i': 'I',
+       \ 'ic': 'I',
+       \ 'ix': 'I',
+       \ 'n': 'N',
+       \ 'multi': 'M',
+       \ 'ni': 'N',
+       \ 'no': 'N',
+       \ 'R': 'R',
+       \ 'Rv': 'R',
+       \ 'S': 'S',
+       \ '': 'S',
+       \ 't': 'T',
+       \ 'v': 'V',
+       \ 'V': 'V',
+       \ '': 'V',
+       \ }
+
+     if !exists('g:airline_symbols')
+         g:airline_symbols = {}
+     endif
+
+     # airline symbols
+     g:airline_left_sep = ''
+     g:airline_left_alt_sep = ''
+     g:airline_right_sep = ''
+     g:airline_right_alt_sep = ''
+     g:airline_symbols.branch = ''
+     g:airline_symbols.readonly = ''
+     g:airline_symbols.linenr = ''
+     g:airline_symbols.paste = 'ρ'
+     g:airline_symbols.whitespace = 'Ξ'
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  ultisnips
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("ultisnips")
+    g:UltiSnipsExpandTrigger = "<C-l>"
+    g:UltiSnipsJumpForwardTrigger = "<C-j>"
+    g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+endif
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  asyncomplete
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("asyncomplete")
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    # enter always enters, will not autocomplete.
+    inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() .. "\<cr>" : "\<cr>"
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  vim-lsp
+#
+# ---------------------------------------------------------------------------- #
+
+# copied (almost) directly from the vim-lsp docs:
+if HasPlugin("lsp")
+    def OnLspBufferEnabled(): void
+        setlocal omnifunc=lsp#complete
+        setlocal signcolumn=yes
+        if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+        nmap <buffer> gd <plug>(lsp-definition)
+        nmap <buffer> gs <plug>(lsp-document-symbol-search)
+        nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+        nmap <buffer> gr <plug>(lsp-references)
+        nmap <buffer> gi <plug>(lsp-implementation)
+        nmap <buffer> <leader>gt <plug>(lsp-type-definition)
+        nmap <buffer> <leader>rn <plug>(lsp-rename)
+        nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+        nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+        nmap <buffer> K <plug>(lsp-hover)
+        # nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+        # nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+        g:lsp_format_sync_timeout = 1000
+        autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    enddef
+
+    augroup lsp_install
+        au!
+        # call OnLspBufferEnabled (set the lsp shortcuts) when an lsp server
+        # is registered for a buffer.
+        autocmd User lsp_buffer_enabled call OnLspBufferEnabled()
+    augroup END
+
+    # show error information on statusline, no virtual text
+    g:lsp_diagnostics_echo_cursor = 1
+    g:lsp_diagnostics_virtual_text_enabled = 0
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  fzf
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("fzf")
+    nmap <C-p> :FZF<CR>
+    imap <C-p> <Esc>:FZF<CR>
+    # avoid accidentally triggering fzf :Windows command with :W. With this
+    # setting, fzf commands will all require an 'Fzf' prefix.
+    g:fzf_command_prefix = 'Fzf'
+    # skip some directories when creating ctags
+    g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
+    # respect gitignore
+    $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  gitgutter
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("gitgutter")
+    nmap <leader>gg :GitGutterToggle<CR>
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  scratch_term
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("scratch_term")
+
+    nmap <F3> :ScratchTermV<space>
+
+    tnoremap <F4> <C-w>:ScratchTermsKill<CR>
+    nnoremap <F4> :ScratchTermsKill<CR>
+    inoremap <F4> <ESC>:ScratchTermsKill<CR>
+
+    nnoremap <F8> :update<CR>:ScratchTerm<t_ku>
+    inoremap <F8> <ESC>:update<CR>:ScratchTerm<t_ku>
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  vim-bbye
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("bbye")
+    nnoremap <Leader>q :Bdelete<CR>
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  vim9-stargate
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("stargate")
+    # For 1 character to search before showing hints
+    noremap <leader>f <Cmd>call stargate#OKvim(1)<CR>
+    # For 2 consecutive characters to search
+    noremap <leader>F <Cmd>call stargate#OKvim(2)<CR>
+    # switch panes
+    nnoremap <leader>w <Cmd>call stargate#Galaxy()<CR>
+    tnoremap <leader>w <C-w>N<Cmd>call stargate#Galaxy()<CR>
+endif
+
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  ctrlsf.vim
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("ctrlsf")
+    nmap <C-F>f <Plug>CtrlSFPrompt
+    vmap <C-F>f <Plug>CtrlSFVwordPath
+    vmap <C-F>F <Plug>CtrlSFVwordExec
+    nmap <C-F>n <Plug>CtrlSFCwordPath
+    nmap <C-F>p <Plug>CtrlSFPwordPath
+    nnoremap <C-F>o :CtrlSFOpen<CR>
+    nnoremap <C-F>t :CtrlSFToggle<CR>
+    inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+endif

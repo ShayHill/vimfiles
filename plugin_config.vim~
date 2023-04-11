@@ -1,17 +1,36 @@
 vim9script
+# Configure plugins if installed
+# ---------------------------------------------------------------------------- #
+# Unfortunately, this is not working. Some of these configurations need to be
+# set *before* the plugins are loaded, but I cannot find a way to determine if
+# plugins are installed before the plugins are loaded. Their directories are
+# not in the &rtp and they do not appear in :scriptnames until after it is too
+# late to set their global config variables.
+#
+# So, HasPlugin() is not working. I have set it up to always return true and
+# may revisit this in the future.
+
 
 def HasPlugin(name: string): bool
-    # return true if a plugin is installed
-    var installed_scripts: string
-    redir => installed_scripts
-    silent exec ':filter \' .. name .. '\ scriptnames'
-    redir END
-    if installed_scripts == ""
-        return v:false
+    # search for plugin/name.vim or autoload/name.vim in runtimepath. If not
+    # found, print error.
+    return v:true
+    var in_plugin = 'plugin/' .. name .. '.vim'
+    var in_autoload = 'autoload/' .. name .. '.vim'
+    if (
+            ! empty(globpath(&rtp, in_autoload)) ||
+            ! empty(globpath(&rtp, in_plugin))
+        )
+        return true
     else
-        return v:true
+        echo 'failed to load configuration for plugin ' .. name
+        echo 'searched for ' .. in_plugin .. ' in &rtp'
+        echo 'searched for ' .. in_autoload .. ' in &rtp'
+        return false
     endif
 enddef
+
+
 
 # ---------------------------------------------------------------------------- #
 #
@@ -19,7 +38,7 @@ enddef
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("vim-airline")
+if HasPlugin("airline")
      g:airline_powerline_fonts = 1
      g:airline_mode_map = {
        \ '__': '-',
@@ -94,7 +113,7 @@ endif
 # ---------------------------------------------------------------------------- #
 
 # copied (almost) directly from the vim-lsp docs:
-if HasPlugin("vim-lsp")
+if HasPlugin("lsp")
     def OnLspBufferEnabled(): void
         setlocal omnifunc=lsp#complete
         setlocal signcolumn=yes
@@ -136,7 +155,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("fzf.vim")
+if HasPlugin("fzf")
     nmap <C-p> :FZF<CR>
     imap <C-p> <Esc>:FZF<CR>
     # avoid accidentally triggering fzf :Windows command with :W. With this
@@ -188,7 +207,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("vim-bbye")
+if HasPlugin("bbye")
     nnoremap <Leader>q :Bdelete<CR>
 endif
 
@@ -200,7 +219,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("vim9-stargate")
+if HasPlugin("stargate")
     # For 1 character to search before showing hints
     noremap <leader>f <Cmd>call stargate#OKvim(1)<CR>
     # For 2 consecutive characters to search
@@ -219,8 +238,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-echo HasPlugin("ctrlsf.vim")
-if HasPlugin("ctrlsf.vim")
+if HasPlugin("ctrlsf")
     nmap <C-F>f <Plug>CtrlSFPrompt
     vmap <C-F>f <Plug>CtrlSFVwordPath
     vmap <C-F>F <Plug>CtrlSFVwordExec

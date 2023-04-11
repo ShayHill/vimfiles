@@ -1,5 +1,5 @@
 vim9script
-# Plugin config is in ~/vimfiles/after/plugin/plugin_config.vim
+# Plugin config is in ~/vimfiles/plugin_config.vim
 
 # set by vim-sensible
 # filetype plugin on # Indent and plugins by filetype
@@ -40,12 +40,14 @@ if has('gui_running')
 endif
 
 
+source $VIMFILES/plugin_config.vim
+
+
 # ---------------------------------------------------------------------------- #
 #
 #  minpac
 #
 # ---------------------------------------------------------------------------- #
-
 
 def PackInit(): void
     packadd minpac
@@ -103,8 +105,8 @@ enddef
 # Define user commands for updating/cleaning the plugins.
 # Each of them calls PackInit() to load minpac and register
 # the information of plugins, then performs the task.
-command! PackUpdate PackInit() | minpac#update()
-command! PackClean  PackInit() | minpac#clean()
+command! PackUpdate PackInit() | minpac#update() | source $VIMFILES/plugin_config.vim
+command! PackClean  PackInit() | minpac#clean() | source $VIMFILES/plugin_config.vim
 command! PackStatus packadd minpac | minpac#status()
 
 
@@ -326,4 +328,3 @@ enddef
 
 # Start the find and replace command across the entire file
 vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
-

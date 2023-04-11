@@ -14,7 +14,7 @@ if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
 endif
 
-CompilerSet makeprg=pre-commit\ run\ --files
+CompilerSet makeprg=pre-commit\ run\ --all-files
 
 " errorformats:
 " 1. ruff
