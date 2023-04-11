@@ -72,7 +72,6 @@ def PackInit(): void
     minpac#add('tpope/vim-commentary')  # commenting
     minpac#add('tpope/vim-vinegar')  # netrw enhancement
     minpac#add('tpope/vim-surround')  # surround text objects
-    minpac#add('psf/black')
     # nice to haves
     minpac#add('jremmen/vim-ripgrep')  # needs installed ripgrep
     minpac#add('airblade/vim-gitgutter')  # show git changes
@@ -90,7 +89,6 @@ def PackInit(): void
     minpac#add('monkoose/vim9-stargate')  # easymotion
     # Python
     minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
-    minpac#add('davidszotten/isort-vim-2', {'type': 'opt'})  # isort
     # colorschemes
     minpac#add('lifepillar/vim-solarized8')
     minpac#add('lifepillar/vim-gruvbox8')
