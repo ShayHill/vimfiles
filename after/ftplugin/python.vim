@@ -34,9 +34,9 @@ setlocal formatoptions-=t  " do not autowrap text
 au filetype python setlocal foldlevel=3
 
 " run Black and MyPy
-nmap <buffer> <leader>b :update<CR>:ScratchTerm pre-commit run black --files %<CR>update<CR>
+nmap <buffer> <leader>b :update<CR>:ScratchTerm pre-commit run black --files %<CR>:update<CR>
 imap <buffer> <leader>b <ESC>:update<CR>:ScratchTerm pre-commit run black --files %<CR>:update<CR>
-nmap <buffer> <leader>b :update<CR>:ScratchTerm pre-commit run isort --files %<CR>update<CR>
-imap <buffer> <leader>b <ESC>:update<CR>:ScratchTerm pre-commit run isort --files %<CR>:update<CR>
+nmap <buffer> <leader>i :update<CR>:ScratchTerm pre-commit run isort --files %<CR>:update<CR>
+imap <buffer> <leader>i <ESC>:update<CR>:ScratchTerm pre-commit run isort --files %<CR>:update<CR>
 
 

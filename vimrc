@@ -61,6 +61,7 @@ def PackInit(): void
     minpac#add('prabirshrestha/asyncomplete-lsp.vim')
     # AI
     minpac#add('github/copilot.vim')
+    minpac#add('madox2/vim-ai')
     # snippets
     minpac#add('SirVer/ultisnips')
     # the usual suspects
@@ -96,7 +97,7 @@ def PackInit(): void
     minpac#add('cocopon/iceberg.vim')
     minpac#add('arcticicestudio/nord-vim')
     # my plugins
-    minpac#add('shayhill/scratch_term')
+    minpac#add('shayhill/vim9-scratchterm')
 enddef
 
 

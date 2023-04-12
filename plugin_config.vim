@@ -10,24 +10,29 @@ vim9script
 # So, HasPlugin() is not working. I have set it up to always return true and
 # may revisit this in the future.
 
+if has('win32')
+    $VIMFILES = "~/vimfiles"
+else
+    $VIMFILES = "~/.vim"
+endif
+
 
 def HasPlugin(name: string): bool
     # search for plugin/name.vim or autoload/name.vim in runtimepath. If not
     # found, print error.
-    return v:true
-    # var in_plugin = 'plugin/' .. name .. '.vim'
-    # var in_autoload = 'autoload/' .. name .. '.vim'
-    # if (
-    #         ! empty(globpath(&rtp, in_autoload)) ||
-    #         ! empty(globpath(&rtp, in_plugin))
-    #     )
-    #     return true
-    # else
-    #     echo 'failed to load configuration for plugin ' .. name
-    #     echo 'searched for ' .. in_plugin .. ' in &rtp'
-    #     echo 'searched for ' .. in_autoload .. ' in &rtp'
-    #     return false
-    # endif
+    var plugin_roots = [
+        $VIMFILES .. '/pack/minpac/start/',
+        $VIMFILES .. '/pack/minpac/opt/'
+    ]
+    var has_plugin = v:false
+    for plugin_root in plugin_roots
+        has_plugin = has_plugin || finddir(plugin_root .. name) != ''
+    endfor
+    if ! has_plugin
+        echo finddir(plugin_roots[0] .. name)
+        echo 'failed to load configuration for plugin ' .. name
+    endif
+    return has_plugin
 enddef
 
 
@@ -38,7 +43,7 @@ enddef
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("airline")
+if HasPlugin("vim-airline")
      g:airline_powerline_fonts = 1
      g:airline_mode_map = {
        \ '__': '-',
@@ -97,7 +102,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("asyncomplete")
+if HasPlugin("asyncomplete.vim")
     inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
     # enter always enters, will not autocomplete.
@@ -113,7 +118,7 @@ endif
 # ---------------------------------------------------------------------------- #
 
 # copied (almost) directly from the vim-lsp docs:
-if HasPlugin("lsp")
+if HasPlugin("vim-lsp")
     def OnLspBufferEnabled(): void
         setlocal omnifunc=lsp#complete
         setlocal signcolumn=yes
@@ -175,7 +180,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("gitgutter")
+if HasPlugin("vim-gitgutter")
     nmap <leader>gg :GitGutterToggle<CR>
 endif
 
@@ -183,11 +188,11 @@ endif
 
 # ---------------------------------------------------------------------------- #
 #
-#  scratch_term
+#  vim9-scratchterm
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("scratch_term")
+if HasPlugin("vim9-scratchterm")
 
     nmap <F3> :ScratchTermV<space>
 
@@ -207,7 +212,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("bbye")
+if HasPlugin("vim-bbye")
     nnoremap <Leader>q :Bdelete<CR>
 endif
 
@@ -219,7 +224,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("stargate")
+if HasPlugin("vim9-stargate")
     # For 1 character to search before showing hints
     noremap <leader>f <Cmd>call stargate#OKvim(1)<CR>
     # For 2 consecutive characters to search
@@ -231,14 +236,13 @@ endif
 
 
 
-
 # ---------------------------------------------------------------------------- #
 #
 #  ctrlsf.vim
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("ctrlsf")
+if HasPlugin("ctrlsf.vim")
     nmap <C-F>f <Plug>CtrlSFPrompt
     vmap <C-F>f <Plug>CtrlSFVwordPath
     vmap <C-F>F <Plug>CtrlSFVwordExec
@@ -247,4 +251,33 @@ if HasPlugin("ctrlsf")
     nnoremap <C-F>o :CtrlSFOpen<CR>
     nnoremap <C-F>t :CtrlSFToggle<CR>
     inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+endif
+
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  vim-ai
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("vim-ai")
+    # complete text on the current line or in visual selection
+    imap <leader>aa <ESC>:AI<CR>
+    nnoremap <leader>aa :AI<CR>
+    xnoremap <leader>aa :AI<CR>
+
+    imap <leader>a <ESC>:AI
+    nnoremap <leader>a :AI
+    xnoremap <leader>a :AI
+
+    # edit text with a custom prompt
+    imap <leader>s <ESC>:AIEdit
+    xnoremap <leader>s :AIEdit fix grammar and spelling
+    nnoremap <leader>s :AIEdit fix grammar and spelling
+
+    # trigger chat
+    imap <leader>cc <ESC>:AIEdit<CR>i
+    xnoremap <leader>cc :AIChat<CR>i
+    nnoremap <leader>cc :AIChat<CR>i
 endif
