@@ -17,8 +17,8 @@ nnoremap <buffer> <F5> :update<CR>:vert Make<CR>
 inoremap <buffer> <F5> <esc>:update<CR>:vert Make<CR>
 
 " run in integrated terminal
-nnoremap <buffer> <F6> :update<CR>:ScratchTerm python %<CR>
-inoremap <buffer> <F6> <esc>:update<CR>:ScratchTerm python %<CR>
+nnoremap <buffer> <F6> :update<CR>:ScratchTermReplaceU python %<CR>
+inoremap <buffer> <F6> <esc>:update<CR>:ScratchTermReplaceU python %<CR>
 
 " last :term pytest command, if any. No <CR>
 nnoremap <buffer> <F7> :update<CR>:ScratchTermReplaceUV pytest<t_ku>

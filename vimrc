@@ -61,7 +61,7 @@ def PackInit(): void
     minpac#add('prabirshrestha/asyncomplete-lsp.vim')
     # AI
     minpac#add('github/copilot.vim')
-    minpac#add('madox2/vim-ai')
+    minpac#add('madox2/vim-ai', {do: '!python -m pip install "openai>=0.27"'})
     # snippets
     minpac#add('SirVer/ultisnips')
     # the usual suspects
@@ -88,6 +88,7 @@ def PackInit(): void
     # low-star projects that seem to work OK
     minpac#add('moll/vim-bbye')  # close a buffer without closing the window
     minpac#add('monkoose/vim9-stargate')  # easymotion
+    minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
     # Python
     minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
     # colorschemes
@@ -134,7 +135,30 @@ set background=dark # set a dark background
 #
 # ---------------------------------------------------------------------------- #
 
-# Keep The Working Directory Clean
+# Use ripgrep in  :grep if installed
+if executable("rg")
+    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
+
+# Use ripgrep in fzf if installed
+if executable("rg")
+    command! -bang -nargs=* Rg
+                \ fzf#vim#grep(
+                \   'rg --column --line-number --no-heading --color=always --ignore-case '.shellescape(<q-args>), 1,
+                \   <bang>0 ? fzf#vim#with_preview('up:60%')
+                \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+                \   <bang>0)
+
+    nnoremap <C-p>a :Rg 
+endif
+
+# opening files
+set path+=**
+set wildmenu
+set wildignore+=*/__pycache__/,/venv/*
+
+# keep the working directory clean
 def MakeDirIfNoExists(path: string): void
     if !isdirectory(expand(a:path))
 	    call mkdir(expand(a:path), "p")

@@ -30,7 +30,7 @@ def HasPlugin(name: string): bool
     endfor
     if ! has_plugin
         echo finddir(plugin_roots[0] .. name)
-        echo 'failed to load configuration for plugin ' .. name
+        echo 'Cannot find plugin ' .. name .. '. Skipping configuration.'
     endif
     return has_plugin
 enddef
