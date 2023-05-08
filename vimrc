@@ -71,6 +71,7 @@ def PackInit(): void
     # the usual suspects
     minpac#add('vim-airline/vim-airline')
     minpac#add('vim-airline/vim-airline-themes')
+    # minpac#add('itchyny/lightline.vim')
 
     minpac#add('tpope/vim-fugitive')  # git integration
     minpac#add('tpope/vim-sensible')  # sensible defaults
@@ -388,6 +389,12 @@ vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
 set statusline=
 # Status line left side.
 set statusline+=\ 
+
+# Show branch if *fugitive is installed
+set statusline+=%#TabLineSel#
+set statusline+=\ %{FugitiveHead()}\ |
+set statusline+=%#StatusLine#
+
 # path relative to current directory
 set statusline+=\ %f
 # show a + sign if file has unsaved changes
@@ -397,7 +404,7 @@ set statusline+=\ %M
 set statusline+=%=
 
 # Status line right side.
-set statusline+=\ %l:%L
+set statusline+=\ %l:%L\ ☰\ %c\ \|
 # show the buffer number
 set statusline+=\ \|
 # set statusline+=%S\|
@@ -406,6 +413,6 @@ set statusline+=\ b%n
 # show the window number
 set statusline+=\ w%{win_getid()}
 
-# show search result [n:m] below searchline
-set shortmess-=S
+# # show search result [n:m] below searchline
+# set shortmess-=S
 
