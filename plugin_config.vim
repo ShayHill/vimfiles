@@ -43,43 +43,68 @@ enddef
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("vim-airline")
-     g:airline_powerline_fonts = 1
-     g:airline_mode_map = {
-       \ '__': '-',
-       \ 'c': 'C',
-       \ 'i': 'I',
-       \ 'ic': 'I',
-       \ 'ix': 'I',
-       \ 'n': 'N',
-       \ 'multi': 'M',
-       \ 'ni': 'N',
-       \ 'no': 'N',
-       \ 'R': 'R',
-       \ 'Rv': 'R',
-       \ 'S': 'S',
-       \ '': 'S',
-       \ 't': 'T',
-       \ 'v': 'V',
-       \ 'V': 'V',
-       \ '': 'V',
-       \ }
+# if HasPlugin("vim-airline")
+#     g:airline_powerline_fonts = 1
+#     g:airline_mode_map = {
+#                 \ '__': '-',
+#                 \ 'c': 'C',
+#                 \ 'i': 'I',
+#                 \ 'ic': 'I',
+#                 \ 'ix': 'I',
+#                 \ 'n': 'N',
+#                 \ 'multi': 'M',
+#                 \ 'ni': 'N',
+#                 \ 'no': 'N',
+#                 \ 'R': 'R',
+#                 \ 'Rv': 'R',
+#                 \ 'S': 'S',
+#                 \ '': 'S',
+#                 \ 't': 'T',
+#                 \ 'v': 'V',
+#                 \ 'V': 'V',
+#                 \ '': 'V',
+#                 \ }
 
-     if !exists('g:airline_symbols')
-         g:airline_symbols = {}
-     endif
+#     if !exists('g:airline_symbols')
+#         g:airline_symbols = {}
+#     endif
 
-     # airline symbols
-     g:airline_left_sep = ''
-     g:airline_left_alt_sep = ''
-     g:airline_right_sep = ''
-     g:airline_right_alt_sep = ''
-     g:airline_symbols.branch = ''
-     g:airline_symbols.readonly = ''
-     g:airline_symbols.linenr = ''
-     g:airline_symbols.paste = 'ρ'
-     g:airline_symbols.whitespace = 'Ξ'
-endif
+#     # airline symbols
+#     g:airline_left_sep = '|'
+#     g:airline_left_alt_sep = '|'
+#     g:airline_right_sep = '|'
+#     g:airline_right_alt_sep = '|'
+
+#     # airline brach fuction without symbols
+#     g:airline_symbols.branch = ''
+#     g:airline_symbols.dirty = '!'
+#     g:airline_symbols.notexists = '?'
+
+#     g:airline_symbols.readonly = ''
+
+#     # g:airline_symbols.linenr = ''
+#     g:airline_symbols.maxlinenr = ' ☰ '
+
+#     g:airline_symbols.paste = 'ρ'
+#     g:airline_symbols.whitespace = 'Ξ'
+
+#     g:airline_section_b = airline#section#create(['hunks', 'branch'])
+#     g:airline_section_b = "%{airline#util#wrap(airline#extensions#branch#get_head(),80)}"
+#     g:airline_section_b = airline#section#create(['branch'])
+
+#     # g:airline_section_c = "%f\ %M"
+#     g:airline_section_x = "%#__accent_bold#%l%#__restore__#:%L%{g:airline_symbols.maxlinenr}%#__accent_bold#%v%#__restore__#"
+#     # word search, word count, etc. get automatically filled in here, even
+#     # when set to ""
+#     g:airline_section_y = ""
+#     g:airline_section_z = "w%{win_getid()}\ b%n"
+#     # g:airline_section_z = "b%n"
+
+#     # don't show errors on the statusline
+#     g:airline_section_error = ""
+#     g:airline_section_warning = ""
+#     g:airline_theme = 'monochrome'
+# endif
 
 
 
@@ -160,7 +185,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("fzf")
+if 0 && HasPlugin("fzf")
     nmap <C-p> :FZF<CR>
     imap <C-p> <Esc>:FZF<CR>
     # avoid accidentally triggering fzf :Windows command with :W. With this
@@ -170,6 +195,22 @@ if HasPlugin("fzf")
     g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
     # respect gitignore
     $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
+
+    def g:ExecInCmd(command: string)
+        # execute a command in Cmd, even when shell is set to pwsh
+        var tmp_shell = &shell
+        var tmp_shellcmdflag = &shellcmdflag
+        var tmp_shellxquote = &shellxquote
+        set shell=cmd
+        set shellcmdflag=/c
+        set shellxquote=
+        execute command
+        &shell = tmp_shell
+        &shellcmdflag = tmp_shellcmdflag
+        &shellxquote = tmp_shellxquote
+    enddef
+
+    nnoremap <C-g>  :call ExecInCmd('FzfGFiles')<CR>
 endif
 
 
@@ -194,7 +235,11 @@ endif
 
 if HasPlugin("vim9-scratchterm")
 
-    nmap <F3> :ScratchTermV<space>
+    nnoremap <F2> :update<CR>:ScratchTerm<space>
+    inoremap <F2> <ESC>:update<CR>:ScratchTerm<space>
+
+    nnoremap <F3> :update<CR>:ScratchTermV<space>
+    inoremap <F3> <ESC>:update<CR>:ScratchTermV<space>
 
     tnoremap <F4> <C-w>:ScratchTermsKill<CR>
     nnoremap <F4> :ScratchTermsKill<CR>
@@ -243,14 +288,14 @@ endif
 # ---------------------------------------------------------------------------- #
 
 if HasPlugin("ctrlsf.vim")
-    nmap <C-F>f <Plug>CtrlSFPrompt
-    vmap <C-F>f <Plug>CtrlSFVwordPath
-    vmap <C-F>F <Plug>CtrlSFVwordExec
-    nmap <C-F>n <Plug>CtrlSFCwordPath
-    nmap <C-F>p <Plug>CtrlSFPwordPath
-    nnoremap <C-F>o :CtrlSFOpen<CR>
-    nnoremap <C-F>t :CtrlSFToggle<CR>
-    inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+    nmap <C-S>f <Plug>CtrlSFPrompt
+    vmap <C-S>f <Plug>CtrlSFVwordPath
+    vmap <C-S>F <Plug>CtrlSFVwordExec
+    nmap <C-S>n <Plug>CtrlSFCwordPath
+    nmap <C-S>p <Plug>CtrlSFPwordPath
+    nnoremap <C-S>o :CtrlSFOpen<CR>
+    nnoremap <C-S>t :CtrlSFToggle<CR>
+    inoremap <C-S>t <Esc>:CtrlSFToggle<CR>
 endif
 
 
@@ -272,12 +317,12 @@ if HasPlugin("vim-ai")
     xnoremap <leader>a :AI
 
     # edit text with a custom prompt
-    imap <leader>s <ESC>:AIEdit
+    imap <leader>s <ESC>:AIEdit fix grammar and spelling
     xnoremap <leader>s :AIEdit fix grammar and spelling
     nnoremap <leader>s :AIEdit fix grammar and spelling
 
     # trigger chat
-    imap <leader>cc <ESC>:AIEdit<CR>i
-    xnoremap <leader>cc :AIChat<CR>i
-    nnoremap <leader>cc :AIChat<CR>i
+    imap <leader>cc <ESC>:AIChat<CR>
+    xnoremap <leader>cc :AIChat<CR>
+    nnoremap <leader>cc :AIChat<CR>
 endif

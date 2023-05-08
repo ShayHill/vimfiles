@@ -17,6 +17,8 @@ else
     $VIMFILES = "~/.vim"
 endif
 
+$TMPDIR = "~/tmp"
+
 if has("win32")
     source $VIMRUNTIME\..\_vimrc # will contain some diff / Windows nuance
     # pwsh (Powershell 7+) breaks plenty of things, so disable it to debug
@@ -43,6 +45,8 @@ endif
 source $VIMFILES/plugin_config.vim
 
 
+
+
 # ---------------------------------------------------------------------------- #
 #
 #  minpac
@@ -67,6 +71,7 @@ def PackInit(): void
     # the usual suspects
     minpac#add('vim-airline/vim-airline')
     minpac#add('vim-airline/vim-airline-themes')
+
     minpac#add('tpope/vim-fugitive')  # git integration
     minpac#add('tpope/vim-sensible')  # sensible defaults
     minpac#add('tpope/vim-obsession')  # session management
@@ -74,29 +79,29 @@ def PackInit(): void
     minpac#add('tpope/vim-vinegar')  # netrw enhancement
     minpac#add('tpope/vim-surround')  # surround text objects
     # nice to haves
-    minpac#add('jremmen/vim-ripgrep')  # needs installed ripgrep
+    # minpac#add('jremmen/vim-ripgrep')  # needs installed ripgrep
     minpac#add('airblade/vim-gitgutter')  # show git changes
     minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
     # dispatch's :Make works sometimes when :make won't for PowerShell
     minpac#add('tpope/vim-dispatch')  # async build
     # fuzzy finding
-    minpac#add('junegunn/fzf')
-    minpac#add('junegunn/fzf.vim')
+    # minpac#add('junegunn/fzf')
+    # minpac#add('junegunn/fzf.vim')
     # markdown
     minpac#add('preservim/vim-markdown')  # folding and syntax
-    minpac#add('iamcco/markdown-preview.nvim')  # requires nodejs
+    minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
     # low-star projects that seem to work OK
     minpac#add('moll/vim-bbye')  # close a buffer without closing the window
     minpac#add('monkoose/vim9-stargate')  # easymotion
-    minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
+    # minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
     # Python
     minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
     # colorschemes
-    minpac#add('lifepillar/vim-solarized8')
+    # minpac#add('lifepillar/vim-solarized8')
     minpac#add('lifepillar/vim-gruvbox8')
-    minpac#add('NLKNguyen/papercolor-theme')
-    minpac#add('cocopon/iceberg.vim')
-    minpac#add('arcticicestudio/nord-vim')
+    # minpac#add('NLKNguyen/papercolor-theme')
+    # minpac#add('cocopon/iceberg.vim')
+    # minpac#add('arcticicestudio/nord-vim')
     # my plugins
     minpac#add('shayhill/vim9-scratchterm')
 enddef
@@ -116,6 +121,21 @@ command! PackStatus packadd minpac | minpac#status()
 #  colorscheme
 #
 # ---------------------------------------------------------------------------- #
+
+def g:SetStatusLine(hl_group: string)
+    # Update the color of the statusline for the active window.
+    # Good groups are Cursor or Search
+    #
+    # I haven't figured out a way to call this automatically. It will fail is
+    # hi groups have not been defined, and they are not defined until after
+    # the vimrc is sourced.
+    var hi_fg = synIDattr(hlID(hl_group), 'fg')
+    var hi_bg = synIDattr(hlID(hl_group), 'bg')
+    var cmdstr = 'hi StatusLine guifg=' .. hi_fg .. ' guibg=' .. hi_bg
+    exe cmdstr
+enddef
+
+# autocmd ColorScheme * call g:SetStatusLine('Cursor')
 
 set t_Co=256 # 256 colors for the terminal
 
@@ -141,46 +161,49 @@ if executable("rg")
     set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
-# Use ripgrep in fzf if installed
-if executable("rg")
-    command! -bang -nargs=* Rg
-                \ fzf#vim#grep(
-                \   'rg --column --line-number --no-heading --color=always --ignore-case '.shellescape(<q-args>), 1,
-                \   <bang>0 ? fzf#vim#with_preview('up:60%')
-                \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-                \   <bang>0)
-
-    nnoremap <C-p>a :Rg 
-endif
+# TODO: delete this if I give up on fzf
+# # Use ripgrep in fzf if installed
+# if executable("rg")
+#     command! -bang -nargs=* Rg
+#                 \ fzf#vim#grep(
+#                 \   'rg --column --line-number --no-heading --color=always --ignore-case '.shellescape(<q-args>), 1,
+#                 \   <bang>0 ? fzf#vim#with_preview('up:60%')
+#                 \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+#                 \   <bang>0)
+#     nnoremap <C-p>a :Rg
+# endif
 
 # opening files
 set path+=**
 set wildmenu
-set wildignore+=*/__pycache__/,/venv/*
+set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*
+set wildoptions+=fuzzy
 
 # keep the working directory clean
 def MakeDirIfNoExists(path: string): void
     if !isdirectory(expand(a:path))
-	    call mkdir(expand(a:path), "p")
+        call mkdir(expand(a:path), "p")
     endif
 enddef
 # set history=1000
-set undofile
-set undoreload=1000
-set backup
-set noswapfile
+set undofile  # undo changes even after closing vim
+# set undoreload=1000
+set backup  # write unsaved changes to a backup file
+set noswapfile  # do not create swapfiles
+
 set backupdir=$HOME/tmp/vim/backup/
 set undodir=$HOME/tmp/vim/undo/
 set directory=$HOME/tmp/vim/swap/
 set viminfo+=n$HOME/tmp/vim/viminfo
+
 silent! call MakeDirIfNoExists(&undodir)
 silent! call MakeDirIfNoExists(&backupdir)
 silent! call MakeDirIfNoExists(&directory)
 
-# Save When Switching Buffers
-set autowrite
-set autowriteall
-#set hidden # switch buffers w/o saving. here to reming me if I unset
+# choose ONE of the following
+set autowriteall  # Save when switching buffers
+# ------------------------------------------------------------------------- OR
+#set hidden # allow switching buffers w/o saving.
 
 # Common Preference Settings
 set foldlevel=99  # open all folds by default
@@ -209,8 +232,8 @@ set cursorline # highlight the line under the cursor
 set ttyfast # better screen redraw
 set showcmd # shows partial commands
 set nowrap # Turn off line wrapping
-set noerrorbells # Turn off error bell - still rings for escape in normal mode
-# set visualbell # turn on the visual bell
+# set noerrorbells # Turn off error bell - still rings for escape in normal mode
+# set visualbell # flash instead of beeping for errors
 
 
 # ---------------------------------------------------------------------------- #
@@ -221,8 +244,8 @@ set noerrorbells # Turn off error bell - still rings for escape in normal mode
 
 
 # vertical split to netrw
-nmap <F2> :Vex<CR>
-imap <F2> <esc>:Vex<CR>
+# nmap <F2> :Vex<CR>
+# imap <F2> <esc>:Vex<CR>
 
 # <F3>, <F4>, and <F8> mapped if HasPlugin scratch_term
 # <F5>, <F6>, and <F7> reserved for filetype-specific mappings
@@ -230,9 +253,18 @@ imap <F2> <esc>:Vex<CR>
 # <F11> gvim fullscreen
 # <F12> gvim translucent
 
+# fuzzy-finder muscle memory
+nnoremap <C-P> :find *
+inoremap <ESC><C-P> :find *
+cnoremap <C-T> <HOME> tabnew \| <END><CR>
+cnoremap <C-X> <HOME> split \| <END><CR>
+cnoremap <C-V> <HOME> vsplit \| <END><CR>
+
 # switch windows
 nnoremap <C-J> <C-w>w
 nnoremap <C-K> <C-w>W
+tnoremap <C-J> <C-\><C-n><C-w>w
+tnoremap <C-K> <C-\><C-n><C-w>W
 
 # return to last position in a globally bookmarked file. E.g, <leader>`A will
 # return to the last position in bookmarked buffer A. `A without leader will
@@ -271,7 +303,7 @@ nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 # refresh highlighting
 map <Leader>h :syntax sync fromstart<CR>
 
-# avoid arrow keys
+# navigate command history without arrow keys
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
 cnoremap <C-h> <t_kl>
@@ -351,3 +383,29 @@ enddef
 
 # Start the find and replace command across the entire file
 vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
+
+# Clear status line when vimrc is reloaded.
+set statusline=
+# Status line left side.
+set statusline+=\ 
+# path relative to current directory
+set statusline+=\ %f
+# show a + sign if file has unsaved changes
+set statusline+=\ %M
+
+# Use a divider to separate the left side from the right side.
+set statusline+=%=
+
+# Status line right side.
+set statusline+=\ %l:%L
+# show the buffer number
+set statusline+=\ \|
+# set statusline+=%S\|
+# show the buffer number
+set statusline+=\ b%n
+# show the window number
+set statusline+=\ w%{win_getid()}
+
+# show search result [n:m] below searchline
+set shortmess-=S
+
