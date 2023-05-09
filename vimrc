@@ -156,6 +156,7 @@ set background=dark # set a dark background
 #
 # ---------------------------------------------------------------------------- #
 
+
 # Use ripgrep in  :grep if installed
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --no-heading
@@ -178,6 +179,7 @@ endif
 set path+=**
 set wildmenu
 set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*
+set wildmode=list:longest,full
 set wildoptions+=fuzzy
 
 # keep the working directory clean
@@ -203,14 +205,14 @@ silent! call MakeDirIfNoExists(&directory)
 
 # choose ONE of the following
 set autowriteall  # Save when switching buffers
-# ------------------------------------------------------------------------- OR
-#set hidden # allow switching buffers w/o saving.
+# set hidden # allow switching buffers w/o saving.
 
 # Common Preference Settings
 set foldlevel=99  # open all folds by default
 match IncSearch '\s\+$'  # highlight trailing whitespace
 set splitright # open vertical splits on the right
 set number # line numbers
+set autoread
 
 # Searching
 set hlsearch # highlight search results
@@ -223,9 +225,6 @@ set tabstop=4 # a tab = four spaces
 set shiftwidth=4 # number of spaces for auto-indent
 set softtabstop=4 # a soft-tab of four spaces
 set autoindent # turn on auto-indent
-
-# Intuitive File Opening
-set wildmode=list:longest,full  # Shows all the options
 
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
@@ -385,34 +384,145 @@ enddef
 # Start the find and replace command across the entire file
 vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
 
-# Clear status line when vimrc is reloaded.
-set statusline=
-# Status line left side.
-set statusline+=\ 
 
-# Show branch if *fugitive is installed
-set statusline+=%#TabLineSel#
-set statusline+=\ %{FugitiveHead()}\ |
-set statusline+=%#StatusLine#
+# ---------------------------------------------------------------------------- #
+#
+#  statusline
+#
+# ---------------------------------------------------------------------------- #
 
-# path relative to current directory
-set statusline+=\ %f
-# show a + sign if file has unsaved changes
-set statusline+=\ %M
+def MixColors(color1: string, color2: string, ratio: float): string
+    # Mix two hex colors.
+    var r1 = str2float('0x' .. strpart(color1, 1, 2))
+    var g1 = str2float('0x' .. strpart(color1, 3, 2))
+    var b1 = str2float('0x' .. strpart(color1, 5, 2))
+    var r2 = str2float('0x' .. strpart(color2, 1, 2))
+    var g2 = str2float('0x' .. strpart(color2, 3, 2))
+    var b2 = str2float('0x' .. strpart(color2, 5, 2))
+    var r = printf('%02x', float2nr(r1 * ratio + r2 * (1 - ratio)))
+    var g = printf('%02x', float2nr(g1 * ratio + g2 * (1 - ratio)))
+    var b = printf('%02x', float2nr(b1 * ratio + b2 * (1 - ratio)))
+    return '#' .. r .. g .. b
+enddef
 
-# Use a divider to separate the left side from the right side.
-set statusline+=%=
+# simplify mode names on statusline
+g:line_mode_map = {
+    "n": "N",    
+    "v": "V",
+    "V": "V",
+    "\<c-v>": "V",
+    "i": "I",
+    "R": "R",
+    "r": "R",
+    "Rv": "R",
+    "c": "C",
+    "s": "S",
+    "S": "S",
+    "\<c-s>": "S",
+    "t": "T"}
 
-# Status line right side.
-set statusline+=\ %l:%L\ ☰\ %c\ \|
-# show the buffer number
-set statusline+=\ \|
-# set statusline+=%S\|
-# show the buffer number
-set statusline+=\ b%n
-# show the window number
-set statusline+=\ w%{win_getid()}
+def BoldHi(base_hi_group: string): void
+    # Create a bold version of a highlight group.
+    #
+    # :param base_hi_group: highlight group from which to inherit every value
+    #   except 'gui' : {'bold': v:true})
+    # :effect: creates a new highlight group named base_hi_group .. 'Bold'
+    #   identical to the base_hi_group but with bolded font. (e.g.,
+    #   BoldHi(StatusLine) will create a new hl group StatusLineBold.
+    var hldict = hlget(base_hi_group, v:true)[0]
+    hldict.gui = hldict->get('gui', {})->extend({ bold: v:true })
+    hldict.name = base_hi_group .. 'Bold'
+    hlset([hldict])
+enddef
 
-# # show search result [n:m] below searchline
-# set shortmess-=S
+def WeakHi(base_hi_group: string): void
+    # Create a bold version of a highlight group.
+    #
+    # :param base_hi_group: highlight group from which to inherit every value
+    #   except 'gui' : {'bold': v:true})
+    # :effect: creates a new highlight group named base_hi_group .. 'Weak'
+    #   identical to the base_hi_group but with bolded font. (e.g.,
+    #   BoldHi(StatusLine) will create a new hl group StatusLineWeak.
+    var hldict = hlget(base_hi_group, v:true)[0]
+    var fg = hldict->get('guifg', '')
+    var bg = hldict->get('guibg', '')
+    if fg != '' && bg != ''
+        hldict.guifg = MixColors(fg, bg, 0.5)
+    endif
+    hldict.name = base_hi_group .. 'Weak'
+    g:see_here = hldict
+    hlset([hldict])
+enddef
 
+def SLSelect(
+        winid: number,
+        focused: string,
+        unfocused: string,
+        focused_split: string
+    ): string
+    # Select a string for the statusline based on winid
+    # * if win is focused, only one window visible, focused
+    # * if win is unfocused, unfocused
+    # * if win is focused AND there are open splits, focused_split
+    if winid == win_getid()
+        if winnr('$') > 1
+            return focused_split
+        endif
+        return focused
+    endif
+    return unfocused
+enddef
+
+def g:GenerateStatusline(winid: number): string
+
+    BoldHi("StatusLine")
+    BoldHi("StatusLineNC")
+    BoldHi("Cursor")
+
+    WeakHi("StatusLine")
+    WeakHi("StatusLineNC")
+    WeakHi("Cursor")
+
+    var stl = ""
+
+    var bold_f = SLSelect(winid, '%#StatusLineBold#', '%#StatusLineNCWeak#', '%#CursorBold#')
+    var weak = SLSelect(winid, '%#StatusLineWeak#', '%#StatusLineNCWeak#', '%#CursorWeak#')
+    var weak_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCWeak#', '%#Cursor#')
+    var bold_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCBold#', '%#Cursor#')
+    var plain = SLSelect(winid, '%#StatusLine#', '%#StatusLineNC#', '%#Cursor#')
+    var sep = plain .. '|'
+
+    # show current mode in bold
+    stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
+
+    # show branch (requires fugitive)
+    stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+
+    # relative file path
+    stl ..= plain .. ' %f %M'
+    # empty space to right-anchor remaining items
+    stl ..= '%='
+
+    # line and column numbers
+    stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
+    stl ..= sep
+
+    # buffer number
+    stl ..= weak .. ' b' .. bold_u .. '%n'
+
+    # window number
+    stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
+    return stl
+enddef
+
+# nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+# \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+# \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+# showing modes in statusline, so no need for the status popup
+set noshowmode
+# show match counts below statusline
+set shortmess-=S
+
+set statusline=%!GenerateStatusline(g:statusline_winid)
+error: cannot format -: Cannot parse: 1:4: set statusline=%!GenerateStatusline(g:statusline_winid)
