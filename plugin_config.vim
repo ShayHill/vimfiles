@@ -257,9 +257,9 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("vim-bbye")
-    nnoremap <Leader>q :Bdelete<CR>
-endif
+# if HasPlugin("vim-bbye")
+#     nnoremap <Leader>q :Bdelete<CR>
+# endif
 
 
 
@@ -325,4 +325,16 @@ if HasPlugin("vim-ai")
     imap <leader>cc <ESC>:AIChat<CR>
     xnoremap <leader>cc :AIChat<CR>
     nnoremap <leader>cc :AIChat<CR>
+endif
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  colorscheme switcher
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("vim-colorscheme-switcher")
+    nmap <F9> :NextColorScheme<CR>
+    # nnoremap <leader>cs :ColorschemeSwitcher<CR>
 endif

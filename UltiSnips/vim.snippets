@@ -1,0 +1,12 @@
+
+snippet atrue "assert_true or throw" b
+if assert_true($1) | throw v:errors[-1] | endif
+endsnippet
+
+snippet aeq "assert_equal or throw" b
+if assert_equal($1) | throw v:errors[-1] | endif
+endsnippet
+
+snippet amatch "assert_match or throw" b
+if assert_match($1) | throw v:errors[-1] | endif
+endsnippet

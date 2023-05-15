@@ -1,35 +1,22 @@
 vim9script
-# Plugin config is in ~/vimfiles/plugin_config.vim
 
-# set by vim-sensible
-# filetype plugin on # Indent and plugins by filetype
-# set scrolloff=5 # screen space around cursor
-# set sidescrolloff=5 # screen space around cursor
-# set wildmenu  # Command line autocompletion
+# unlet! g:skip_defaults_vim
+# source $VIMRUNTIME/defaults.vim
+
+
+## Plugin config is in ~/vimfiles/plugin_config.vim
+
+## set by vim-sensible
+## filetype plugin on # Indent and plugins by filetype
+## set scrolloff=5 # screen space around cursor
+## set sidescrolloff=5 # screen space around cursor
+## set wildmenu  # Command line autocompletion
 
 g:mapleader = ','  # for <leader> shortcuts.
-set encoding=utf-8 # setup the encoding to UTF-8
-scriptencoding utf-8 # Encoding for this script (to allow Unicode characters)
+#set encoding=utf-8 # setup the encoding to UTF-8
+#scriptencoding utf-8 # Encoding for this script (to allow Unicode characters)
 
-if has('win32')
-    $VIMFILES = "~/vimfiles"
-else
-    $VIMFILES = "~/.vim"
-endif
 
-$TMPDIR = "~/tmp"
-
-if has("win32")
-    source $VIMRUNTIME\..\_vimrc # will contain some diff / Windows nuance
-    # pwsh (Powershell 7+) breaks plenty of things, so disable it to debug
-    # :make etc. Lowercase :make won't work with pwsh, at least not without
-    # some obscure configuration I haven't found yet, but tpope/dispatch :Make
-    # works fine.
-	set shell=pwsh
-	# interpreter for Python plugins
-    set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32
-    set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32\python310.dll
-endif
 
 # ---------------------------------------------------------------------------- #
 #
@@ -37,14 +24,47 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
+if has("win32")
+	# some diff / Windows nuance, sources vimrc_example.vim
+	source $VIMRUNTIME/../_vimrc
+else
+	# sources defaults.vim
+	source $VIMRUNTIME/vimrc_example.vim
+endif
+
+# remove "You discovered the command-line window!" message from defaults.vim
+augroup vimHints | exe 'au!' | augroup END
+
+$VIMFILES = expand('<sfile>:p:h')
+
 if has('gui_running')
 	source $VIMFILES/gvim.vimrc
 endif
 
-
 source $VIMFILES/plugin_config.vim
 
 
+# ---------------------------------------------------------------------------- #
+#
+#  Windows specific
+#
+# ---------------------------------------------------------------------------- #
+
+if has("win32")
+	set shell=pwsh
+	set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32
+	set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32\python310.dll
+
+	# Use ripgrep in :grep if installed. The vim default (works in cmd)
+	# will freeze Powershell.
+	if executable("rg")
+		set grepprg=rg\ --vimgrep\ --no-heading
+		set grepformat=%f:%l:%c:%m,%f:%l:%m
+	else
+		# issue a warning if rg is not installed
+		echoerr "rg not found. Install ripgrep to use :grep"
+	endif
+endif
 
 
 # ---------------------------------------------------------------------------- #
@@ -69,52 +89,41 @@ def PackInit(): void
     # snippets
     minpac#add('SirVer/ultisnips')
     # the usual suspects
-    minpac#add('vim-airline/vim-airline')
-    minpac#add('vim-airline/vim-airline-themes')
-    # minpac#add('itchyny/lightline.vim')
-
     minpac#add('tpope/vim-fugitive')  # git integration
-    minpac#add('tpope/vim-sensible')  # sensible defaults
+    # minpac#add('tpope/vim-sensible')  # sensible defaults
     minpac#add('tpope/vim-obsession')  # session management
     minpac#add('tpope/vim-commentary')  # commenting
     minpac#add('tpope/vim-vinegar')  # netrw enhancement
     minpac#add('tpope/vim-surround')  # surround text objects
+    minpac#add('tpope/vim-dispatch')  # async build
     # nice to haves
-    # minpac#add('jremmen/vim-ripgrep')  # needs installed ripgrep
     minpac#add('airblade/vim-gitgutter')  # show git changes
     minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
-    # dispatch's :Make works sometimes when :make won't for PowerShell
-    minpac#add('tpope/vim-dispatch')  # async build
-    # fuzzy finding
-    # minpac#add('junegunn/fzf')
-    # minpac#add('junegunn/fzf.vim')
     # markdown
     minpac#add('preservim/vim-markdown')  # folding and syntax
     minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
     # low-star projects that seem to work OK
-    minpac#add('moll/vim-bbye')  # close a buffer without closing the window
     minpac#add('monkoose/vim9-stargate')  # easymotion
     # minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
     # Python
-    minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
+    # minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
     # colorschemes
     # minpac#add('lifepillar/vim-solarized8')
-    minpac#add('lifepillar/vim-gruvbox8')
+    # minpac#add('lifepillar/vim-gruvbox8')
     # minpac#add('NLKNguyen/papercolor-theme')
     # minpac#add('cocopon/iceberg.vim')
     # minpac#add('arcticicestudio/nord-vim')
     # my plugins
     minpac#add('shayhill/vim9-scratchterm')
+    # trying out
+    minpac#add('Donaldttt/fuzzyy')
+    minpac#add('xolox/vim-misc')
+    minpac#add('xolox/vim-colorscheme-switcher')
 enddef
 
-
-# Define user commands for updating/cleaning the plugins.
-# Each of them calls PackInit() to load minpac and register
-# the information of plugins, then performs the task.
 command! PackUpdate PackInit() | minpac#update() | source $VIMFILES/plugin_config.vim
 command! PackClean  PackInit() | minpac#clean() | source $VIMFILES/plugin_config.vim
 command! PackStatus packadd minpac | minpac#status()
-
 
 
 # ---------------------------------------------------------------------------- #
@@ -123,31 +132,44 @@ command! PackStatus packadd minpac | minpac#status()
 #
 # ---------------------------------------------------------------------------- #
 
-def g:SetStatusLine(hl_group: string)
-    # Update the color of the statusline for the active window.
-    # Good groups are Cursor or Search
-    #
-    # I haven't figured out a way to call this automatically. It will fail is
-    # hi groups have not been defined, and they are not defined until after
-    # the vimrc is sourced.
-    var hi_fg = synIDattr(hlID(hl_group), 'fg')
-    var hi_bg = synIDattr(hlID(hl_group), 'bg')
-    var cmdstr = 'hi StatusLine guifg=' .. hi_fg .. ' guibg=' .. hi_bg
-    exe cmdstr
-enddef
-
-# autocmd ColorScheme * call g:SetStatusLine('Cursor')
-
-set t_Co=256 # 256 colors for the terminal
+set t_Co=256 # enable 256 colors
 
 g:gruvbox_italics = 0 # disable italic comments and keywords
 try
-    colorscheme iceberg
+	colorscheme iceberg
 catch /^Vim\%((\a\+)\)\=:E185/
-    colorscheme habamax
+	colorscheme habamax
 endtry
 
 set background=dark # set a dark background
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  keep the working directory clean
+#
+# ---------------------------------------------------------------------------- #
+
+$TMPDIR = expand("~/tmp/vim")
+
+def MakeDirIfNoExists(path: string): void
+	if !isdirectory(expand(a:path))
+		call mkdir(expand(a:path), "p")
+	endif
+enddef
+
+set undofile  # undo changes even after closing vim
+set backup  # write unsaved changes to a backup file
+set noswapfile  # do not create swapfiles
+
+set backupdir=$TMPDIR/backup/
+set undodir=$TMPDIR/undo/
+set directory=$TMPDIR/swap/
+set viminfo+=n$TMPDIR/viminfo
+
+silent! call MakeDirIfNoExists(&undodir)
+silent! call MakeDirIfNoExists(&backupdir)
+silent! call MakeDirIfNoExists(&directory)
 
 
 # ---------------------------------------------------------------------------- #
@@ -156,84 +178,43 @@ set background=dark # set a dark background
 #
 # ---------------------------------------------------------------------------- #
 
-
-# Use ripgrep in  :grep if installed
-if executable("rg")
-    set grepprg=rg\ --vimgrep\ --no-heading
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-endif
-
-# TODO: delete this if I give up on fzf
-# # Use ripgrep in fzf if installed
-# if executable("rg")
-#     command! -bang -nargs=* Rg
-#                 \ fzf#vim#grep(
-#                 \   'rg --column --line-number --no-heading --color=always --ignore-case '.shellescape(<q-args>), 1,
-#                 \   <bang>0 ? fzf#vim#with_preview('up:60%')
-#                 \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-#                 \   <bang>0)
-#     nnoremap <C-p>a :Rg
-# endif
-
 # opening files
 set path+=**
 set wildmenu
-set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*
+set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*,*/.cache/*
 set wildmode=list:longest,full
-set wildoptions+=fuzzy
 
-# keep the working directory clean
-def MakeDirIfNoExists(path: string): void
-    if !isdirectory(expand(a:path))
-        call mkdir(expand(a:path), "p")
-    endif
-enddef
-# set history=1000
-set undofile  # undo changes even after closing vim
-# set undoreload=1000
-set backup  # write unsaved changes to a backup file
-set noswapfile  # do not create swapfiles
-
-set backupdir=$HOME/tmp/vim/backup/
-set undodir=$HOME/tmp/vim/undo/
-set directory=$HOME/tmp/vim/swap/
-set viminfo+=n$HOME/tmp/vim/viminfo
-
-silent! call MakeDirIfNoExists(&undodir)
-silent! call MakeDirIfNoExists(&backupdir)
-silent! call MakeDirIfNoExists(&directory)
-
-# choose ONE of the following
+# aggresive autsave
 set autowriteall  # Save when switching buffers
-# set hidden # allow switching buffers w/o saving.
+set hidden # allow switching buffers w/o saving.
 
-# Common Preference Settings
-set foldlevel=99  # open all folds by default
+
+## Common Preference Settings
 match IncSearch '\s\+$'  # highlight trailing whitespace
 set splitright # open vertical splits on the right
 set number # line numbers
 set autoread
 
-# Searching
-set hlsearch # highlight search results
-set ignorecase # ignore case when searching
-set smartcase # override ignorecase if search pattern contains upper case
 
-# Indentation
+## Indentation
 set expandtab # spaces instead of tabs
 set tabstop=4 # a tab = four spaces
 set shiftwidth=4 # number of spaces for auto-indent
 set softtabstop=4 # a soft-tab of four spaces
 set autoindent # turn on auto-indent
 
+
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
 set cursorline # highlight the line under the cursor
-set ttyfast # better screen redraw
-set showcmd # shows partial commands
+set showcmd # shows partial commands beneath statusline
 set nowrap # Turn off line wrapping
-# set noerrorbells # Turn off error bell - still rings for escape in normal mode
+set noshowmode # showing modes in statusline, so no need for the status popup
+set shortmess-=S # show match counts below statusline
+
+# set noerrorbells # Turn off error bell - still rings for  in normal mode
 # set visualbell # flash instead of beeping for errors
+
 
 
 # ---------------------------------------------------------------------------- #
@@ -243,13 +224,8 @@ set nowrap # Turn off line wrapping
 # ---------------------------------------------------------------------------- #
 
 
-# vertical split to netrw
-# nmap <F2> :Vex<CR>
-# imap <F2> <esc>:Vex<CR>
-
 # <F3>, <F4>, and <F8> mapped if HasPlugin scratch_term
 # <F5>, <F6>, and <F7> reserved for filetype-specific mappings
-# <F9> defined below for replace text under cursor
 # <F11> gvim fullscreen
 # <F12> gvim translucent
 
@@ -266,10 +242,9 @@ nnoremap <C-K> <C-w>W
 tnoremap <C-J> <C-\><C-n><C-w>w
 tnoremap <C-K> <C-\><C-n><C-w>W
 
-# return to last position in a globally bookmarked file. E.g, <leader>`A will
-# return to the last position in bookmarked buffer A. `A without leader will
-# return  to the cursor position when file A was bookmarked.
-noremap <leader>' <cmd>exec "normal '".getcharstr()."`\""<cr>
+# <leader><leader>a (any letter) will navigates to the global bookmark A (any
+# letter) then jumps to the last cursor position.
+noremap <leader><leader> <cmd>exec "normal '" .. toupper(getcharstr()) .. "`\""<cr>
 
 # it's so easy to mistype :w that even my mech keyboard somehow does it
 # with autoshift.
@@ -300,7 +275,7 @@ endif
 # finding unicode characters that are hard to see.
 nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 
-# refresh highlighting
+# refresh highlighting.
 map <Leader>h :syntax sync fromstart<CR>
 
 # navigate command history without arrow keys
@@ -308,22 +283,15 @@ cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
 cnoremap <C-h> <t_kl>
 cnoremap <C-l> <t_kr>
-# inoremap <C-j> <t_kd>
-# inoremap <C-k> <t_ku>
-# inoremap <C-h> <t_kl>
-# inoremap <C-l> <t_kr>
-# nnoremap <C-j> <t_kd>
-# nnoremap <C-k> <t_ku>
-# nnoremap <C-h> <t_kl>
-# nnoremap <C-l> <t_kr>
-# tnoremap <C-j> <t_kd>
-# tnoremap <C-k> <t_ku>
-# tnoremap <C-h> <t_kl>
-# tnoremap <C-l> <t_kr>
 
-# ---------------------------------------------------------------------- Buffers:
-# ---------------------------------------------------------------------- Buffers:
 
+# ---------------------------------------------------------------------------- #
+#
+#  Deal with buffers
+#
+# ---------------------------------------------------------------------------- #
+
+# naturally, these only work in gvim
 map <C-Tab> :bnext<cr>
 map <C-S-Tab> :bprevious<cr>
 
@@ -336,167 +304,91 @@ tmap <C-S-Tab> <C-w>:bprevious<cr>
 map <C-k6> <C-6>
 
 
-
 # ---------------------------------------------------------------------------- #
 #
-#  F9 to replace text under cursor, even with special characters
-#  https://stackoverflow.com/questions/676600/vim-search-and-replace-selected-text/6171215#6171215
+#  Search (and Replace) with code
+#
+#  to replace register a with register b
+#  :s/<C-R>=CStr(@a)<CR>/<C-R>=CStrR(@b)<CR>/
 #
 # ---------------------------------------------------------------------------- #
 
-# Escape special characters in a string for exact matching.
-# This is useful to copying strings from the file to the search tool
-# Based on this - http://peterodding.com/code/vim/profile/autoload/xolox/escape.vim
-def EscapeString(my_string: string): string
-    var string = my_string
-    # Escape regex characters
-    string = escape(string, '^$.*\/~[]')
-    # Escape the line endings
-    string = substitute(string, '\n', '\\n', 'g')
-    return string
+def g:CStr(text: string): string
+    # Command string. Escape any characters that might interfere with using a
+    # string as a match. This is for use in search `/HERE` or the left
+    # argument of search and replace `:s/HERE//`
+	var escaped_string = text
+	escaped_string = escape(escaped_string, '^$.*\/~[]')
+	escaped_string = substitute(escaped_string, '\n', '\\n', 'g')
+	return escaped_string
 enddef
 
-# Get the current visual block for search and replaces
-# This function passed the visual block through a string escape function
-# Based on this - https://stackoverflow.com/questions/676600/vim-replace-selected-text/677918#677918
-def g:GetVisual(): string
-    # Save the current register and clipboard
-    var reg_save = getreg('"')
-    var regtype_save = getregtype('"')
-    var cb_save = &clipboard
-    set clipboard&
-
-    # Put the current visual selection in the " register
-    normal! ""gvy
-    var selection = getreg('"')
-
-    # Put the saved registers and clipboards back
-    call setreg('"', reg_save, regtype_save)
-    var clipboard = cb_save
-
-    # Escape any special characters in the selection
-    var escaped_selection = EscapeString(selection)
-
-    echo escaped_selection
-    return escaped_selection
+def g:CStrR(text: string): string
+    # Command string Right or Command string Replace. Escape characters that
+    # would interfere with using a string on the right `:s//HERE/` side of a
+    # search and replace pattern.
+	var escaped_string = text
+	escaped_string = escape(escaped_string, '\/')
+	escaped_string = substitute(escaped_string, '\n', '\r', 'g')
+	return escaped_string
 enddef
-
-# Start the find and replace command across the entire file
-vmap <leader>z <Esc>:%s/<c-r>=GetVisual()<cr>/
 
 
 # ---------------------------------------------------------------------------- #
 #
-#  statusline
+#  Statusline
 #
 # ---------------------------------------------------------------------------- #
 
-def MixColors(color1: string, color2: string, ratio: float): string
-    # Mix two hex colors.
-    var r1 = str2float('0x' .. strpart(color1, 1, 2))
-    var g1 = str2float('0x' .. strpart(color1, 3, 2))
-    var b1 = str2float('0x' .. strpart(color1, 5, 2))
-    var r2 = str2float('0x' .. strpart(color2, 1, 2))
-    var g2 = str2float('0x' .. strpart(color2, 3, 2))
-    var b2 = str2float('0x' .. strpart(color2, 5, 2))
-    var r = printf('%02x', float2nr(r1 * ratio + r2 * (1 - ratio)))
-    var g = printf('%02x', float2nr(g1 * ratio + g2 * (1 - ratio)))
-    var b = printf('%02x', float2nr(b1 * ratio + b2 * (1 - ratio)))
-    return '#' .. r .. g .. b
-enddef
+set laststatus=2
 
-# simplify mode names on statusline
-g:line_mode_map = {
-    "n": "N",    
-    "v": "V",
-    "V": "V",
-    "\<c-v>": "V",
-    "i": "I",
-    "R": "R",
-    "r": "R",
-    "Rv": "R",
-    "c": "C",
-    "s": "S",
-    "S": "S",
-    "\<c-s>": "S",
-    "t": "T"}
+source $VIMFILES/statusline.vim
 
-def BoldHi(base_hi_group: string): void
-    # Create a bold version of a highlight group.
-    #
-    # :param base_hi_group: highlight group from which to inherit every value
-    #   except 'gui' : {'bold': v:true})
-    # :effect: creates a new highlight group named base_hi_group .. 'Bold'
-    #   identical to the base_hi_group but with bolded font. (e.g.,
-    #   BoldHi(StatusLine) will create a new hl group StatusLineBold.
-    var hldict = hlget(base_hi_group, v:true)[0]
-    hldict.gui = hldict->get('gui', {})->extend({ bold: v:true })
-    hldict.name = base_hi_group .. 'Bold'
-    hlset([hldict])
-enddef
-
-def WeakHi(base_hi_group: string): void
-    # Create a bold version of a highlight group.
-    #
-    # :param base_hi_group: highlight group from which to inherit every value
-    #   except 'gui' : {'bold': v:true})
-    # :effect: creates a new highlight group named base_hi_group .. 'Weak'
-    #   identical to the base_hi_group but with bolded font. (e.g.,
-    #   BoldHi(StatusLine) will create a new hl group StatusLineWeak.
-    var hldict = hlget(base_hi_group, v:true)[0]
-    var fg = hldict->get('guifg', '')
-    var bg = hldict->get('guibg', '')
-    if fg != '' && bg != ''
-        hldict.guifg = MixColors(fg, bg, 0.5)
-    endif
-    hldict.name = base_hi_group .. 'Weak'
-    g:see_here = hldict
-    hlset([hldict])
-enddef
+augroup ColorSchemeAutoCommands
+  autocmd!
+  autocmd colorscheme * source $VIMFILES/statusline.vim
+augroup END
 
 def SLSelect(
         winid: number,
-        focused: string,
-        unfocused: string,
-        focused_split: string
+        statusline: string,
+        not_current: string,
+        current_now: string
     ): string
     # Select a string for the statusline based on winid
-    # * if win is focused, only one window visible, focused
-    # * if win is unfocused, unfocused
-    # * if win is focused AND there are open splits, focused_split
+    # * if win is focused, only one window visible, statusline
+    # * if win is unfocused, not_current
+    # * if win is focused AND there are open splits, current_now
     if winid == win_getid()
         if winnr('$') > 1
-            return focused_split
+            return current_now
         endif
-        return focused
+        return statusline
     endif
-    return unfocused
+    return not_current
 enddef
+
 
 def g:GenerateStatusline(winid: number): string
 
-    BoldHi("StatusLine")
-    BoldHi("StatusLineNC")
-    BoldHi("Cursor")
-
-    WeakHi("StatusLine")
-    WeakHi("StatusLineNC")
-    WeakHi("Cursor")
-
     var stl = ""
 
-    var bold_f = SLSelect(winid, '%#StatusLineBold#', '%#StatusLineNCWeak#', '%#CursorBold#')
-    var weak = SLSelect(winid, '%#StatusLineWeak#', '%#StatusLineNCWeak#', '%#CursorWeak#')
-    var weak_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCWeak#', '%#Cursor#')
-    var bold_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCBold#', '%#Cursor#')
-    var plain = SLSelect(winid, '%#StatusLine#', '%#StatusLineNC#', '%#Cursor#')
+    # inline highlight group strings
+    var bold_f = SLSelect(winid, '%#StatusLineBold#', '%#StatusLineNCWeak#', '%#StatusLineCNBold#')
+    var weak = SLSelect(winid, '%#StatusLineWeak#', '%#StatusLineNCWeak#', '%#StatusLineCNWeak#')
+    var weak_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCWeak#', '%#StatusLineCN#')
+    var bold_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCBold#', '%#StatusLineCN#')
+    var plain = SLSelect(winid, '%#StatusLine#', '%#StatusLineNC#', '%#StatusLineCN#')
+
     var sep = plain .. '|'
 
     # show current mode in bold
     stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
 
     # show branch (requires fugitive)
-    stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+    if exists('g:loaded_fugitive')
+        stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+    endif
 
     # relative file path
     stl ..= plain .. ' %f %M'
@@ -515,14 +407,9 @@ def g:GenerateStatusline(winid: number): string
     return stl
 enddef
 
+# # for debugging syntax highlighting
 # nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 # \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 # \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-# showing modes in statusline, so no need for the status popup
-set noshowmode
-# show match counts below statusline
-set shortmess-=S
-
 set statusline=%!GenerateStatusline(g:statusline_winid)
-error: cannot format -: Cannot parse: 1:4: set statusline=%!GenerateStatusline(g:statusline_winid)
