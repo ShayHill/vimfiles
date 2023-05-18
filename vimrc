@@ -100,7 +100,6 @@ def PackInit(): void
     minpac#add('airblade/vim-gitgutter')  # show git changes
     minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
     # markdown
-    minpac#add('preservim/vim-markdown')  # folding and syntax
     minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
     # low-star projects that seem to work OK
     minpac#add('monkoose/vim9-stargate')  # easymotion
@@ -115,6 +114,7 @@ def PackInit(): void
     # minpac#add('arcticicestudio/nord-vim')
     # my plugins
     minpac#add('shayhill/vim9-scratchterm')
+    minpac#add('shayhill/vim9-focalpoint')
     # trying out
     minpac#add('Donaldttt/fuzzyy')
     minpac#add('xolox/vim-misc')
@@ -342,43 +342,26 @@ enddef
 
 set laststatus=2
 
-source $VIMFILES/statusline.vim
-
-augroup ColorSchemeAutoCommands
+augroup ResetStatuslineHiGroups
   autocmd!
-  autocmd colorscheme * source $VIMFILES/statusline.vim
+  autocmd colorscheme * g:FPReset()
 augroup END
 
-def SLSelect(
-        winid: number,
-        statusline: string,
-        not_current: string,
-        current_now: string
-    ): string
-    # Select a string for the statusline based on winid
-    # * if win is focused, only one window visible, statusline
-    # * if win is unfocused, not_current
-    # * if win is focused AND there are open splits, current_now
-    if winid == win_getid()
-        if winnr('$') > 1
-            return current_now
-        endif
-        return statusline
-    endif
-    return not_current
-enddef
-
+augroup ShadeNotCurrentWindow
+  autocmd!
+  autocmd WinEnter * setl wincolor=Normal
+  autocmd WinLeave * setl wincolor=NormalNC
+augroup END
 
 def g:GenerateStatusline(winid: number): string
-
     var stl = ""
 
     # inline highlight group strings
-    var bold_f = SLSelect(winid, '%#StatusLineBold#', '%#StatusLineNCWeak#', '%#StatusLineCNBold#')
-    var weak = SLSelect(winid, '%#StatusLineWeak#', '%#StatusLineNCWeak#', '%#StatusLineCNWeak#')
-    var weak_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCWeak#', '%#StatusLineCN#')
-    var bold_u = SLSelect(winid, '%#StatusLine#', '%#StatusLineNCBold#', '%#StatusLineCN#')
-    var plain = SLSelect(winid, '%#StatusLine#', '%#StatusLineNC#', '%#StatusLineCN#')
+    var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
+    var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
+    var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
+    var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
+    var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
 
     var sep = plain .. '|'
 
@@ -406,6 +389,7 @@ def g:GenerateStatusline(winid: number): string
     stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
     return stl
 enddef
+
 
 # # for debugging syntax highlighting
 # nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
