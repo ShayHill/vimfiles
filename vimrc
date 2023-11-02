@@ -1,70 +1,59 @@
 vim9script
 
-# unlet! g:skip_defaults_vim
-# source $VIMRUNTIME/defaults.vim
+# set by vim-sensible
+# filetype plugin on # Indent and plugins by filetype
+# set scrolloff=5 # screen space around cursor
+# set sidescrolloff=5 # screen space around cursor
+# set wildmenu  # Command line autocompletion
 
-
-## Plugin config is in ~/vimfiles/plugin_config.vim
-
-## set by vim-sensible
-## filetype plugin on # Indent and plugins by filetype
-## set scrolloff=5 # screen space around cursor
-## set sidescrolloff=5 # screen space around cursor
-## set wildmenu  # Command line autocompletion
-
+# I prefer comma as a leader key, because it is always followed by a space in
+# sane typing and Python programming.
 g:mapleader = ','  # for <leader> shortcuts.
-#set encoding=utf-8 # setup the encoding to UTF-8
-#scriptencoding utf-8 # Encoding for this script (to allow Unicode characters)
 
 
-
-# ---------------------------------------------------------------------------- #
-#
-#  other config files
-#
-# ---------------------------------------------------------------------------- #
-
-if has("win32")
-	# some diff / Windows nuance, sources vimrc_example.vim
-	source $VIMRUNTIME/../_vimrc
-else
-	# sources defaults.vim
-	source $VIMRUNTIME/vimrc_example.vim
-endif
-
-# remove "You discovered the command-line window!" message from defaults.vim
+# remove "You discovered the command-line window!" message from defaults.vim.
 augroup vimHints | exe 'au!' | augroup END
 
-$VIMFILES = expand('<sfile>:p:h')
+# ---------------------------------------------------------------------------- #
+#
+# set up Python and other Windows options
+#
+# ---------------------------------------------------------------------------- #
+
+if has("windows")
+	set shell=pwsh
+	set pythonthreehome=C:\\Users\\shaya\\AppData\\Local\\Programs\\Python\\Python312
+	set pythonthreedll=C:\\Users\\shaya\\AppData\\Local\\Programs\\Python\\Python312\\python312.dll
+
+	# Use ripgrep in :grep if installed. The vim default for Windows
+	# (works in cmd) will freeze Powershell.
+	if executable("rg")
+		set grepprg=rg\ --vimgrep\ --no-heading
+	else
+		echoerr "rg not found. Install ripgrep to use :grep"
+	endif
+endif
+
+
+# ---------------------------------------------------------------------------- #
+#
+# source external config files
+#
+# ---------------------------------------------------------------------------- #
+
+# this is just a path variable to use later 
+if has('windows')
+    $VIMFILES = "~/vimfiles"
+else
+    $VIMFILES = "~/.vim"
+endif
 
 if has('gui_running')
 	source $VIMFILES/gvim.vimrc
 endif
 
+# this has to be sourced before loading the plugins
 source $VIMFILES/plugin_config.vim
-
-
-# ---------------------------------------------------------------------------- #
-#
-#  Windows specific
-#
-# ---------------------------------------------------------------------------- #
-
-if has("win32")
-	set shell=pwsh
-	set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32
-	set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python310-32\python310.dll
-
-	# Use ripgrep in :grep if installed. The vim default (works in cmd)
-	# will freeze Powershell.
-	if executable("rg")
-		set grepprg=rg\ --vimgrep\ --no-heading
-		set grepformat=%f:%l:%c:%m,%f:%l:%m
-	else
-		# issue a warning if rg is not installed
-		echoerr "rg not found. Install ripgrep to use :grep"
-	endif
-endif
 
 
 # ---------------------------------------------------------------------------- #
@@ -90,7 +79,7 @@ def PackInit(): void
     minpac#add('SirVer/ultisnips')
     # the usual suspects
     minpac#add('tpope/vim-fugitive')  # git integration
-    # minpac#add('tpope/vim-sensible')  # sensible defaults
+    minpac#add('tpope/vim-sensible')  # sensible defaults
     minpac#add('tpope/vim-obsession')  # session management
     minpac#add('tpope/vim-commentary')  # commenting
     minpac#add('tpope/vim-vinegar')  # netrw enhancement
@@ -107,18 +96,20 @@ def PackInit(): void
     # Python
     # minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
     # colorschemes
-    # minpac#add('lifepillar/vim-solarized8')
+    minpac#add('lifepillar/vim-solarized8')
     # minpac#add('lifepillar/vim-gruvbox8')
-    # minpac#add('NLKNguyen/papercolor-theme')
+    minpac#add('NLKNguyen/papercolor-theme')
     # minpac#add('cocopon/iceberg.vim')
     # minpac#add('arcticicestudio/nord-vim')
     # my plugins
     minpac#add('shayhill/vim9-scratchterm')
     minpac#add('shayhill/vim9-focalpoint')
     # trying out
+    minpac#add('puremourning/vimspector')
     minpac#add('Donaldttt/fuzzyy')
     minpac#add('xolox/vim-misc')
     minpac#add('xolox/vim-colorscheme-switcher')
+    minpac#add('mg979/vim-visual-multi')
 enddef
 
 command! PackUpdate PackInit() | minpac#update() | source $VIMFILES/plugin_config.vim
@@ -128,20 +119,22 @@ command! PackStatus packadd minpac | minpac#status()
 
 # ---------------------------------------------------------------------------- #
 #
-#  colorscheme
+#  Vimspector
 #
 # ---------------------------------------------------------------------------- #
 
-set t_Co=256 # enable 256 colors
+g:vimspector_enable_mappings = 'HUMAN'
 
-g:gruvbox_italics = 0 # disable italic comments and keywords
-try
-	colorscheme iceberg
-catch /^Vim\%((\a\+)\)\=:E185/
-	colorscheme habamax
-endtry
+nmap <Leader>di <Plug>VimspectorBalloonEval
+xmap <Leader>di <Plug>VimspectorBalloonEval
 
-set background=dark # set a dark background
+nmap <LocalLeader><F11> <Plug>VimspectorUpFrame
+nmap <LocalLeader><F12> <Plug>VimspectorDownFrame
+nmap <LocalLeader>B     <Plug>VimspectorBreakpoints
+nmap <LocalLeader>D     <Plug>VimspectorDisassemble
+
+
+
 
 
 # ---------------------------------------------------------------------------- #
@@ -153,8 +146,8 @@ set background=dark # set a dark background
 $TMPDIR = expand("~/tmp/vim")
 
 def MakeDirIfNoExists(path: string): void
-	if !isdirectory(expand(a:path))
-		call mkdir(expand(a:path), "p")
+	if !isdirectory(expand(path))
+		call mkdir(expand(path), "p")
 	endif
 enddef
 
@@ -178,10 +171,17 @@ silent! call MakeDirIfNoExists(&directory)
 #
 # ---------------------------------------------------------------------------- #
 
+# source any local .vimrc file in the current directory (for project-specific
+# Vim configuration)
+set exrc
+
+# do not save options in sessions, only windows and buffers
+# set sessionoptions-=options
+
 # opening files
 set path+=**
 set wildmenu
-set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*,*/.cache/*
+# set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*,*/.cache/*
 set wildmode=list:longest,full
 
 # aggresive autsave
@@ -211,9 +211,10 @@ set showcmd # shows partial commands beneath statusline
 set nowrap # Turn off line wrapping
 set noshowmode # showing modes in statusline, so no need for the status popup
 set shortmess-=S # show match counts below statusline
+set relativenumber
 
 # set noerrorbells # Turn off error bell - still rings for  in normal mode
-# set visualbell # flash instead of beeping for errors
+set visualbell # flash instead of beeping for errors
 
 
 
@@ -223,6 +224,9 @@ set shortmess-=S # show match counts below statusline
 #
 # ---------------------------------------------------------------------------- #
 
+# save with C-s
+nnoremap <C-s> :w<CR>
+inoremap <C-s> <ESC>:w<CR>
 
 # <F3>, <F4>, and <F8> mapped if HasPlugin scratch_term
 # <F5>, <F6>, and <F7> reserved for filetype-specific mappings
@@ -230,11 +234,11 @@ set shortmess-=S # show match counts below statusline
 # <F12> gvim translucent
 
 # fuzzy-finder muscle memory
-nnoremap <C-P> :find *
-inoremap <ESC><C-P> :find *
-cnoremap <C-T> <HOME> tabnew \| <END><CR>
-cnoremap <C-X> <HOME> split \| <END><CR>
-cnoremap <C-V> <HOME> vsplit \| <END><CR>
+nnoremap <C-P> :FuzzyGitFiles<CR>
+inoremap <C-P> <ESC>:FuzzyGitFiles<CR>
+# cnoremap <C-T> <HOME> tabnew \| <END><CR>
+# cnoremap <C-X> <HOME> split \| <END><CR>
+# cnoremap <C-V> <HOME> vsplit \| <END><CR>
 
 # switch windows
 nnoremap <C-J> <C-w>w
@@ -256,8 +260,8 @@ tnoremap <leader>n <C-w>N
 # remove trailing whitespace
 nnoremap <leader>_ :%s/\s\+$//g<CR>
 
-# clear search highlights with space.
-nnoremap <space> :noh<CR>
+# # clear search highlights with space.
+# nnoremap <space> :noh<CR>
 
 # save as root with :w!!
 cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
@@ -278,11 +282,17 @@ nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 # refresh highlighting.
 map <Leader>h :syntax sync fromstart<CR>
 
-# navigate command history without arrow keys
-cnoremap <C-j> <t_kd>
-cnoremap <C-k> <t_ku>
-cnoremap <C-h> <t_kl>
-cnoremap <C-l> <t_kr>
+
+
+
+
+                                        
+
+# # navigate command history without arrow keys
+# cnoremap <C-j> <t_kd>
+# cnoremap <C-k> <t_ku>
+# cnoremap <C-h> <t_kl>
+# cnoremap <C-l> <t_kr>
 
 
 # ---------------------------------------------------------------------------- #
@@ -317,10 +327,10 @@ def g:CStr(text: string): string
     # Command string. Escape any characters that might interfere with using a
     # string as a match. This is for use in search `/HERE` or the left
     # argument of search and replace `:s/HERE//`
-	var escaped_string = text
-	escaped_string = escape(escaped_string, '^$.*\/~[]')
-	escaped_string = substitute(escaped_string, '\n', '\\n', 'g')
-	return escaped_string
+    var escaped_string = text
+    escaped_string = escape(escaped_string, '^$.*\/~[]')
+    escaped_string = substitute(escaped_string, '\n', '\\n', 'g')
+    return escaped_string
 enddef
 
 def g:CStrR(text: string): string
@@ -340,60 +350,33 @@ enddef
 #
 # ---------------------------------------------------------------------------- #
 
-set laststatus=2
-
-augroup ResetStatuslineHiGroups
-  autocmd!
-  autocmd colorscheme * g:FPReset()
-augroup END
-
-augroup ShadeNotCurrentWindow
-  autocmd!
-  autocmd WinEnter * setl wincolor=Normal
-  autocmd WinLeave * setl wincolor=NormalNC
-augroup END
-
-def g:GenerateStatusline(winid: number): string
-    var stl = ""
-
-    # inline highlight group strings
-    var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
-    var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
-    var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
-    var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
-    var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
-
-    var sep = plain .. '|'
-
-    # show current mode in bold
-    stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
-
-    # show branch (requires fugitive)
-    if exists('g:loaded_fugitive')
-        stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
-    endif
-
-    # relative file path
-    stl ..= plain .. ' %f %M'
-    # empty space to right-anchor remaining items
-    stl ..= '%='
-
-    # line and column numbers
-    stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
-    stl ..= sep
-
-    # buffer number
-    stl ..= weak .. ' b' .. bold_u .. '%n'
-
-    # window number
-    stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
-    return stl
-enddef
-
-
-# # for debugging syntax highlighting
+# for debugging syntax highlighting
 # nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 # \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 # \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-set statusline=%!GenerateStatusline(g:statusline_winid)
+
+
+augroup markdownformat
+  autocmd!
+  autocmd FileType markdown setlocal formatprg=pandoc\ -t\ commonmark_x
+  autocmd FileType markdown setlocal equalprg=pandoc\ -t\ commonmark_x
+augroup END
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  colorscheme
+#
+# ---------------------------------------------------------------------------- #
+
+set t_Co=256 # enable 256 colors
+
+g:gruvbox_italics = 0 # disable italic comments and keywords
+# try
+	# colorscheme iceberg
+# catch /^Vim\%((\a\+)\)\=:E185/
+colorscheme PaperColor
+set background=light
+# endtry
+

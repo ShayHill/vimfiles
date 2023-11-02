@@ -1,6 +1,9 @@
 " gvim configuration. gvim_fullscreen.dll is available at https://github.com/movsb/gvim_fullscreen
 " Has to be compiled and placed in the vimfiles directory
 
+set lines=50
+set columns=120
+
 set go-=T " hide the toolbar
 set go-=m " hide the menu
 set go-=r " hide all the scrollbars

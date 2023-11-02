@@ -1,14 +1,6 @@
 vim9script
 # Configure plugins if installed
 # ---------------------------------------------------------------------------- #
-# Unfortunately, this is not working. Some of these configurations need to be
-# set *before* the plugins are loaded, but I cannot find a way to determine if
-# plugins are installed before the plugins are loaded. Their directories are
-# not in the &rtp and they do not appear in :scriptnames until after it is too
-# late to set their global config variables.
-#
-# So, HasPlugin() is not working. I have set it up to always return true and
-# may revisit this in the future.
 
 if has('win32')
     $VIMFILES = "~/vimfiles"
@@ -185,7 +177,7 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if 0 && HasPlugin("fzf")
+if HasPlugin("fzf")
     nmap <C-p> :FZF<CR>
     imap <C-p> <Esc>:FZF<CR>
     # avoid accidentally triggering fzf :Windows command with :W. With this
@@ -235,18 +227,18 @@ endif
 
 if HasPlugin("vim9-scratchterm")
 
-    nnoremap <F2> :update<CR>:ScratchTerm<space>
-    inoremap <F2> <ESC>:update<CR>:ScratchTerm<space>
+    nnoremap <leader>x :update<CR>:ScratchTerm<space>
+    inoremap <leader>x <ESC>:update<CR>:ScratchTerm<space>
 
-    nnoremap <F3> :update<CR>:ScratchTermV<space>
-    inoremap <F3> <ESC>:update<CR>:ScratchTermV<space>
+    nnoremap <leader>v :update<CR>:ScratchTermV<space>
+    inoremap <leader>v <ESC>:update<CR>:ScratchTermV<space>
 
-    tnoremap <F4> <C-w>:ScratchTermsKill<CR>
-    nnoremap <F4> :ScratchTermsKill<CR>
-    inoremap <F4> <ESC>:ScratchTermsKill<CR>
+    tnoremap <leader>k <C-w>:ScratchTermsKill<CR>
+    nnoremap <leader>k :ScratchTermsKill<CR>
+    inoremap <leader>k <ESC>:ScratchTermsKill<CR>
 
-    nnoremap <F8> :update<CR>:ScratchTerm<t_ku>
-    inoremap <F8> <ESC>:update<CR>:ScratchTerm<t_ku>
+    nnoremap <leader>y :update<CR>:ScratchTerm<t_ku>
+    inoremap <leader>y <ESC>:update<CR>:ScratchTerm<t_ku>
 endif
 
 
@@ -299,6 +291,95 @@ if HasPlugin("ctrlsf.vim")
 endif
 
 
+# ---------------------------------------------------------------------------- #
+#
+#  vim9-focalpoint
+#
+# ---------------------------------------------------------------------------- #
+
+if HasPlugin("vim9-focalpoint")
+    set laststatus=2
+
+    g:line_mode_map = {
+        "n": "N",
+        "v": "V",
+        "V": "V",
+        "\<c-v>": "V",
+        "i": "I",
+        "R": "R",
+        "r": "R",
+        "Rv": "R",
+        "c": "C",
+        "s": "S",
+        "S": "S",
+        "\<c-s>": "S",
+        "t": "T" }
+
+    g:use_pmenu_to_shade = [
+        'delek',
+        'habamax',
+        'industry',
+        'koehler',
+        'lunaperche',
+        'morning',
+        'pablo',
+        'peachpuff',
+        'quiet',
+        'retrobox',
+        'torte',
+        'wildcharm' ]
+
+    augroup ResetStatuslineHiGroups
+      autocmd!
+      autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
+    augroup END
+
+    augroup ShadeNotCurrentWindow
+      autocmd!
+      autocmd WinEnter * setl wincolor=Normal
+      autocmd WinLeave * setl wincolor=NormalNC
+    augroup END
+
+    def g:GenerateStatusline(winid: number): string
+
+        var stl = ""
+
+        # inline highlight group strings
+        var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
+        var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
+        var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
+        var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
+        var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
+
+        var sep = plain .. '|'
+
+        # show current mode in bold
+        stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
+
+        # show branch (requires fugitive)
+        if exists('g:loaded_fugitive')
+            stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+        endif
+
+        # relative file path
+        stl ..= plain .. ' %f %M'
+        # empty space to right-anchor remaining items
+        stl ..= '%='
+
+        # line and column numbers
+        stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
+        stl ..= sep
+
+        # buffer number
+        stl ..= weak .. ' b' .. bold_u .. '%n'
+
+        # window number
+        stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
+        return stl
+    enddef
+
+    set statusline=%!GenerateStatusline(g:statusline_winid)
+endif
 
 # ---------------------------------------------------------------------------- #
 #
@@ -335,6 +416,5 @@ endif
 # ---------------------------------------------------------------------------- #
 
 if HasPlugin("vim-colorscheme-switcher")
-    nmap <F9> :NextColorScheme<CR>
-    # nnoremap <leader>cs :ColorschemeSwitcher<CR>
+    nnoremap <leader>cs :ColorschemeSwitcher<CR>
 endif
