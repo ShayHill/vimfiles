@@ -49,7 +49,7 @@
 # $1
 # endsnippet
 
-snippet docmod "#!usr/bin/env python" b
+snippet docmod "module docstring" b
 """$1
 
 :author: Shay Hill
@@ -58,6 +58,27 @@ snippet docmod "#!usr/bin/env python" b
 $2
 endsnippet
 
+snippet heading "SHOUT in a python comment" b
+# ===============================================================================
+#   $1
+# ===============================================================================
+$2
+endsnippet
+
+snippet conftest "boilerplate for conftest" b
+"""See full diffs in pytest.
+
+:author: Shay Hill
+:created: 2023-10-07
+"""
+
+from typing import Any
+
+def pytest_assertrepr_compare(config: Any, op: str, left: str, right: str):
+    """See full error diffs"""
+    if op in ("==", "!="):
+        return ["{0} {1} {2}".format(left, op, right)]
+endsnippet
 
 # snippet docscr "#!usr/bin/env python" b
 # """$1

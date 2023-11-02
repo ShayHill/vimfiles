@@ -10,3 +10,14 @@ endsnippet
 snippet amatch "assert_match or throw" b
 if assert_match($1) | throw v:errors[-1] | endif
 endsnippet
+
+snippet local
+vim9script
+
+# run the main python file with
+nnoremap <leader>m :update<CR>:ScratchTermReplaceU python src/$1/main.py<CR>
+inoremap <leader>m <esc>:update<CR>:ScratchTermReplaceU python src/$1/main.py<CR>
+
+# resize the code window after running a python file
+nnoremap <leader>w :resize 65<CR>
+endsnippet

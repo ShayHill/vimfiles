@@ -1,9 +1,43 @@
-snippet pyright  
+snippet pyproject
+[project]
+name = "$1"
+version = "0.1.0"
+description = "$2"
+authors = [{ name = "Shay Hill", email = "shay_public@hotmail.com" }]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.$3"
+dependencies = [$4]
+
+[project.optional-dependencies]
+dev = [$5]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+endsnippet
+
+
+snippet cz
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "$version"
+major-version-zero = true
+version_files = ["pyproject.toml:^version"]
+endsnippet
+
+snippet isort
+[tool.isort]
+profile = "black"
+endsnippet
+
+snippet pyright
 [tool.pyright]
 include = ["src"]
 exclude = ["**/__pycache__.py"]
 
-pythonVersion = "3.10"
+pythonVersion = "3.$1"
 pythonPlatform = "Any"
 
 typeCheckingMode = "strict"
@@ -16,45 +50,11 @@ reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnusedCallResult = true
 
-venvPath = "C:\\\\Users\\\\shaya\\\\AppData\\\\Local\\\\pypoetry\\\\Cache\\\\virtualenvs"
+$2# venvPath = "C:\\\\Users\\\\shaya\\\\AppData\\\\Local\\\\pypoetry\\\\Cache\\\\virtualenvs"
 # venv = "C:\\\\Users\\\\shaya\\\\AppData\\\\Local\\\\pypoetry\\\\Cache\\\\virtualenvs\\\\docx2python-fuFHBYOz-py3.11"
 # extraPaths = ["__pypackages__/3.11/lib"]
+venvPath = "."
+venv = "./venv"
 endsnippet
 
-snippet pylint  
-[tool.pylint."MAIN"]
-load-plugins = "pylint.extensions.docparams"
 
-[tool.pylint."MESSAGES CONTROL"]
-disable = [
-    "too-many-instance-attributes,too-many-locals,protected-access,c-extension-no-member,too-many-instance-attributes",
-    "too-many-locals,import-error,too-many-arguments"
-]
-
-[tool.pylint."BASIC"]
-good-names = "i,j,_"
-include-naming-hint = true
-
-[tool.pylint."PARAMETERS"]
-accept-no-param-doc = false
-accept-no-raise-doc = false
-accept-no-return-doc = false
-accept-no-yields-doc = false
-endsnippet
-
-snippet linters
-pyright${1}
-
-pylint
-endsnippet
-
-snippet cz
-[tool.commitizen]
-name = "cz_conventional_commits"
-version = "0.1.0"
-tag_format = "$version"
-major-version-zero = true
-version_files = [
-    "pyproject.toml:^version"
-]
-endsnippet
