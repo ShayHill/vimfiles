@@ -171,39 +171,39 @@ endif
 
 
 
-# ---------------------------------------------------------------------------- #
-#
-#  fzf
-#
-# ---------------------------------------------------------------------------- #
+## ---------------------------------------------------------------------------- #
+##
+##  fzf
+##
+## ---------------------------------------------------------------------------- #
 
-if HasPlugin("fzf")
-    nmap <C-p> :FZF<CR>
-    imap <C-p> <Esc>:FZF<CR>
-    # avoid accidentally triggering fzf :Windows command with :W. With this
-    # setting, fzf commands will all require an 'Fzf' prefix.
-    g:fzf_command_prefix = 'Fzf'
-    # skip some directories when creating ctags
-    g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
-    # respect gitignore
-    $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
+#if HasPlugin("fzf")
+#    nmap <C-p> :FZF<CR>
+#    imap <C-p> <Esc>:FZF<CR>
+#    # avoid accidentally triggering fzf :Windows command with :W. With this
+#    # setting, fzf commands will all require an 'Fzf' prefix.
+#    g:fzf_command_prefix = 'Fzf'
+#    # skip some directories when creating ctags
+#    g:fzf_tags_command = 'ctags -R --exclude=.mypy_cache --exclude=__pycache__ --exclude=__pypackages__ --exclude=node_modules'
+#    # respect gitignore
+#    $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --follow --exclude .git'
 
-    def g:ExecInCmd(command: string)
-        # execute a command in Cmd, even when shell is set to pwsh
-        var tmp_shell = &shell
-        var tmp_shellcmdflag = &shellcmdflag
-        var tmp_shellxquote = &shellxquote
-        set shell=cmd
-        set shellcmdflag=/c
-        set shellxquote=
-        execute command
-        &shell = tmp_shell
-        &shellcmdflag = tmp_shellcmdflag
-        &shellxquote = tmp_shellxquote
-    enddef
+#    def g:ExecInCmd(command: string)
+#        # execute a command in Cmd, even when shell is set to pwsh
+#        var tmp_shell = &shell
+#        var tmp_shellcmdflag = &shellcmdflag
+#        var tmp_shellxquote = &shellxquote
+#        set shell=cmd
+#        set shellcmdflag=/c
+#        set shellxquote=
+#        execute command
+#        &shell = tmp_shell
+#        &shellcmdflag = tmp_shellcmdflag
+#        &shellxquote = tmp_shellxquote
+#    enddef
 
-    nnoremap <C-g>  :call ExecInCmd('FzfGFiles')<CR>
-endif
+#    nnoremap <C-g>  :call ExecInCmd('FzfGFiles')<CR>
+#endif
 
 
 
@@ -290,96 +290,6 @@ if HasPlugin("ctrlsf.vim")
     inoremap <C-S>t <Esc>:CtrlSFToggle<CR>
 endif
 
-
-# ---------------------------------------------------------------------------- #
-#
-#  vim9-focalpoint
-#
-# ---------------------------------------------------------------------------- #
-
-if HasPlugin("vim9-focalpoint")
-    set laststatus=2
-
-    g:line_mode_map = {
-        "n": "N",
-        "v": "V",
-        "V": "V",
-        "\<c-v>": "V",
-        "i": "I",
-        "R": "R",
-        "r": "R",
-        "Rv": "R",
-        "c": "C",
-        "s": "S",
-        "S": "S",
-        "\<c-s>": "S",
-        "t": "T" }
-
-    g:use_pmenu_to_shade = [
-        'delek',
-        'habamax',
-        'industry',
-        'koehler',
-        'lunaperche',
-        'morning',
-        'pablo',
-        'peachpuff',
-        'quiet',
-        'retrobox',
-        'torte',
-        'wildcharm' ]
-
-    augroup ResetStatuslineHiGroups
-      autocmd!
-      autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
-    augroup END
-
-    augroup ShadeNotCurrentWindow
-      autocmd!
-      autocmd WinEnter * setl wincolor=Normal
-      autocmd WinLeave * setl wincolor=NormalNC
-    augroup END
-
-    def g:GenerateStatusline(winid: number): string
-
-        var stl = ""
-
-        # inline highlight group strings
-        var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
-        var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
-        var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
-        var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
-        var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
-
-        var sep = plain .. '|'
-
-        # show current mode in bold
-        stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
-
-        # show branch (requires fugitive)
-        if exists('g:loaded_fugitive')
-            stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
-        endif
-
-        # relative file path
-        stl ..= plain .. ' %f %M'
-        # empty space to right-anchor remaining items
-        stl ..= '%='
-
-        # line and column numbers
-        stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
-        stl ..= sep
-
-        # buffer number
-        stl ..= weak .. ' b' .. bold_u .. '%n'
-
-        # window number
-        stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
-        return stl
-    enddef
-
-    set statusline=%!GenerateStatusline(g:statusline_winid)
-endif
 
 # ---------------------------------------------------------------------------- #
 #

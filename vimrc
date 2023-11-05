@@ -1,10 +1,9 @@
 vim9script
 
-# set by vim-sensible
-# filetype plugin on # Indent and plugins by filetype
-# set scrolloff=5 # screen space around cursor
-# set sidescrolloff=5 # screen space around cursor
-# set wildmenu  # Command line autocompletion
+# don't make Vim pretend to be Vi
+set nocompatible
+syntax on
+
 
 # I prefer comma as a leader key, because it is always followed by a space in
 # sane typing and Python programming.
@@ -13,6 +12,57 @@ g:mapleader = ','  # for <leader> shortcuts.
 
 # remove "You discovered the command-line window!" message from defaults.vim.
 augroup vimHints | exe 'au!' | augroup END
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  colorscheme
+#
+# ---------------------------------------------------------------------------- #
+
+
+# Must set colorscheme before vim9-focalpoint defines an autogroup for the vim
+# `colorscheme` command.
+
+set t_Co=256 # enable 256 colors
+
+g:gruvbox_italics = 0 # disable italic comments and keywords
+
+var _dark_colorscheme = "habamax"
+var _light_colorscheme = "PaperColor"
+
+var _toggle = 1
+if g:colors_name == _light_colorscheme
+    _toggle = 0
+endif
+
+
+# set colorscheme if exists, else set fallback. If fallback does not exist,
+# this will fail, so fallback should be a built-in colorscheme.
+def TrySetColorscheme(colorscheme: string, fallback: string)
+    try
+        execute "colorscheme" colorscheme
+    catch /^Vim\%((\a\+)\)\=:E185/
+        execute "colorscheme" fallback
+    endtry
+enddef
+
+
+# toggle between my two preferred colorschemes
+# will default to dark when starting vim, but will leave light when sourcing
+# vimrc if current colorscheme is light.
+def g:ToggleColorScheme()
+    _toggle = _toggle ? 0 : 1
+    if _toggle == 1
+        TrySetColorscheme(_dark_colorscheme, "habamax")
+        set background=dark
+    else
+        TrySetColorscheme(_light_colorscheme, "default")
+        set background=light
+    endif
+enddef
+
+noremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
 
 # ---------------------------------------------------------------------------- #
 #
@@ -49,7 +99,9 @@ else
 endif
 
 if has('gui_running')
-	source $VIMFILES/gvim.vimrc
+    source $VIMFILES/gvim.vimrc
+else
+    set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
 # this has to be sourced before loading the plugins
@@ -67,49 +119,40 @@ def PackInit(): void
     call minpac#init()
     minpac#add('k-takata/minpac', {'type': 'opt'})
 
-    # everything needed for lsp and completion
+    # -------- everything needed for lsp and completion
     minpac#add('prabirshrestha/vim-lsp')
     minpac#add('mattn/vim-lsp-settings')
     minpac#add('prabirshrestha/asyncomplete.vim')
     minpac#add('prabirshrestha/asyncomplete-lsp.vim')
-    # AI
+    # -------- AI
     minpac#add('github/copilot.vim')
     minpac#add('madox2/vim-ai', {do: '!python -m pip install "openai>=0.27"'})
-    # snippets
+    # -------- snippets
     minpac#add('SirVer/ultisnips')
-    # the usual suspects
+    # -------- the usual suspects
     minpac#add('tpope/vim-fugitive')  # git integration
-    minpac#add('tpope/vim-sensible')  # sensible defaults
     minpac#add('tpope/vim-obsession')  # session management
     minpac#add('tpope/vim-commentary')  # commenting
     minpac#add('tpope/vim-vinegar')  # netrw enhancement
     minpac#add('tpope/vim-surround')  # surround text objects
     minpac#add('tpope/vim-dispatch')  # async build
-    # nice to haves
+    minpac#add('puremourning/vimspector')
+    # -------- nice to haves
     minpac#add('airblade/vim-gitgutter')  # show git changes
     minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
-    # markdown
+    # -------- markdown
     minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
-    # low-star projects that seem to work OK
+    # -------- low-star projects that seem to work OK
     minpac#add('monkoose/vim9-stargate')  # easymotion
-    # minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
-    # Python
-    # minpac#add('tmhedberg/SimpylFold', {'type': 'opt'})  # folding
-    # colorschemes
+    minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
+    # -------- colorschemes
     minpac#add('lifepillar/vim-solarized8')
-    # minpac#add('lifepillar/vim-gruvbox8')
     minpac#add('NLKNguyen/papercolor-theme')
-    # minpac#add('cocopon/iceberg.vim')
-    # minpac#add('arcticicestudio/nord-vim')
-    # my plugins
+    # -------- my plugins
     minpac#add('shayhill/vim9-scratchterm')
     minpac#add('shayhill/vim9-focalpoint')
-    # trying out
-    minpac#add('puremourning/vimspector')
+    # -------- trying out
     minpac#add('Donaldttt/fuzzyy')
-    minpac#add('xolox/vim-misc')
-    minpac#add('xolox/vim-colorscheme-switcher')
-    minpac#add('mg979/vim-visual-multi')
 enddef
 
 command! PackUpdate PackInit() | minpac#update() | source $VIMFILES/plugin_config.vim
@@ -184,19 +227,21 @@ set wildmenu
 # set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*,*/.cache/*
 set wildmode=list:longest,full
 
+
 # aggresive autsave
 set autowriteall  # Save when switching buffers
-set hidden # allow switching buffers w/o saving.
+# set hidden # allow switching buffers w/o saving.
 
 
-## Common Preference Settings
-match IncSearch '\s\+$'  # highlight trailing whitespace
-set splitright # open vertical splits on the right
-set number # line numbers
-set autoread
+# Searching
+match IncSearch '\s\+$' # automatically highlight trailing whitespace
+set incsearch # start searching as soon as you start to type /...
+set hlsearch # highlight search results
+# T-pope mapping to un-highlight search results and call :diffupdate
+nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
 
-## Indentation
+# Indentation
 set expandtab # spaces instead of tabs
 set tabstop=4 # a tab = four spaces
 set shiftwidth=4 # number of spaces for auto-indent
@@ -204,16 +249,24 @@ set softtabstop=4 # a soft-tab of four spaces
 set autoindent # turn on auto-indent
 
 
+# scrolloff
+set scrolloff=1
+set sidescroll=1
+set sidescrolloff=2
+
+
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
 set cursorline # highlight the line under the cursor
 set showcmd # shows partial commands beneath statusline
-set nowrap # Turn off line wrapping
 set noshowmode # showing modes in statusline, so no need for the status popup
 set shortmess-=S # show match counts below statusline
-set relativenumber
-
-# set noerrorbells # Turn off error bell - still rings for  in normal mode
+set splitright # open vertical splits on the right
+set number # line numbers
+set relativenumber # number lines relative to cursor
+set autoread # read file changes without asking if no unsaved changes
+set backspace=indent,eol,start # normal backspace behavior of other applications
+set nrformats-=octal # don't interpret 011 as 9
 set visualbell # flash instead of beeping for errors
 
 
@@ -356,27 +409,91 @@ enddef
 # \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
+set laststatus=2
+
+g:line_mode_map = {
+    "n": "N",
+    "v": "V",
+    "V": "V",
+    "\<c-v>": "V",
+    "i": "I",
+    "R": "R",
+    "r": "R",
+    "Rv": "R",
+    "c": "C",
+    "s": "S",
+    "S": "S",
+    "\<c-s>": "S",
+    "t": "T" }
+
+g:use_pmenu_to_shade = [
+    'delek',
+    'habamax',
+    'industry',
+    'koehler',
+    'lunaperche',
+    'morning',
+    'pablo',
+    'peachpuff',
+    'quiet',
+    'retrobox',
+    'torte',
+    'wildcharm' ]
+
+augroup ResetStatuslineHiGroups
+  autocmd!
+  autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
+augroup END
+
+augroup ShadeNotCurrentWindow
+  autocmd!
+  autocmd WinEnter * setl wincolor=Normal
+  autocmd WinLeave * setl wincolor=NormalNC
+augroup END
+
+def g:GenerateStatusline(winid: number): string
+
+    var stl = ""
+
+    # inline highlight group strings
+    var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
+    var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
+    var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
+    var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
+    var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
+
+    var sep = plain .. '|'
+
+    # show current mode in bold
+    stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
+
+    # show branch (requires fugitive)
+    if exists('g:loaded_fugitive')
+        stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+    endif
+
+    # relative file path
+    stl ..= plain .. ' %f %M'
+    # empty space to right-anchor remaining items
+    stl ..= '%='
+
+    # line and column numbers
+    stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
+    stl ..= sep
+
+    # buffer number
+    stl ..= weak .. ' b' .. bold_u .. '%n'
+
+    # window number
+    stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
+    return stl
+enddef
+
+set statusline=%!GenerateStatusline(g:statusline_winid)
 
 augroup markdownformat
   autocmd!
   autocmd FileType markdown setlocal formatprg=pandoc\ -t\ commonmark_x
   autocmd FileType markdown setlocal equalprg=pandoc\ -t\ commonmark_x
 augroup END
-
-
-# ---------------------------------------------------------------------------- #
-#
-#  colorscheme
-#
-# ---------------------------------------------------------------------------- #
-
-set t_Co=256 # enable 256 colors
-
-g:gruvbox_italics = 0 # disable italic comments and keywords
-# try
-	# colorscheme iceberg
-# catch /^Vim\%((\a\+)\)\=:E185/
-colorscheme PaperColor
-set background=light
-# endtry
 
