@@ -1,68 +1,13 @@
 vim9script
 
-# don't make Vim pretend to be Vi
-set nocompatible
-syntax on
-
-
-# I prefer comma as a leader key, because it is always followed by a space in
-# sane typing and Python programming.
+# With comma as leader key, I can use leader shortcuts in insert mode because
+# a comma is 99% of the time followed by a space in the applications I use
+# (mostly Python and markdown). The catch is that you might work with
+# comma-delimited text, in which case you may end up triggering insert-mode
+# leader shortcuts.
 g:mapleader = ','  # for <leader> shortcuts.
 
 
-# remove "You discovered the command-line window!" message from defaults.vim.
-augroup vimHints | exe 'au!' | augroup END
-
-
-# ---------------------------------------------------------------------------- #
-#
-#  colorscheme
-#
-# ---------------------------------------------------------------------------- #
-
-
-# Must set colorscheme before vim9-focalpoint defines an autogroup for the vim
-# `colorscheme` command.
-
-set t_Co=256 # enable 256 colors
-
-g:gruvbox_italics = 0 # disable italic comments and keywords
-
-var _dark_colorscheme = "habamax"
-var _light_colorscheme = "PaperColor"
-
-var _toggle = 1
-if g:colors_name == _light_colorscheme
-    _toggle = 0
-endif
-
-
-# set colorscheme if exists, else set fallback. If fallback does not exist,
-# this will fail, so fallback should be a built-in colorscheme.
-def TrySetColorscheme(colorscheme: string, fallback: string)
-    try
-        execute "colorscheme" colorscheme
-    catch /^Vim\%((\a\+)\)\=:E185/
-        execute "colorscheme" fallback
-    endtry
-enddef
-
-
-# toggle between my two preferred colorschemes
-# will default to dark when starting vim, but will leave light when sourcing
-# vimrc if current colorscheme is light.
-def g:ToggleColorScheme()
-    _toggle = _toggle ? 0 : 1
-    if _toggle == 1
-        TrySetColorscheme(_dark_colorscheme, "habamax")
-        set background=dark
-    else
-        TrySetColorscheme(_light_colorscheme, "default")
-        set background=light
-    endif
-enddef
-
-noremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
 
 # ---------------------------------------------------------------------------- #
 #
@@ -91,6 +36,12 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
+# nice defaults from Bram and the The Vim Project
+source $VIMRUNTIME/defaults.vim
+
+# remove "You discovered the command-line window!" message from defaults.vim.
+augroup vimHints | exe 'au!' | augroup END
+
 # this is just a path variable to use later 
 if has('windows')
     $VIMFILES = "~/vimfiles"
@@ -106,6 +57,58 @@ endif
 
 # this has to be sourced before loading the plugins
 source $VIMFILES/plugin_config.vim
+
+
+# ---------------------------------------------------------------------------- #
+#
+#  colorscheme
+#
+# ---------------------------------------------------------------------------- #
+
+
+# Must set colorscheme before vim9-focalpoint defines an autogroup for the vim
+# `colorscheme` command.
+
+set t_Co=256 # enable 256 colors
+
+g:gruvbox_italics = 0 # disable italic comments and keywords
+
+var _dark_colorscheme = "habamax"
+var _light_colorscheme = "PaperColor"
+
+if !exists('g:colors_name')
+    execute "colorscheme" _dark_colorscheme
+    set background=dark
+endif
+
+var _toggle = 1
+
+# set colorscheme if exists, else set fallback. If fallback does not exist,
+# this will fail, so fallback should be a built-in colorscheme.
+def TrySetColorscheme(colorscheme: string, fallback: string)
+    try
+        execute "colorscheme" colorscheme
+    catch /^Vim\%((\a\+)\)\=:E185/
+        execute "colorscheme" fallback
+    endtry
+enddef
+
+
+# toggle between my two preferred colorschemes
+# will default to dark when starting vim, but will leave light when sourcing
+# vimrc if current colorscheme is set.
+def g:ToggleColorScheme()
+    _toggle = _toggle ? 0 : 1
+    if _toggle == 1
+        TrySetColorscheme(_dark_colorscheme, "habamax")
+        set background=dark
+    else
+        TrySetColorscheme(_light_colorscheme, "default")
+        set background=light
+    endif
+enddef
+
+noremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
 
 
 # ---------------------------------------------------------------------------- #
@@ -223,7 +226,6 @@ set exrc
 
 # opening files
 set path+=**
-set wildmenu
 # set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*,*/.cache/*
 set wildmode=list:longest,full
 
@@ -235,7 +237,6 @@ set autowriteall  # Save when switching buffers
 
 # Searching
 match IncSearch '\s\+$' # automatically highlight trailing whitespace
-set incsearch # start searching as soon as you start to type /...
 set hlsearch # highlight search results
 # T-pope mapping to un-highlight search results and call :diffupdate
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
@@ -249,24 +250,15 @@ set softtabstop=4 # a soft-tab of four spaces
 set autoindent # turn on auto-indent
 
 
-# scrolloff
-set scrolloff=1
-set sidescroll=1
-set sidescrolloff=2
-
-
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
 set cursorline # highlight the line under the cursor
-set showcmd # shows partial commands beneath statusline
 set noshowmode # showing modes in statusline, so no need for the status popup
 set shortmess-=S # show match counts below statusline
 set splitright # open vertical splits on the right
 set number # line numbers
 set relativenumber # number lines relative to cursor
 set autoread # read file changes without asking if no unsaved changes
-set backspace=indent,eol,start # normal backspace behavior of other applications
-set nrformats-=octal # don't interpret 011 as 9
 set visualbell # flash instead of beeping for errors
 
 
@@ -334,12 +326,6 @@ nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 
 # refresh highlighting.
 map <Leader>h :syntax sync fromstart<CR>
-
-
-
-
-
-                                        
 
 # # navigate command history without arrow keys
 # cnoremap <C-j> <t_kd>
