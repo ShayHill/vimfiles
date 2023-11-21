@@ -21,8 +21,8 @@ nnoremap <buffer> <leader>e :update<CR>:ScratchTermReplaceU python %<CR>
 inoremap <buffer> <leader>e <esc>:update<CR>:ScratchTermReplaceU python %<CR>
 
 " last :term pytest command, if any. No <CR>
-nnoremap <buffer> <leader>t :update<CR>:ScratchTermReplaceUV pytest<t_ku>
-inoremap <buffer> <leader>t <ESC>:update<CR>:ScratchTermReplaceUV pytest<t_ku>
+nnoremap <buffer> <leader>t :update<CR>:ScratchTermReplaceUV py -m pytest<t_ku>
+inoremap <buffer> <leader>t <ESC>:update<CR>:ScratchTermReplaceUV py -m pytest<t_ku>
 
 " Fold a multi-line python docstring from the top line of the docstring.
 nnoremap <buffer> <leader>z $zf/"""<CR>
@@ -42,8 +42,8 @@ imap <buffer> <leader>bb <ESC>:update<CR>:ScratchTerm pre-commit run black --fil
 nmap <buffer> <leader>ii :update<CR>:ScratchTerm pre-commit run isort --files %<CR>:update<CR>
 imap <buffer> <leader>ii <ESC>:update<CR>ScratchTerm !pre-commit run isort --files %<CR>:update<CR>
 
-nmap <buffer> <leader>b :update<CR>m`:%!black - -q<CR>``:update<CR>
-imap <buffer> <leader>b <ESC>m`:update<CR>:%!black - -q<CR>``:update<CR>
+nmap <buffer> <leader>b :update<CR>m`:%!py -m black - -q<CR>``:update<CR>
+imap <buffer> <leader>b <ESC>m`:update<CR>:%!py -m black - -q<CR>``:update<CR>
 nmap <buffer> <leader>i :update<CR>m`:%!isort - -q<CR>``:update<CR>
 imap <buffer> <leader>i <ESC>:update<CR>m`:%!isort - -q<CR>``:update<CR>
 

@@ -1,25 +1,18 @@
 vim9script
 
-# With comma as leader key, I can use leader shortcuts in insert mode because
-# a comma is 99% of the time followed by a space in the applications I use
-# (mostly Python and markdown). The catch is that you might work with
-# comma-delimited text, in which case you may end up triggering insert-mode
-# leader shortcuts.
-g:mapleader = ','  # for <leader> shortcuts.
-
-
+# nice defaults from Bram and the The Vim Project
+source $VIMRUNTIME/defaults.vim
 
 # ---------------------------------------------------------------------------- #
 #
-# set up Python and other Windows options
+# external programs
 #
 # ---------------------------------------------------------------------------- #
 
 if has("windows")
 	set shell=pwsh
-	set pythonthreehome=C:\\Users\\shaya\\AppData\\Local\\Programs\\Python\\Python312
-	set pythonthreedll=C:\\Users\\shaya\\AppData\\Local\\Programs\\Python\\Python312\\python312.dll
-
+	set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python312
+	set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python312\python312.dll
 	# Use ripgrep in :grep if installed. The vim default for Windows
 	# (works in cmd) will freeze Powershell.
 	if executable("rg")
@@ -29,20 +22,29 @@ if has("windows")
 	endif
 endif
 
+# ---------------------------------------------------------------------------- #
+#
+# leader key
+#
+# ---------------------------------------------------------------------------- #
+
+# With comma as leader key, I can use leader shortcuts in insert mode because
+# a comma is 99% of the time followed by a space in the applications I use
+# (mostly Python and markdown). The catch is that you might work with
+# comma-delimited text, in which case you may end up triggering insert-mode
+# leader shortcuts.
+g:mapleader = ','  # for <leader> shortcuts.
 
 # ---------------------------------------------------------------------------- #
 #
-# source external config files
+# source other config files
 #
 # ---------------------------------------------------------------------------- #
-
-# nice defaults from Bram and the The Vim Project
-source $VIMRUNTIME/defaults.vim
 
 # remove "You discovered the command-line window!" message from defaults.vim.
 augroup vimHints | exe 'au!' | augroup END
 
-# this is just a path variable to use later 
+# this is just a path variable to use later
 if has('windows')
     $VIMFILES = "~/vimfiles"
 else
@@ -147,7 +149,7 @@ def PackInit(): void
     minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
     # -------- low-star projects that seem to work OK
     minpac#add('monkoose/vim9-stargate')  # easymotion
-    minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
+    # minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
     # -------- colorschemes
     minpac#add('lifepillar/vim-solarized8')
     minpac#add('NLKNguyen/papercolor-theme')
@@ -310,6 +312,7 @@ nnoremap <leader>_ :%s/\s\+$//g<CR>
 
 # save as root with :w!!
 cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
+cmap w!! w !Start-Process vim % > NUL<CR>:e!<CR><CR>
 
 # print the date and time
 if has("win32")
@@ -326,6 +329,12 @@ nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 
 # refresh highlighting.
 map <Leader>h :syntax sync fromstart<CR>
+
+
+
+
+
+
 
 # # navigate command history without arrow keys
 # cnoremap <C-j> <t_kd>

@@ -167,8 +167,15 @@ if HasPlugin("vim-lsp")
     # show error information on statusline, no virtual text
     g:lsp_diagnostics_echo_cursor = 1
     g:lsp_diagnostics_virtual_text_enabled = 0
-endif
 
+    g:lsp_settings_filetype_python = ['pyright-langserver']
+
+ 	g:lsp_diagnostics_signs_error = {'text': '✗'}
+	g:lsp_diagnostics_signs_warning = {'text': '‼'}
+    g:lsp_diagnostics_signs_information = {'text': 'i'}
+	g:lsp_diagnostics_signs_hint = {'text': '💡'}
+    
+endif
 
 
 ## ---------------------------------------------------------------------------- #
@@ -325,6 +332,6 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if HasPlugin("vim-colorscheme-switcher")
-    nnoremap <leader>cs :ColorschemeSwitcher<CR>
-endif
+# if HasPlugin("vim-colorscheme-switcher")
+#     nnoremap <leader>cs :ColorschemeSwitcher<CR>
+# endif
