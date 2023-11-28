@@ -18,7 +18,7 @@ set go-=L " hide all the scrollbars
 set go-=b " hide all the scrollbars
 set go-=h " hide all the scrollbars
 
-set guifont=DejaVuSansMono_NFM:h10:cANSI:qDRAFT
+set guifont=Consolas:h10:cANSI:qDRAFT,SimSun-ExtB:h11:cANSI:qDEFAULT,DejaVuSansMono_NFM:h10:cANSI:qDRAFT
 
  "if has("windows")
  let gvim_fullscreen = expand('$HOME/vimfiles/gvim_fullscreen.dll')
@@ -39,8 +39,9 @@ noremap <C-F11> <esc>:call libcallnr($VIMRUNTIME .. '/gvim_fullscreen.dll', 'Tog
 " let g:syntastic_style_warning_symbol = '⚡'
 
 " if you can't see the below characters, get a better font
-set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶ " to see: set list!
+" set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶ " to see: set list!
 " set fillchars+=vert:│ " better looking for windows separator
 
 
 
+  

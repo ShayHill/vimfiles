@@ -3,7 +3,7 @@ snippet update_venv
 
 # Create a Python venv at ./venv if it doesn't exist
 
-if (!(Test-Path -PathType container "source"))
+if (!(Test-Path -PathType container "venv"))
 {
 	py -m venv venv
 }
@@ -11,9 +11,9 @@ if (!(Test-Path -PathType container "source"))
 # Read pyproject.toml to create a requirements.txt and dev-requirements.txt
 # Use these to update your Python venv at ./venv
 
-py -m pip-compile -o requirements.txt pyproject.toml --upgrade --strip-extras
-py -m pip-compile --extra=dev -o dev-requirements.txt pyproject.toml --upgrade --strip-extras
+venv\Scripts\pip-compile -o requirements.txt pyproject.toml --upgrade --strip-extras
+venv\Scripts\pip-compile --extra=dev -o dev-requirements.txt pyproject.toml --upgrade --strip-extras
 venv\Scripts\activate
-py -m pip-sync --python-executable .\venv\Scripts\python.exe requirements.txt dev-requirements.txt
-python -m pip install -e .
+venv\Scripts\pip-sync --python-executable .\venv\Scripts\python.exe requirements.txt dev-requirements.txt
+venv\Srtipts\pip install -e .
 endsnippet

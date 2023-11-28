@@ -131,7 +131,7 @@ def PackInit(): void
     minpac#add('prabirshrestha/asyncomplete-lsp.vim')
     # -------- AI
     minpac#add('github/copilot.vim')
-    minpac#add('madox2/vim-ai', {do: '!python -m pip install "openai>=0.27"'})
+    minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
     # -------- snippets
     minpac#add('SirVer/ultisnips')
     # -------- the usual suspects
@@ -146,7 +146,8 @@ def PackInit(): void
     minpac#add('airblade/vim-gitgutter')  # show git changes
     minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
     # -------- markdown
-    minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
+    # minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
+    minpac#add('instant-markdown/vim-instant-markdown')  # requires node and curl
     # -------- low-star projects that seem to work OK
     minpac#add('monkoose/vim9-stargate')  # easymotion
     # minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
