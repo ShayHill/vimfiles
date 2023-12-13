@@ -274,7 +274,7 @@ if HasPlugin("vim9-stargate")
     # For 2 consecutive characters to search
     noremap <leader>F <Cmd>call stargate#OKvim(2)<CR>
     # switch panes
-    nnoremap <leader>w <Cmd>call stargate#Galaxy()<CR>
+    # nnoremap <leader>w <Cmd>call stargate#Galaxy()<CR>
     tnoremap <leader>w <C-w>N<Cmd>call stargate#Galaxy()<CR>
 endif
 

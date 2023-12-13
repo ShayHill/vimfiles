@@ -169,6 +169,7 @@ def PackInit(): void
     minpac#add('shayhill/vim9-focalpoint')
     # -------- trying out
     minpac#add('Donaldttt/fuzzyy')
+    minpac#add('vimwiki/vimwiki')
 enddef
 
 command! PackUpdate PackInit() | minpac#update() | source $VIMFILES/plugin_config.vim

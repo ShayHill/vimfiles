@@ -42,9 +42,9 @@ imap <buffer> <leader>bb <ESC>:update<CR>:ScratchTerm pre-commit run black --fil
 nmap <buffer> <leader>ii :update<CR>:ScratchTerm pre-commit run isort --files %<CR>:update<CR>
 imap <buffer> <leader>ii <ESC>:update<CR>ScratchTerm !pre-commit run isort --files %<CR>:update<CR>
 
-nmap <buffer> <leader>b :update<CR>m`:%!py -m black - -q<CR>``:update<CR>
-imap <buffer> <leader>b <ESC>m`:update<CR>:%!py -m black - -q<CR>``:update<CR>
-nmap <buffer> <leader>i :update<CR>m`:%!py -m isort - -q<CR>``:update<CR>
-imap <buffer> <leader>i <ESC>:update<CR>m`:%!py -m !isort - -q<CR>``:update<CR>
+nmap <buffer> <leader>b :update<CR>m`:%!black - -q<CR>``:update<CR>
+imap <buffer> <leader>b <ESC>m`:update<CR>:%!black - -q<CR>``:update<CR>
+nmap <buffer> <leader>i :update<CR>m`:%!isort - -q<CR>``:update<CR>
+imap <buffer> <leader>i <ESC>:update<CR>m`:%!!isort - -q<CR>``:update<CR>
 
 
