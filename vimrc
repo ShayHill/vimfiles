@@ -11,15 +11,25 @@ source $VIMRUNTIME/defaults.vim
 
 if has("windows")
 	set shell=pwsh
-	set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python312
-	set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python312\python312.dll
+ 	var local_programs = expand('$HOME/AppData/Local/Programs')
+	# set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python312
+	# set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python312\python312.dll
+    execute 'set luadll=' .. local_programs .. '/lua-5.4.2_Win64_dll17_lib/lua54.dll'
+
 	# Use ripgrep in :grep if installed. The vim default for Windows
 	# (works in cmd) will freeze Powershell.
-	if executable("rg")
+	var rg = local_programs .. '/ripgrep-13.0.0-x86_64-pc-windows-msvc/rg.exe'
+	if executable(rg)
 		set grepprg=rg\ --vimgrep\ --no-heading
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif
+endif
+
+if has('gui_running')
+    var gvim_fullscreen = expand('$HOME/vimfiles/gvim_fullscreen.dll')
+    noremap <C-F11> <esc>:call libcallnr(gvim_fullscreen, 'ToggleFullscreen', 0)<cr>
+    noremap <C-F12> <esc>:call libcallnr(gvim_fullscreen, 'ToggleTransparency', '255,180')<cr>
 endif
 
 # ---------------------------------------------------------------------------- #

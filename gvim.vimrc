@@ -31,7 +31,7 @@ set guifont=Consolas:h10:cANSI:qDRAFT,SimSun-ExtB:h11:cANSI:qDEFAULT,DejaVuSansM
 "endif
 
 " et gvim_fullscreen = expand('$HOME/vimfiles/gvim_fullscreen.dll')
-noremap <C-F11> <esc>:call libcallnr($VIMRUNTIME .. '/gvim_fullscreen.dll', 'ToggleFullscreen', 0)<cr>
+" noremap <C-F11> <esc>:call libcallnr($VIMRUNTIME .. '/gvim_fullscreen.dll', 'ToggleFullscreen', 0)<cr>
 
 " let g:syntastic_error_symbol='✗'
 " let g:syntastic_warning_symbol='⚠'

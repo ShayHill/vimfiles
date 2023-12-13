@@ -2,3 +2,4 @@ Session.vim
 vim-env/
 .netrwhist
 pack/
+gvim_fullscreen.dll
