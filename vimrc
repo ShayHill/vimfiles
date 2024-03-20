@@ -21,6 +21,7 @@ if has("windows")
 	var rg = local_programs .. '/ripgrep-13.0.0-x86_64-pc-windows-msvc/rg.exe'
 	if executable(rg)
 		set grepprg=rg\ --vimgrep\ --no-heading
+        execute 'set grepprg=' .. rg .. '\ --vimgrep\ --no-heading'
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif

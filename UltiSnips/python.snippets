@@ -35,20 +35,6 @@
 # endsnippet
 
 
-# snippet conf "boilerplate for conftest" b
-# """Test configuration for pytest.
-
-# :author: Shay Hill
-# :created: `!v strftime("%Y-%m-%d")`
-# """
-
-# def pytest_assertrepr_compare(config, op, left, right):
-#     """See full error diffs"""
-#     if op in ("==", "!="):
-#         return ["{0} {1} {2}".format(left, op, right)]
-# $1
-# endsnippet
-
 snippet docmod "module docstring" b
 """$1
 
