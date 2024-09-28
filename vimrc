@@ -5,79 +5,75 @@ source $VIMRUNTIME/defaults.vim
 
 # ---------------------------------------------------------------------------- #
 #
-# external programs
+#  Vimspector Cheat Sheet
+#
+# Key          Mapping                                      Function
+# F5           <Plug>VimspectorContinue                     When debugging, continue. Otherwise start debugging.
+# F3           <Plug>VimspectorStop                         Stop debugging.
+# F4           <Plug>VimspectorRestart                      Restart debugging with the same configuration.
+# F6           <Plug>VimspectorPause                        Pause debuggee.
+# F9           <Plug>VimspectorToggleBreakpoint             Toggle line breakpoint on the current line.
+# <leader>F9   <Plug>VimspectorToggleConditionalBreakpoint  Toggle conditional line breakpoint or logpoint on the current line.
+# F8           <Plug>VimspectorAddFunctionBreakpoint        Add a function breakpoint for the expression under cursor
+# <leader>F8   <Plug>VimspectorRunToCursor                  Run to Cursor
+# F10          <Plug>VimspectorStepOver                     Step Over
+# F11          <Plug>VimspectorStepInto                     Step Into
+# F12          <Plug>VimspectorStepOut                      Step out of current function scope
+#
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------------------------------------------------- #
+#
+#   external programs
 #
 # ---------------------------------------------------------------------------- #
 
 if has("windows")
 	set shell=pwsh
- 	var local_programs = expand('$HOME/AppData/Local/Programs')
-	# set pythonthreehome=C:\Users\shaya\AppData\Local\Programs\Python\Python312
-	# set pythonthreedll=C:\Users\shaya\AppData\Local\Programs\Python\Python312\python312.dll
-    execute 'set luadll=' .. local_programs .. '/lua-5.4.2_Win64_dll17_lib/lua54.dll'
+	var local_programs = expand('$HOME/AppData/Local/Programs')
+	execute 'set pythonthreehome=' .. local_programs .. "/Python/Python312"
+	execute 'set pythonthreedll=' .. local_programs .. "/Python/Python312/python312.dll"
+	execute 'set luadll=' .. local_programs .. '/Lua/bin/lua54.dll'
 
-	# Use ripgrep in :grep if installed. The vim default for Windows
-	# (works in cmd) will freeze Powershell.
-	var rg = local_programs .. '/ripgrep-13.0.0-x86_64-pc-windows-msvc/rg.exe'
-	if executable(rg)
-		set grepprg=rg\ --vimgrep\ --no-heading
-        execute 'set grepprg=' .. rg .. '\ --vimgrep\ --no-heading'
+	if executable('rg')
+		set grepprg=rg\ --vimgrep\ --no-heading\ --glob\ !binaries\ --glob\ !resources
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif
 endif
 
-if has('gui_running')
-    var gvim_fullscreen = expand('$HOME/vimfiles/gvim_fullscreen.dll')
-    noremap <C-F11> <esc>:call libcallnr(gvim_fullscreen, 'ToggleFullscreen', 0)<cr>
-    noremap <C-F12> <esc>:call libcallnr(gvim_fullscreen, 'ToggleTransparency', '255,180')<cr>
-endif
 
 # ---------------------------------------------------------------------------- #
 #
-# leader key
+#   source other local config files
 #
 # ---------------------------------------------------------------------------- #
-
-# With comma as leader key, I can use leader shortcuts in insert mode because
-# a comma is 99% of the time followed by a space in the applications I use
-# (mostly Python and markdown). The catch is that you might work with
-# comma-delimited text, in which case you may end up triggering insert-mode
-# leader shortcuts.
-g:mapleader = ','  # for <leader> shortcuts.
-
-# ---------------------------------------------------------------------------- #
-#
-# source other config files
-#
-# ---------------------------------------------------------------------------- #
-
-# remove "You discovered the command-line window!" message from defaults.vim.
-augroup vimHints | exe 'au!' | augroup END
-
-# this is just a path variable to use later
-if has('windows')
-    $VIMFILES = "~/vimfiles"
-else
-    $VIMFILES = "~/.vim"
-endif
 
 if has('gui_running')
-    source $VIMFILES/gvim.vimrc
+	source $MYVIMDIR/gvim.vimrc
 else
-    set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+	set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 endif
 
-# this has to be sourced before loading the plugins
-source $VIMFILES/plugin_config.vim
+# source this before loading the plugins
+source $MYVIMDIR/plugin_config.vim
 
 
 # ---------------------------------------------------------------------------- #
 #
 #  colorscheme
 #
+#  Toggle between two preferred colorschemes to switch without distraction
+#  when I'm on my laptop in certain lighting conditions.
+#
 # ---------------------------------------------------------------------------- #
 
+def g:RestoreLspHighlights(): void
+	highlight link LspErrorHighlight Error
+	highlight link LspWarningHighlight Todo
+	highlight link LspInformationHighlight Normal
+	highlight link LspHintHighlight Normal
+enddef
 
 # Must set colorscheme before vim9-focalpoint defines an autogroup for the vim
 # `colorscheme` command.
@@ -90,20 +86,21 @@ var _dark_colorscheme = "habamax"
 var _light_colorscheme = "PaperColor"
 
 if !exists('g:colors_name')
-    execute "colorscheme" _dark_colorscheme
-    set background=dark
+	execute "colorscheme" _dark_colorscheme
+	set background=dark
 endif
 
 var _toggle = 1
 
+
 # set colorscheme if exists, else set fallback. If fallback does not exist,
 # this will fail, so fallback should be a built-in colorscheme.
 def TrySetColorscheme(colorscheme: string, fallback: string)
-    try
-        execute "colorscheme" colorscheme
-    catch /^Vim\%((\a\+)\)\=:E185/
-        execute "colorscheme" fallback
-    endtry
+	try
+		execute "colorscheme" colorscheme
+	catch /^Vim\%((\a\+)\)\=:E185/
+		execute "colorscheme" fallback
+	endtry
 enddef
 
 
@@ -111,119 +108,79 @@ enddef
 # will default to dark when starting vim, but will leave light when sourcing
 # vimrc if current colorscheme is set.
 def g:ToggleColorScheme()
-    _toggle = _toggle ? 0 : 1
-    if _toggle == 1
-        TrySetColorscheme(_dark_colorscheme, "habamax")
-        set background=dark
-    else
-        TrySetColorscheme(_light_colorscheme, "default")
-        set background=light
-    endif
+	_toggle = _toggle ? 0 : 1
+	if _toggle == 1
+		TrySetColorscheme(_dark_colorscheme, "habamax")
+		set background=dark
+	else
+		TrySetColorscheme(_light_colorscheme, "default")
+		set background=light
+	endif
+	call g:RestoreLspHighlights()
 enddef
 
-noremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
+nnoremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
 
 
 # ---------------------------------------------------------------------------- #
 #
-#  minpac
+#   package management
 #
 # ---------------------------------------------------------------------------- #
+
 
 def PackInit(): void
-    packadd minpac
-    call minpac#init()
-    minpac#add('k-takata/minpac', {'type': 'opt'})
+	packadd minpac
 
-    # -------- everything needed for lsp and completion
-    minpac#add('prabirshrestha/vim-lsp')
-    minpac#add('mattn/vim-lsp-settings')
-    minpac#add('prabirshrestha/asyncomplete.vim')
-    minpac#add('prabirshrestha/asyncomplete-lsp.vim')
-    # -------- AI
-    minpac#add('github/copilot.vim')
-    minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
-    # -------- snippets
-    minpac#add('SirVer/ultisnips')
-    # -------- the usual suspects
-    minpac#add('tpope/vim-fugitive')  # git integration
-    minpac#add('tpope/vim-obsession')  # session management
-    minpac#add('tpope/vim-commentary')  # commenting
-    minpac#add('tpope/vim-vinegar')  # netrw enhancement
-    minpac#add('tpope/vim-surround')  # surround text objects
-    minpac#add('tpope/vim-dispatch')  # async build
-    minpac#add('puremourning/vimspector')
-    # -------- nice to haves
-    minpac#add('airblade/vim-gitgutter')  # show git changes
-    minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
-    # -------- markdown
-    # minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})  # requires nodejs
-    minpac#add('instant-markdown/vim-instant-markdown')  # requires node and curl
-    # -------- low-star projects that seem to work OK
-    minpac#add('monkoose/vim9-stargate')  # easymotion
-    # minpac#add('BourgeoisBear/clrzr')  # colorize hex codes
-    # -------- colorschemes
-    minpac#add('lifepillar/vim-solarized8')
-    minpac#add('NLKNguyen/papercolor-theme')
-    # -------- my plugins
-    minpac#add('shayhill/vim9-scratchterm')
-    minpac#add('shayhill/vim9-focalpoint')
-    # -------- trying out
-    minpac#add('Donaldttt/fuzzyy')
-    minpac#add('vimwiki/vimwiki')
+	minpac#init()
+	minpac#add('k-takata/minpac', {'type': 'opt'})
+
+	# -------- everything needed for lsp and completion
+	minpac#add('prabirshrestha/vim-lsp')
+	minpac#add('mattn/vim-lsp-settings')
+	minpac#add('prabirshrestha/asyncomplete.vim')
+	minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+
+	# -------- ai completion and chat
+	minpac#add('github/copilot.vim')
+	minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
+
+	# -------- snippets
+	minpac#add('SirVer/ultisnips')
+
+	# -------- debugging
+ 	minpac#add('puremourning/vimspector', {do: '!py -m pip install setuptools'})
+
+	# -------- fuzzy finder
+	minpac#add('Donaldttt/fuzzyy')
+
+	# -------- the usual suspects
+	minpac#add('tpope/vim-fugitive')  # git integration
+	minpac#add('tpope/vim-obsession')  # session management
+	minpac#add('tpope/vim-commentary')  # commenting
+	minpac#add('tpope/vim-surround')  # surround text objects
+
+	minpac#add('airblade/vim-gitgutter')  # show git changes
+	minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
+
+	# -------- markdown
+	minpac#add('instant-markdown/vim-instant-markdown')  # requires node and curl
+
+	# -------- colorschemes
+	minpac#add('lifepillar/vim-solarized8')
+	minpac#add('NLKNguyen/papercolor-theme')
+
+	# -------- my plugins
+	minpac#add('shayhill/vim9-scratchterm')
+	minpac#add('shayhill/vim9-focalpoint')
+
+	# -------- vimwiki
+	# minpac#add('vimwiki/vimwiki')
 enddef
 
-command! PackUpdate PackInit() | minpac#update() | source $VIMFILES/plugin_config.vim
-command! PackClean  PackInit() | minpac#clean() | source $VIMFILES/plugin_config.vim
+command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
+command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
-
-
-# ---------------------------------------------------------------------------- #
-#
-#  Vimspector
-#
-# ---------------------------------------------------------------------------- #
-
-g:vimspector_enable_mappings = 'HUMAN'
-
-nmap <Leader>di <Plug>VimspectorBalloonEval
-xmap <Leader>di <Plug>VimspectorBalloonEval
-
-nmap <LocalLeader><F11> <Plug>VimspectorUpFrame
-nmap <LocalLeader><F12> <Plug>VimspectorDownFrame
-nmap <LocalLeader>B     <Plug>VimspectorBreakpoints
-nmap <LocalLeader>D     <Plug>VimspectorDisassemble
-
-
-
-
-
-# ---------------------------------------------------------------------------- #
-#
-#  keep the working directory clean
-#
-# ---------------------------------------------------------------------------- #
-
-$TMPDIR = expand("~/tmp/vim")
-
-def MakeDirIfNoExists(path: string): void
-	if !isdirectory(expand(path))
-		call mkdir(expand(path), "p")
-	endif
-enddef
-
-set undofile  # undo changes even after closing vim
-set backup  # write unsaved changes to a backup file
-set noswapfile  # do not create swapfiles
-
-set backupdir=$TMPDIR/backup/
-set undodir=$TMPDIR/undo/
-set directory=$TMPDIR/swap/
-set viminfo+=n$TMPDIR/viminfo
-
-silent! call MakeDirIfNoExists(&undodir)
-silent! call MakeDirIfNoExists(&backupdir)
-silent! call MakeDirIfNoExists(&directory)
 
 
 # ---------------------------------------------------------------------------- #
@@ -236,19 +193,12 @@ silent! call MakeDirIfNoExists(&directory)
 # Vim configuration)
 set exrc
 
-# do not save options in sessions, only windows and buffers
-# set sessionoptions-=options
-
 # opening files
 set path+=**
-# set wildignore+=*/__pycache__/*,*/venv/*,*/dist/*,*/.tox/*,*.docx,*/binaries/*,*/.cache/*
 set wildmode=list:longest,full
-
 
 # aggresive autsave
 set autowriteall  # Save when switching buffers
-# set hidden # allow switching buffers w/o saving.
-
 
 # Searching
 match IncSearch '\s\+$' # automatically highlight trailing whitespace
@@ -256,49 +206,21 @@ set hlsearch # highlight search results
 # T-pope mapping to un-highlight search results and call :diffupdate
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
-
-# Indentation
-set expandtab # spaces instead of tabs
-set tabstop=4 # a tab = four spaces
-set shiftwidth=4 # number of spaces for auto-indent
-set softtabstop=4 # a soft-tab of four spaces
-set autoindent # turn on auto-indent
-
-
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
 set cursorline # highlight the line under the cursor
 set noshowmode # showing modes in statusline, so no need for the status popup
 set shortmess-=S # show match counts below statusline
-set splitright # open vertical splits on the right
 set number # line numbers
 set relativenumber # number lines relative to cursor
 set autoread # read file changes without asking if no unsaved changes
 set visualbell # flash instead of beeping for errors
-
-
 
 # ---------------------------------------------------------------------------- #
 #
 #  mappings
 #
 # ---------------------------------------------------------------------------- #
-
-# save with C-s
-nnoremap <C-s> :w<CR>
-inoremap <C-s> <ESC>:w<CR>
-
-# <F3>, <F4>, and <F8> mapped if HasPlugin scratch_term
-# <F5>, <F6>, and <F7> reserved for filetype-specific mappings
-# <F11> gvim fullscreen
-# <F12> gvim translucent
-
-# fuzzy-finder muscle memory
-nnoremap <C-P> :FuzzyGitFiles<CR>
-inoremap <C-P> <ESC>:FuzzyGitFiles<CR>
-# cnoremap <C-T> <HOME> tabnew \| <END><CR>
-# cnoremap <C-X> <HOME> split \| <END><CR>
-# cnoremap <C-V> <HOME> vsplit \| <END><CR>
 
 # switch windows
 nnoremap <C-J> <C-w>w
@@ -310,25 +232,15 @@ tnoremap <C-K> <C-\><C-n><C-w>W
 # letter) then jumps to the last cursor position.
 noremap <leader><leader> <cmd>exec "normal '" .. toupper(getcharstr()) .. "`\""<cr>
 
-# it's so easy to mistype :w that even my mech keyboard somehow does it
-# with autoshift.
-command! W w
-
-# enter terminal normal mode with <leader>n
-tnoremap <leader>n <C-w>N
-
 # remove trailing whitespace
 nnoremap <leader>_ :%s/\s\+$//g<CR>
-
-# # clear search highlights with space.
-# nnoremap <space> :noh<CR>
 
 # save as root with :w!!
 cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 cmap w!! w !Start-Process vim % > NUL<CR>:e!<CR><CR>
 
 # print the date and time
-if has("win32")
+if has("windows")
     nnoremap <leader>dt "=strftime("%y%m%d %H:%M:%S ")<CR>P
     inoremap <leader>dt <C-R>=strftime("%y%m%d %H:%M:%S ")<CR>
 else
@@ -343,32 +255,9 @@ nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 # refresh highlighting.
 map <Leader>h :syntax sync fromstart<CR>
 
-
-
-
-
-
-
-# # navigate command history without arrow keys
-# cnoremap <C-j> <t_kd>
-# cnoremap <C-k> <t_ku>
-# cnoremap <C-h> <t_kl>
-# cnoremap <C-l> <t_kr>
-
-
-# ---------------------------------------------------------------------------- #
-#
-#  Deal with buffers
-#
-# ---------------------------------------------------------------------------- #
-
-# naturally, these only work in gvim
-map <C-Tab> :bnext<cr>
-map <C-S-Tab> :bprevious<cr>
-
-# keep rolling if you shift-tab into the integrated terminal
-tmap <C-Tab> <C-w>:bnext<cr>
-tmap <C-S-Tab> <C-w>:bprevious<cr>
+# it's so easy to mistype :w that even my mech keyboard somehow occasionally
+# does it with autoshift.
+command! W w
 
 # my 40% keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
 # won't work without this mapping.
@@ -404,17 +293,18 @@ def g:CStrR(text: string): string
 	return escaped_string
 enddef
 
-
 # ---------------------------------------------------------------------------- #
 #
 #  Statusline
 #
+#  This statusline configuration requires plugin vim9-focalpoint
+#
 # ---------------------------------------------------------------------------- #
 
 # for debugging syntax highlighting
-# nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-# \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-# \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+nnoremap <C-F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
 set laststatus=2
@@ -459,49 +349,42 @@ augroup ShadeNotCurrentWindow
   autocmd WinLeave * setl wincolor=NormalNC
 augroup END
 
-def g:GenerateStatusline(winid: number): string
+ def g:GenerateStatusline(winid: number): string
 
-    var stl = ""
+     var stl = ""
 
-    # inline highlight group strings
-    var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
-    var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
-    var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
-    var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
-    var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
+     # inline highlight group strings
+     var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
+     var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
+     var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
+     var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
+     var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
 
-    var sep = plain .. '|'
+     var sep = plain .. '|'
 
-    # show current mode in bold
-    stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
+     # show current mode in bold
+     stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
 
-    # show branch (requires fugitive)
-    if exists('g:loaded_fugitive')
-        stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
-    endif
+     # show branch (requires fugitive)
+     if exists('g:loaded_fugitive')
+         stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+     endif
 
-    # relative file path
-    stl ..= plain .. ' %f %M'
-    # empty space to right-anchor remaining items
-    stl ..= '%='
+     # relative file path
+     stl ..= plain .. ' %f %M'
+     # empty space to right-anchor remaining items
+     stl ..= '%='
 
-    # line and column numbers
-    stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
-    stl ..= sep
+     # line and column numbers
+     stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
+     stl ..= sep
 
-    # buffer number
-    stl ..= weak .. ' b' .. bold_u .. '%n'
+     # buffer number
+     stl ..= weak .. ' b' .. bold_u .. '%n'
 
-    # window number
-    stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
-    return stl
-enddef
+     # window number
+     stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
+     return stl
+ enddef
 
-set statusline=%!GenerateStatusline(g:statusline_winid)
-
-augroup markdownformat
-  autocmd!
-  autocmd FileType markdown setlocal formatprg=pandoc\ -t\ commonmark_x
-  autocmd FileType markdown setlocal equalprg=pandoc\ -t\ commonmark_x
-augroup END
-
+ set statusline=%!GenerateStatusline(g:statusline_winid)

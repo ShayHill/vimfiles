@@ -1,47 +1,31 @@
-" gvim configuration. gvim_fullscreen.dll is available at https://github.com/movsb/gvim_fullscreen
-" Has to be compiled and placed in the vimfiles directory
+vim9script
 
+# if you can't see the below characters, get a better font
+set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶
+set fillchars+=vert:│  # for a better looking windows separator
 
-" when opening for the first time, open at a useful size
+set guifont=DejaVu_Sans_Mono:h10:cANSI:qDRAFT
+
+# open at a useful size
 if !exists('g:vimrc_sourced')
-    let g:vimrc_sourced = 1
+    g:vimrc_sourced = 1
     set lines=50
     set columns=120
 endif
 
-set go-=T " hide the toolbar
-set go-=m " hide the menu
-set go-=r " hide all the scrollbars
-set go-=R " hide all the scrollbars
-set go-=l " hide all the scrollbars
-set go-=L " hide all the scrollbars
-set go-=b " hide all the scrollbars
-set go-=h " hide all the scrollbars
+set go-=T  # hide the toolbar
+set go-=m  # hide the menu
+set go-=r  # hide the scrollbars
+set go-=R  # hide the scrollbars
+set go-=l  # hide the scrollbars
+set go-=L  # hide the scrollbars
+set go-=b  # hide the scrollbars
+set go-=h  # hide the scrollbars
 
-set guifont=Consolas:h10:cANSI:qDRAFT,SimSun-ExtB:h11:cANSI:qDEFAULT,DejaVuSansMono_NFM:h10:cANSI:qDRAFT
-
- "if has("windows")
- let gvim_fullscreen = expand('$HOME/vimfiles/gvim_fullscreen.dll')
- "   "toggle fullscreen mode by pressing F11
- "   noremap <leader>F11 <esc>:call libcallnr(gvim_fullscreen, 'ToggleFullscreen', 0)<cr>
- "   "toggle window translucency by pressing F12
- "   noremap <leader>F12 <esc>:call libcallnr(gvim_fullscreen, 'ToggleTransparency', "255,180")<cr>
-
- "   let g:MyVimLib = expand('$HOME/vimfiles/gvim_fullscreen.dll')
-"endif
-
-" et gvim_fullscreen = expand('$HOME/vimfiles/gvim_fullscreen.dll')
-" noremap <C-F11> <esc>:call libcallnr($VIMRUNTIME .. '/gvim_fullscreen.dll', 'ToggleFullscreen', 0)<cr>
-
-" let g:syntastic_error_symbol='✗'
-" let g:syntastic_warning_symbol='⚠'
-" let g:syntastic_style_error_symbol = '⚡'
-" let g:syntastic_style_warning_symbol = '⚡'
-
-" if you can't see the below characters, get a better font
-" set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶ " to see: set list!
-" set fillchars+=vert:│ " better looking for windows separator
-
-
-
-  
+g:GvimFullscreenDll = $MYVIMDIR .. 'gvim_fullscreen.dll'
+if filereadable(g:GvimFullscreenDll)
+	inoremap <C-F11> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
+	noremap <C-F11> :call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
+	inoremap <C-F12> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
+	noremap <C-F12> :call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
+endif
