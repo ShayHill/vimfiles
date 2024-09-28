@@ -1,6 +1,6 @@
 " Vim compiler file
 
-let current_compiler = "pylint_vim_env"
+let current_compiler = "precommit"
 
 if exists(":CompilerSet") != 2		" older Vim always used :setlocal
   command -nargs=* CompilerSet setlocal <args>
