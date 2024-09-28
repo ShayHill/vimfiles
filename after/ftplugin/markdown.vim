@@ -1,16 +1,13 @@
-" packadd vim-markdown
-packadd markdown-preview.nvim
-
 
 function! MarkdownLevel()
     if getline(v:lnum) =~ '^#.*$'
         return ">1"
     endif
-    return "=" 
+    return "="
 endfunction
 
-au BufEnter *.md setlocal foldexpr=MarkdownLevel()  
-au BufEnter *.md setlocal foldmethod=expr
+setlocal foldexpr=MarkdownLevel()
+setlocal foldmethod=expr
 
 setlocal wrap
 setlocal linebreak

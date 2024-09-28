@@ -1,3 +1,4 @@
+vim9script
 
-set wrap
-set linebreak
+setlocal wrap
+setlocal linebreak
