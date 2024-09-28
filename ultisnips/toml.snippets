@@ -27,10 +27,28 @@ major-version-zero = true
 version_files = ["pyproject.toml:^version"]
 endsnippet
 
+
 snippet isort
 [tool.isort]
 profile = "black"
 endsnippet
+
+
+snippet tox
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{$1}
+
+[testenv]
+deps = pytest
+commands = pytest
+"""
+endsnippet
+
 
 snippet pyright
 [tool.pyright]
@@ -53,5 +71,4 @@ reportUnusedCallResult = true
 venvPath = "."
 venv = "./venv"
 endsnippet
-
 

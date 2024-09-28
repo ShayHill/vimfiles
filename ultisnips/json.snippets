@@ -1,19 +1,6 @@
-
 snippet vimspector
 {
     "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
-    "adapters": {
-        "run_with_debugpy": {
-            "extends": "debugpy",
-            "command": [
-                "${workspaceRoot}/run_with_debugpy"
-            ],
-            "port": 9876,
-            "env": {
-                "DEBUG_PORT": "9876"
-            }
-        }
-    },
     "configurations": {
         "run": {
             "adapter": "debugpy",
@@ -24,8 +11,7 @@ snippet vimspector
                 "cwd": "${workspaceRoot}",
                 "python": "${workspaceRoot}/venv/Scripts/python.exe",
                 "program": "${file}",
-                "stopOnEntry": false,
-                "console": "integratedTerminal"
+                "stopOnEntry": false
             },
             "breakpoints": {
                 "exception": {
@@ -45,14 +31,14 @@ snippet vimspector
                 "cwd": "${workspaceRoot}",
                 "python": "${workspaceRoot}/venv/Scripts/python.exe",
                 "program": "${workspaceRoot}/src/$1/main.py",
-                "stopOnEntry": false,
-                "console": "integratedTerminal"
+                "stopOnEntry": false
             },
             "breakpoints": {
                 "exception": {
                     "raised": "N",
-                    "uncaught": "",
-                    "userUnhandled": ""
+                    "caught": "N",
+                    "uncaught": "Y",
+                    "userUnhandled": "N"
                 }
             }
         },

@@ -24,23 +24,26 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
-# lines to keep handy
-# #!usr/bin/env python
-# # last modified: `!v strftime("%Y-%m-%d")`
-
-
-# snippet def "standard function or module" b
-# def $1($2) -> $3:
-#     """$4"""
-# endsnippet
-
-
 snippet docmod "module docstring" b
 """$1
 
 :author: Shay Hill
 :created: `!v strftime("%Y-%m-%d")`
 """
+$2
+endsnippet
+
+snippet testmod "test module docstring" b
+"""$1
+
+:author: Shay Hill
+:created: `!v strftime("%Y-%m-%d")`
+"""
+# pyright: reportPrivateUsage = false
+# pyright: reportUnknownMemberType=false
+# pyright: reportUnknownVariableType=false
+# pyright: reportMissingParameterType=false
+# pyright: reportUnknownParameterType=false
 $2
 endsnippet
 
@@ -55,7 +58,7 @@ snippet conftest "boilerplate for conftest" b
 """See full diffs in pytest.
 
 :author: Shay Hill
-:created: 2023-10-07
+:created: `!v strftime("%Y-%m-%d")`
 """
 
 from typing import Any
@@ -65,32 +68,3 @@ def pytest_assertrepr_compare(config: Any, op: str, left: str, right: str):
     if op in ("==", "!="):
         return ["{0} {1} {2}".format(left, op, right)]
 endsnippet
-
-# snippet docscr "#!usr/bin/env python" b
-# """$1
-
-# :author: Shay Hill
-# :created: `!v strftime("%Y-%m-%d")`
-# """
-# $2
-# endsnippet
-
-# snippet doctestmod "#!python" b
-# """$1
-
-# :author: Shay Hill
-# :created: `!v strftime("%Y-%m-%d")`
-# """
-# # pyright: reportPrivateUsage=false
-# # pyright: reportUnknownMemberType=false
-# # pyright: reportUnknownVariableType=false
-# # pyright: reportMissingParameterType=false
-# # pyright: reportUnknownParameterType=false
-# $2
-# endsnippet
-
-# snippet test
-# def test_${1}(self${2}) -> None:
-#     """${3}"""
-# endsnippet
-
