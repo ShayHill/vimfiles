@@ -148,8 +148,7 @@ def PackInit(): void
 	# -------- snippets
 	minpac#add('SirVer/ultisnips')
 
-	# -------- debugging
- 	minpac#add('puremourning/vimspector', {do: '!py -m pip install setuptools'})
+
 
 	# -------- fuzzy finder
 	minpac#add('Donaldttt/fuzzyy')
@@ -186,6 +185,32 @@ command! PackStatus packadd minpac | minpac#status()
 
 # ---------------------------------------------------------------------------- #
 #
+#  keep the working directory clean
+#
+# ---------------------------------------------------------------------------- #
+
+set undofile  # undo changes even after closing vim
+set backup  # write unsaved changes to a backup file
+
+$TMPDIR = expand('~/AppData/Local/Temp/vim')
+
+def MakeDirIfNoExists(path: string): void
+	if !isdirectory(expand(path))
+		call mkdir(expand(path), "p")
+	endif
+enddef
+
+set backupdir=$TMPDIR/backup/
+set undodir=$TMPDIR/undo/
+set directory=TMPDIR/swap/
+
+silent! call MakeDirIfNoExists(&undodir)
+silent! call MakeDirIfNoExists(&backupdir)
+silent! call MakeDirIfNoExists(&directory)
+
+
+# ---------------------------------------------------------------------------- #
+#
 #  behaviors
 #
 # ---------------------------------------------------------------------------- #
@@ -216,6 +241,7 @@ set number # line numbers
 set relativenumber # number lines relative to cursor
 set autoread # read file changes without asking if no unsaved changes
 set visualbell # flash instead of beeping for errors
+
 
 # ---------------------------------------------------------------------------- #
 #
