@@ -49,12 +49,6 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-if has('gui_running')
-	source $MYVIMDIR/gvim.vimrc
-else
-	set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-endif
-
 # source this before loading the plugins
 source $MYVIMDIR/plugin_config.vim
 
@@ -241,6 +235,7 @@ set number # line numbers
 set relativenumber # number lines relative to cursor
 set autoread # read file changes without asking if no unsaved changes
 set visualbell # flash instead of beeping for errors
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 
 
 # ---------------------------------------------------------------------------- #
