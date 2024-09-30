@@ -196,7 +196,7 @@ enddef
 
 set backupdir=$TMPDIR/backup/
 set undodir=$TMPDIR/undo/
-set directory=TMPDIR/swap/
+set directory=$TMPDIR/swap/
 
 silent! call MakeDirIfNoExists(&undodir)
 silent! call MakeDirIfNoExists(&backupdir)
