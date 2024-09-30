@@ -17,7 +17,7 @@ setlocal nowrap
 #  build commands as strings to run formatters
 #
 # ---------------------------------------------------------------------------- #
- 
+
 def FindModule(module: string): string
 	# Find a module in a local venv. Failing that search for
 	# module in vimthreehome. Return the path to the module

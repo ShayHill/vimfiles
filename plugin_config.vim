@@ -52,7 +52,15 @@ if g:HasPlugin("vim-lsp")
 	g:lsp_diagnostics_echo_cursor = 1
 	g:lsp_diagnostics_virtual_text_enabled = 0
 	g:lsp_settings_filetype_python = ['pyright-langserver']
+
+	# use symbols instead of W>, E>, etc.
+	g:lsp_diagnostics_signs_error = {'text': '❌'}
+	g:lsp_diagnostics_signs_warning = {'text': '🔶'}
+	g:lsp_diagnostics_signs_information = {'text': 'ℹ'}
+	g:lsp_diagnostics_signs_hint = {'text': '💡'}
+	hi lspErrorText ctermbg=NONE guibg=NONE
 endif
+
 
 
 if g:HasPlugin("asyncomplete.vim")
