@@ -264,11 +264,11 @@ cmap w!! w !Start-Process vim % > NUL<CR>:e!<CR><CR>
 
 # print the date and time
 if has("windows")
-    nnoremap <leader>dt "=strftime("%y%m%d %H:%M:%S ")<CR>P
-    inoremap <leader>dt <C-R>=strftime("%y%m%d %H:%M:%S ")<CR>
+	nnoremap <leader>dt "=strftime("%y%m%d %H:%M:%S ")<CR>P
+	inoremap <leader>dt <C-R>=strftime("%y%m%d %H:%M:%S ")<CR>
 else
-    nnoremap <leader>dt "=strftime("%y%m%d %T ")<CR>P
-    inoremap <leader>dt <C-R>=strftime("%y%m%d %T ")<CR>
+	nnoremap <leader>dt "=strftime("%y%m%d %T ")<CR>P
+	inoremap <leader>dt <C-R>=strftime("%y%m%d %T ")<CR>
 endif
 
 # highlight all characters except ascii printable, \n, and \t. This is for
@@ -297,19 +297,19 @@ map <C-k6> <C-6>
 # ---------------------------------------------------------------------------- #
 
 def g:CStr(text: string): string
-    # Command string. Escape any characters that might interfere with using a
-    # string as a match. This is for use in search `/HERE` or the left
-    # argument of search and replace `:s/HERE//`
-    var escaped_string = text
-    escaped_string = escape(escaped_string, '^$.*\/~[]')
-    escaped_string = substitute(escaped_string, '\n', '\\n', 'g')
-    return escaped_string
+	# Command string. Escape any characters that might interfere with using a
+	# string as a match. This is for use in search `/HERE` or the left
+	# argument of search and replace `:s/HERE//`
+	var escaped_string = text
+	escaped_string = escape(escaped_string, '^$.*\/~[]')
+	escaped_string = substitute(escaped_string, '\n', '\\n', 'g')
+	return escaped_string
 enddef
 
 def g:CStrR(text: string): string
-    # Command string Right or Command string Replace. Escape characters that
-    # would interfere with using a string on the right `:s//HERE/` side of a
-    # search and replace pattern.
+	# Command string Right or Command string Replace. Escape characters that
+	# would interfere with using a string on the right `:s//HERE/` side of a
+	# search and replace pattern.
 	var escaped_string = text
 	escaped_string = escape(escaped_string, '\/')
 	escaped_string = substitute(escaped_string, '\n', '\r', 'g')
@@ -333,81 +333,80 @@ nnoremap <C-F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '
 set laststatus=2
 
 g:line_mode_map = {
-    "n": "N",
-    "v": "V",
-    "V": "V",
-    "\<c-v>": "V",
-    "i": "I",
-    "R": "R",
-    "r": "R",
-    "Rv": "R",
-    "c": "C",
-    "s": "S",
-    "S": "S",
-    "\<c-s>": "S",
-    "t": "T" }
+	"n": "N",
+	"v": "V",
+	"V": "V",
+	"\<c-v>": "V",
+	"i": "I",
+	"R": "R",
+	"r": "R",
+	"Rv": "R",
+	"c": "C",
+	"s": "S",
+	"S": "S",
+	"\<c-s>": "S",
+	"t": "T" }
 
 g:use_pmenu_to_shade = [
-    'delek',
-    'habamax',
-    'industry',
-    'koehler',
-    'lunaperche',
-    'morning',
-    'pablo',
-    'peachpuff',
-    'quiet',
-    'retrobox',
-    'torte',
-    'wildcharm' ]
+	'delek',
+	'habamax',
+	'industry',
+	'koehler',
+	'lunaperche',
+	'morning',
+	'pablo',
+	'peachpuff',
+	'quiet',
+	'retrobox',
+	'torte',
+	'wildcharm' ]
 
 augroup ResetStatuslineHiGroups
-  autocmd!
-  autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
+	autocmd!
+	autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
 augroup END
 
 augroup ShadeNotCurrentWindow
-  autocmd!
-  autocmd WinEnter * setl wincolor=Normal
-  autocmd WinLeave * setl wincolor=NormalNC
+	autocmd!
+	autocmd WinEnter * setl wincolor=Normal
+	autocmd WinLeave * setl wincolor=NormalNC
 augroup END
 
- def g:GenerateStatusline(winid: number): string
+def g:GenerateStatusline(winid: number): string
+	var stl = ""
 
-     var stl = ""
+	# inline highlight group strings
+	var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
+	var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
+	var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
+	var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
+	var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
 
-     # inline highlight group strings
-     var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
-     var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
-     var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
-     var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
-     var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
+	var sep = plain .. '|'
 
-     var sep = plain .. '|'
+	# show current mode in bold
+	stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
 
-     # show current mode in bold
-     stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
+	# show branch (requires fugitive)
+	if exists('g:loaded_fugitive')
+	 stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+	endif
 
-     # show branch (requires fugitive)
-     if exists('g:loaded_fugitive')
-         stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
-     endif
+	# relative file path
+	stl ..= plain .. ' %f %M'
+	# empty space to right-anchor remaining items
+	stl ..= '%='
 
-     # relative file path
-     stl ..= plain .. ' %f %M'
-     # empty space to right-anchor remaining items
-     stl ..= '%='
+	# line and column numbers
+	stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
+	stl ..= sep
 
-     # line and column numbers
-     stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
-     stl ..= sep
+	# buffer number
+	stl ..= weak .. ' b' .. bold_u .. '%n'
 
-     # buffer number
-     stl ..= weak .. ' b' .. bold_u .. '%n'
+	# window number
+	stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
+	return stl
+enddef
 
-     # window number
-     stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
-     return stl
- enddef
-
- set statusline=%!GenerateStatusline(g:statusline_winid)
+set statusline=%!GenerateStatusline(g:statusline_winid)
