@@ -8,7 +8,6 @@ setlocal autoindent  # turn on auto-indent
 
 setlocal colorcolumn=89  # max cols in black is 88
 setlocal textwidth=85  # wrapping for gq
-setlocal formatoptions-=t  # do not autowrap text
 
 setlocal nowrap
 
@@ -107,14 +106,14 @@ def FindPython(): string
 	# Find the Python executable in the global python environment or in the venv.
 	# Returns the path to the Python executable or 'false' if not found.
 	if executable("venv/Scripts/python.exe")
-		return 'python'
+		return 'venv/Scripts/python.exe'
 	else
 		return 'py'
 	endif
 enddef
 
 
-def g:LoadCommand(cmd: string)
+def! g:LoadCommand(cmd: string)
 	# Write a command onto the command line.
 	# Do not execute it.
 	# The command argument is a string that starts with a colon.
@@ -126,6 +125,7 @@ enddef
 
 
 var python_binary = FindPython()
+g:AAA = FindPython()
 if g:HasPlugin("vim9-scratchterm")
 	# execute Python or Pytest in scratch terminals
 	g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' % <CR>'

@@ -236,6 +236,7 @@ set relativenumber # number lines relative to cursor
 set autoread # read file changes without asking if no unsaved changes
 set visualbell # flash instead of beeping for errors
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set formatoptions-=t  # do not autowrap text
 
 
 # ---------------------------------------------------------------------------- #
