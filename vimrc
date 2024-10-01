@@ -122,6 +122,11 @@ nnoremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
 #
 # ---------------------------------------------------------------------------- #
 
+# load Vim internal plugins
+packadd! matchit  # jump between html tags with %
+packadd! comment  # (un)comment lines with gc, gcc
+packadd! nohlsearch  # clear search highlighting after insert or timeout
+
 
 def PackInit(): void
 	packadd minpac
@@ -142,15 +147,12 @@ def PackInit(): void
 	# -------- snippets
 	minpac#add('SirVer/ultisnips')
 
-
-
 	# -------- fuzzy finder
 	minpac#add('Donaldttt/fuzzyy')
 
 	# -------- the usual suspects
 	minpac#add('tpope/vim-fugitive')  # git integration
 	minpac#add('tpope/vim-obsession')  # session management
-	minpac#add('tpope/vim-commentary')  # commenting
 	minpac#add('tpope/vim-surround')  # surround text objects
 	minpac#add('tpope/vim-vinegar')  # netrw enhancement
 	minpac#add('tpope/vim-dispatch')  # async build
