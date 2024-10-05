@@ -59,7 +59,7 @@ enddef
 
 def MapBlackIfFound(): void
 	var black = FindModule('black')
-	var cmd = UpdateAround(MarkAndReturn(':%!' .. black .. ' - -q<CR>'))
+	var cmd = UpdateAround(MarkAndReturn(':!' .. black .. ' % -q<CR>'))
 	if executable(black)
 		execute 'nmap <buffer> <leader>b ' .. cmd
 	else
@@ -70,7 +70,7 @@ enddef
 
 def MapIsortIfFound(): void
 	var isort = FindModule('isort')
-	var cmd = UpdateAround(MarkAndReturn(':%!' .. isort .. ' - -q<CR>'))
+	var cmd = UpdateAround(MarkAndReturn(':!' .. isort .. ' % -q<CR>'))
 	if executable(isort)
 		execute 'nmap <buffer> <leader>i ' .. cmd
 	else
@@ -81,7 +81,7 @@ enddef
 
 def MapAutoflakeIfFound(): void
 	var autoflake = FindModule('autoflake')
-	var af_cmd = ':%!' .. autoflake .. ' --in-place --remove-all-unused-imports -<CR>'
+	var af_cmd = ':!' .. autoflake .. ' --in-place --remove-all-unused-imports %<CR>'
 	var cmd = UpdateAround(MarkAndReturn(af_cmd))
 	if executable(autoflake)
 		execute 'nmap <buffer> <leader>ii ' .. cmd
