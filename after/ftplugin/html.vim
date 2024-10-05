@@ -1,5 +1,7 @@
 vim9script
 
+# Match 2-space indentation style of prettier
+
 setlocal expandtab  # spaces instead of tabs
 setlocal tabstop=2  # a tab = two spaces
 setlocal shiftwidth=2  # number of spaces for auto-indent
