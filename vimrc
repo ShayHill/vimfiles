@@ -123,10 +123,8 @@ nnoremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
 # ---------------------------------------------------------------------------- #
 
 # load Vim internal plugins
-packadd! matchit  # jump between html tags with %
+packadd! matchit  # jump between html tags
 packadd! comment  # (un)comment lines with gc, gcc
-packadd! nohlsearch  # clear search highlighting after insert or timeout
-
 
 def PackInit(): void
 	packadd minpac
@@ -141,7 +139,7 @@ def PackInit(): void
 	minpac#add('prabirshrestha/asyncomplete-lsp.vim')
 
 	# -------- ai completion and chat
-	minpac#add('github/copilot.vim')
+	# minpac#add('github/copilot.vim')
 	minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
 
 	# -------- snippets
@@ -150,6 +148,9 @@ def PackInit(): void
 	# -------- fuzzy finder
 	minpac#add('Donaldttt/fuzzyy')
 
+	# -------- debugging
+	minpac#add('puremourning/vimspector', {do: '!py -m pip install setuptools'})
+
 	# -------- the usual suspects
 	minpac#add('tpope/vim-fugitive')  # git integration
 	minpac#add('tpope/vim-obsession')  # session management
@@ -157,6 +158,8 @@ def PackInit(): void
 	minpac#add('tpope/vim-vinegar')  # netrw enhancement
 	minpac#add('tpope/vim-dispatch')  # async build
 	minpac#add('airblade/vim-gitgutter')  # show git changes
+
+	# -------- refactoring
 	minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
 
 	# -------- markdown
