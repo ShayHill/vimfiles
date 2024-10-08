@@ -3,6 +3,10 @@ vim9script
 # nice defaults from Bram and the The Vim Project
 source $VIMRUNTIME/defaults.vim
 
+nnoremap <Space> <Nop>
+vnoremap <Space> <Nop>
+g:mapleader = " "
+
 # ---------------------------------------------------------------------------- #
 #
 #  Vimspector Cheat Sheet
@@ -246,6 +250,9 @@ set visualbell # flash instead of beeping for errors
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set formatoptions-=t  # do not autowrap text
 
+# jk to escape
+inoremap jk <Esc>
+inoremap kj <Esc>
 
 # ---------------------------------------------------------------------------- #
 #
@@ -261,7 +268,7 @@ tnoremap <C-K> <C-\><C-n><C-w>W
 
 # <leader><leader>a (any letter) will navigates to the global bookmark A (any
 # letter) then jumps to the last cursor position.
-noremap <leader><leader> <cmd>exec "normal '" .. toupper(getcharstr()) .. "`\""<cr>
+nnoremap <leader><leader> <cmd>exec "normal '" .. toupper(getcharstr()) .. "`\""<cr>
 
 # remove trailing whitespace
 nnoremap <leader>_ :%s/\s\+$//g<CR>
@@ -273,10 +280,10 @@ cmap w!! w !Start-Process vim % > NUL<CR>:e!<CR><CR>
 # print the date and time
 if has("windows")
 	nnoremap <leader>dt "=strftime("%y%m%d %H:%M:%S ")<CR>P
-	inoremap <leader>dt <C-R>=strftime("%y%m%d %H:%M:%S ")<CR>
+	# inoremap <leader>dt <C-R>=strftime("%y%m%d %H:%M:%S ")<CR>
 else
 	nnoremap <leader>dt "=strftime("%y%m%d %T ")<CR>P
-	inoremap <leader>dt <C-R>=strftime("%y%m%d %T ")<CR>
+	# inoremap <leader>dt <C-R>=strftime("%y%m%d %T ")<CR>
 endif
 
 # highlight all characters except ascii printable, \n, and \t. This is for
@@ -284,7 +291,7 @@ endif
 nnoremap <leader>np /[ -~\n\t_]\@!<CR>
 
 # refresh highlighting.
-map <Leader>h :syntax sync fromstart<CR>
+nmap <Leader>h :syntax sync fromstart<CR>
 
 # it's so easy to mistype :w that even my mech keyboard somehow occasionally
 # does it with autoshift.

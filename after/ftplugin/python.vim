@@ -38,7 +38,7 @@ var precommit = FindModule('pre-commit')
 if executable(precommit) && g:HasPlugin("vim-dispatch")
 	compiler precommit
 	nmap <buffer> <leader>l :update<CR>:vert Make<CR>:update<CR>
-	imap <buffer> <leader>l <ESC>:update<CR>:vert Make<CR>:update<CR>
+	# imap <buffer> <leader>l <ESC>:update<CR>:vert Make<CR>:update<CR>
 else
 	echo "pre-commit not found or cannot run asynchronously"
 endif
@@ -130,20 +130,20 @@ if g:HasPlugin("vim9-scratchterm")
 	# execute Python or Pytest in scratch terminals
 	g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' % <CR>'
 	nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
-	imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
+	# imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
 
 	# last :term pytest command, if any. No <CR>
 	g:pt_cmd = ':ScratchTermReplaceUV ' .. python_binary .. ' -m pytest'
 	nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
-	imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
+	# imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
 else
 	g:py_cmd = ':term ' .. python_binary .. ' % <CR>'
 	nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
-	imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
+	# imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
 
 	# last :term pytest command, if any. No <CR>
 	g:pt_cmd = ':vert term ' .. python_binary .. ' -m pytest'
 	nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
-	imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
+	# imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
 endif
 

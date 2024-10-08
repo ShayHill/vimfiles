@@ -106,17 +106,17 @@ endif
 
 if g:HasPlugin("vim9-scratchterm")
     nnoremap <leader>x :update<CR>:ScratchTerm<space>
-    inoremap <leader>x <ESC>:update<CR>:ScratchTerm<space>
+    # inoremap <leader>x <ESC>:update<CR>:ScratchTerm<space>
 
     nnoremap <leader>v :update<CR>:ScratchTermV<space>
-    inoremap <leader>v <ESC>:update<CR>:ScratchTermV<space>
+    # inoremap <leader>v <ESC>:update<CR>:ScratchTermV<space>
 
-    tnoremap <leader>k <C-w>:ScratchTermsKill<CR>
+    # tnoremap <leader>k <C-w>:ScratchTermsKill<CR>
     nnoremap <leader>k :ScratchTermsKill<CR>
-    inoremap <leader>k <ESC>:ScratchTermsKill<CR>
+    # inoremap <leader>k <ESC>:ScratchTermsKill<CR>
 
     nnoremap <leader>y :update<CR>:ScratchTerm<t_ku>
-    inoremap <leader>y <ESC>:update<CR>:ScratchTerm<t_ku>
+    # inoremap <leader>y <ESC>:update<CR>:ScratchTerm<t_ku>
 endif
 
 
