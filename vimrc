@@ -214,6 +214,9 @@ silent! call MakeDirIfNoExists(&directory)
 #
 # ---------------------------------------------------------------------------- #
 
+# remove "You discovered the command-line window!" message from defaults.vim.
+augroup vimHints | exe 'au!' | augroup END
+
 # source any local .vimrc file in the current directory (for project-specific
 # Vim configuration)
 set exrc
