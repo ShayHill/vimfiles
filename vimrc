@@ -41,6 +41,7 @@ if has("windows")
 
 	if executable('rg')
 		set grepprg=rg\ --vimgrep\ --no-heading\ --glob\ !binaries\ --glob\ !resources
+		var findcmd = 'rg --files --hidden --color never --glob ""'
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif
