@@ -41,13 +41,32 @@ if has("windows")
 
 	if executable('rg')
 		set grepprg=rg\ --vimgrep\ --no-heading\ --glob\ !binaries\ --glob\ !resources
-		var findcmd = 'rg --files --hidden --color never --glob ""'
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif
 endif
 
+# " Use the 'git ls-files' output
+# func FindGitFiles(cmdarg, cmdcomplete)
+# 	let fnames = systemlist('git ls-files')
+# 	return fnames->filter('v:val =~? a:cmdarg')
+# endfunc
+# set findfunc=FindGitFiles
 
+if v:version > 901 || (v:version == 901 && has("patch831"))
+	# Use the 'git ls-files' output
+	def FindGitFiles(cmdarg: string, cmdcomplete: bool): list<string>
+		var cmd = 'Get-ChildItem -Recurse -File -Filter "*' .. cmdarg .. '*"'
+		return systemlist(cmd)
+		# fnames = systemlist('git ls-files')
+		# return filter(fnames, (_, x) => x =~? cmdarg)
+	enddef
+
+	set findfunc=FindGitFiles
+endif
+
+# var cmdarg = "noise"
+# g:cmd = 'Get-ChildItem -Recurse -File -Filter "*' .. cmdarg .. '*"'
 # ---------------------------------------------------------------------------- #
 #
 #   source other local config files
@@ -204,9 +223,9 @@ def MakeDirIfNoExists(path: string): void
 	endif
 enddef
 
-set backupdir=$TMPDIR/backup/
-set undodir=$TMPDIR/undo/
-set directory=$TMPDIR/swap/
+set backupdir=$TMPDIR/backup
+set undodir=$TMPDIR/undo
+set directory=$TMPDIR/swap
 
 silent! call MakeDirIfNoExists(&undodir)
 silent! call MakeDirIfNoExists(&backupdir)
