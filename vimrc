@@ -163,7 +163,7 @@ def PackInit(): void
 	minpac#add('prabirshrestha/asyncomplete-lsp.vim')
 
 	# -------- ai completion and chat
-	# minpac#add('github/copilot.vim')
+	minpac#add('github/copilot.vim')
 	minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
 
 	# -------- snippets
