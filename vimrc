@@ -193,6 +193,9 @@ def PackInit(): void
 	minpac#add('lifepillar/vim-solarized8')
 	minpac#add('NLKNguyen/papercolor-theme')
 
+	# -------- translation
+	minpac#add('voldikss/vim-translator')
+
 	# -------- my plugins
 	minpac#add('shayhill/vim9-scratchterm')
 	minpac#add('shayhill/vim9-focalpoint')

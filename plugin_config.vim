@@ -4,7 +4,7 @@ def g:HasPlugin(name: string): bool
 	# Search for plugin/name.vim or autoload/name.vim in runtimepath.
 	# If found, return true
 	# If not found, print a warning and return false
-	
+
 	var plugin_roots = [
 		$MYVIMDIR .. '/pack/minpac/start/',
 		$MYVIMDIR .. '/pack/minpac/opt/'
@@ -130,3 +130,11 @@ if g:HasPlugin("ctrlsf.vim")
     nnoremap <C-S>t :CtrlSFToggle<CR>
     inoremap <C-S>t <Esc>:CtrlSFToggle<CR>
 endif
+
+
+if g:HasPlugin("vim-translator")
+    nmap <leader>t :Translate<CR>
+    vmap <leader>t :Translate<CR>
+    g:translator_target_lang = 'es'
+endif
+
