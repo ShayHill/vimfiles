@@ -284,10 +284,10 @@ inoremap kj <Esc>
 # ---------------------------------------------------------------------------- #
 
 # switch windows
-nnoremap <C-J> <C-w>w
-nnoremap <C-K> <C-w>W
-tnoremap <C-J> <C-\><C-n><C-w>w
-tnoremap <C-K> <C-\><C-n><C-w>W
+nnoremap <C-d> <C-w>w
+nnoremap <C-u> <C-w>W
+tnoremap <C-d> <C-\><C-n><C-w>w
+tnoremap <C-u> <C-\><C-n><C-w>W
 
 # <leader><leader>a (any letter) will navigates to the global bookmark A (any
 # letter) then jumps to the last cursor position.

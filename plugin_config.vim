@@ -81,8 +81,8 @@ endif
 
 if g:HasPlugin("ultisnips")
 	g:UltiSnipsExpandTrigger = "<C-l>"
-	g:UltiSnipsJumpForwardTrigger = "<C-j>"
-	g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+	g:UltiSnipsJumpForwardTrigger = "<C-d>"
+	g:UltiSnipsJumpBackwardTrigger = "<C-u>"
 endif
 
 
@@ -106,17 +106,9 @@ endif
 
 if g:HasPlugin("vim9-scratchterm")
     nnoremap <leader>x :update<CR>:ScratchTerm<space>
-    # inoremap <leader>x <ESC>:update<CR>:ScratchTerm<space>
-
     nnoremap <leader>v :update<CR>:ScratchTermV<space>
-    # inoremap <leader>v <ESC>:update<CR>:ScratchTermV<space>
-
-    # tnoremap <leader>k <C-w>:ScratchTermsKill<CR>
     nnoremap <leader>k :ScratchTermsKill<CR>
-    # inoremap <leader>k <ESC>:ScratchTermsKill<CR>
-
     nnoremap <leader>y :update<CR>:ScratchTerm<t_ku>
-    # inoremap <leader>y <ESC>:update<CR>:ScratchTerm<t_ku>
 endif
 
 
@@ -133,8 +125,12 @@ endif
 
 
 if g:HasPlugin("vim-translator")
-    nmap <leader>t :Translate<CR>
-    vmap <leader>t :Translate<CR>
+    nmap <leader>j :Translate<CR>
+    vmap <leader>j :Translate<CR>
+    nmap <leader>n :Translate --target_lang="en"<CR>
+    vmap <leader>n :Translate --target_lang="en"<CR>
+    vmap <leader>jj :TranslateR<CR>
+    vmap <leader>nn :TranslateR --target_lang="en"<CR>
     g:translator_target_lang = 'es'
 endif
 
