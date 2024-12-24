@@ -37,6 +37,8 @@ endsnippet
 snippet tox
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
+pythonpath = ["tests"]
+log_cli = 1
 
 [tool.tox]
 legacy_tox_ini = """
@@ -47,6 +49,9 @@ envlist = py{$1}
 deps = pytest
 commands = pytest
 """
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
 endsnippet
 
 

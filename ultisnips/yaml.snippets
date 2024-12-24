@@ -249,19 +249,6 @@ repos:
     # - --ignore-missing-imports
     # files: ^(src/|tests/)
 
-- repo: https://github.com/PyCQA/isort
-  rev: 5.12.0
-  hooks:
-  - id: isort
-    args: ["--profile", "black", "--filter-files", "--combine-as", "honor--noqa"]
-
-- repo: https://github.com/psf/black
-  rev: 22.12.0
-  hooks:
-  - id: black
-    language_version: python3.$1
-    args: ["--skip-magic-trailing-comma"]
-
 - repo: https://github.com/asottile/pyupgrade
   rev: v3.3.1
   hooks:
@@ -324,7 +311,12 @@ repos:
       - --target-version=py3$1
       - --select=ALL
       - --ignore=COM812,D203,D213,ISC003
-      # - --fix
+      - --fix
+      - --fixable=RUF022
+    - id: ruff
+      args: ["check", "--select", "I", "--fix"]
+    - id: ruff-format
+      name: "ruff-format"
 
 # reads pyproject.toml for additional config
 - repo: https://github.com/RobertCraigie/pyright-python
