@@ -46,20 +46,11 @@ if has("windows")
 	endif
 endif
 
-# " Use the 'git ls-files' output
-# func FindGitFiles(cmdarg, cmdcomplete)
-# 	let fnames = systemlist('git ls-files')
-# 	return fnames->filter('v:val =~? a:cmdarg')
-# endfunc
-# set findfunc=FindGitFiles
-
-if v:version > 901 || (v:version == 901 && has("patch831"))
+if has("patch-9.1.831")
 	# Use the 'git ls-files' output
 	def FindGitFiles(cmdarg: string, cmdcomplete: bool): list<string>
-		var cmd = 'Get-ChildItem -Recurse -File -Filter "*' .. cmdarg .. '*"'
-		return systemlist(cmd)
-		# fnames = systemlist('git ls-files')
-		# return filter(fnames, (_, x) => x =~? cmdarg)
+		fnames = systemlist('git ls-files')
+		return filter(fnames, (_, x) => x =~? cmdarg)
 	enddef
 
 	set findfunc=FindGitFiles
@@ -272,6 +263,13 @@ set autoread # read file changes without asking if no unsaved changes
 set visualbell # flash instead of beeping for errors
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set formatoptions-=t  # do not autowrap text
+set completeopt=menu,popup,fuzzy completepopup=highlight:Pmenu  # fuzzy completion
+set signcolumn=number # show signs in the number column, providing one extra column for text
+set breakindent breakindentopt=sbr,list:-1 linebreak  # indent
+set nojoinspaces  # eliminate "complimentary typing" when joining lines with punctuation
+set diffopt+=vertical,algorithm:patience,indent-heuristic  # expirimenting with options
+set viminfo='200,<500,s32  # save more history
+set mouse=a  # enable mouse on the command line
 
 # jk to escape
 inoremap jk <Esc>
