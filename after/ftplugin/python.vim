@@ -135,7 +135,7 @@ if g:HasPlugin("vim9-scratchterm")
 	# last :term pytest command, if any. No <CR>
 	g:pt_cmd = ':ScratchTermReplaceUV ' .. python_binary .. ' -m pytest'
 	nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
-	nmap <buffer> <leader>tt :call g:LoadCommand(g:pt_cmd .. ' ' .. expand('%'))<CR>
+	nmap <buffer> <leader>T :call g:LoadCommand(g:pt_cmd .. ' ' .. expand('%'))<CR>
 	# imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
 else
 	g:py_cmd = ':term ' .. python_binary .. ' % <CR>'
