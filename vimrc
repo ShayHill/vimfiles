@@ -191,6 +191,10 @@ def PackInit(): void
 	minpac#add('shayhill/vim9-scratchterm')
 	minpac#add('shayhill/vim9-focalpoint')
 
+	# -------- trying out
+	minpac#add('junegunn/vim-easy-align')
+	
+	
 	# -------- vimwiki
 	# minpac#add('vimwiki/vimwiki')
 enddef
@@ -199,6 +203,11 @@ command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
 command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
 
+# Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+# Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 # ---------------------------------------------------------------------------- #
 #
@@ -282,10 +291,10 @@ inoremap kj <Esc>
 # ---------------------------------------------------------------------------- #
 
 # switch windows
-nnoremap <C-d> <C-w>w
-nnoremap <C-u> <C-w>W
-tnoremap <C-d> <C-\><C-n><C-w>w
-tnoremap <C-u> <C-\><C-n><C-w>W
+# nnoremap <C-d> <C-w>w
+# nnoremap <C-u> <C-w>W
+# tnoremap <C-d> <C-\><C-n><C-w>w
+# tnoremap <C-u> <C-\><C-n><C-w>W
 
 # <leader><leader>a (any letter) will navigates to the global bookmark A (any
 # letter) then jumps to the last cursor position.
@@ -407,6 +416,8 @@ augroup ShadeNotCurrentWindow
 	autocmd WinEnter * setl wincolor=Normal
 	autocmd WinLeave * setl wincolor=NormalNC
 augroup END
+
+@a = ':s/,/        ,        /g:s/\s*\([^,]\{8}\)\s*/ \1/g:s/^\s*/        /:s/\s*$//:s/,\s\+/, /g'
 
 def g:GenerateStatusline(winid: number): string
 	var stl = ""
