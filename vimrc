@@ -44,6 +44,9 @@ if has("windows")
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif
+
+	# PowerShell is capable of TrueColor.
+	set termguicolors
 endif
 
 if has("patch-9.1.831")
@@ -459,3 +462,4 @@ def g:GenerateStatusline(winid: number): string
 enddef
 
 set statusline=%!GenerateStatusline(g:statusline_winid)
+
