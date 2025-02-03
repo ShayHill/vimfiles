@@ -99,38 +99,45 @@ endif
 
 
 if g:HasPlugin("vim-instant-markdown")
-    g:instant_markdown_autostart = 0
-    g:instant_markdown_mathjax = 1
+	g:instant_markdown_autostart = 0
+	g:instant_markdown_mathjax = 1
 endif
 
 
 if g:HasPlugin("vim9-scratchterm")
-    nnoremap <leader>x :update<CR>:ScratchTerm<space>
-    nnoremap <leader>v :update<CR>:ScratchTermV<space>
-    nnoremap <leader>k :ScratchTermsKill<CR>
-    nnoremap <leader>y :update<CR>:ScratchTerm<t_ku>
+	nnoremap <leader>x :update<CR>:ScratchTerm<space>
+	nnoremap <leader>v :update<CR>:ScratchTermV<space>
+	nnoremap <leader>k :ScratchTermsKill<CR>
+	nnoremap <leader>y :update<CR>:ScratchTerm<t_ku>
 endif
 
 
 if g:HasPlugin("ctrlsf.vim")
-    nmap <C-S>f <Plug>CtrlSFPrompt
-    vmap <C-S>f <Plug>CtrlSFVwordPath
-    vmap <C-S>F <Plug>CtrlSFVwordExec
-    nmap <C-S>n <Plug>CtrlSFCwordPath
-    nmap <C-S>p <Plug>CtrlSFPwordPath
-    nnoremap <C-S>o :CtrlSFOpen<CR>
-    nnoremap <C-S>t :CtrlSFToggle<CR>
-    inoremap <C-S>t <Esc>:CtrlSFToggle<CR>
+	nmap <C-S>f <Plug>CtrlSFPrompt
+	vmap <C-S>f <Plug>CtrlSFVwordPath
+	vmap <C-S>F <Plug>CtrlSFVwordExec
+	nmap <C-S>n <Plug>CtrlSFCwordPath
+	nmap <C-S>p <Plug>CtrlSFPwordPath
+	nnoremap <C-S>o :CtrlSFOpen<CR>
+	nnoremap <C-S>t :CtrlSFToggle<CR>
+	inoremap <C-S>t <Esc>:CtrlSFToggle<CR>
 endif
 
 
 if g:HasPlugin("vim-translator")
-    nmap <leader>j :Translate<CR>
-    vmap <leader>j :Translate<CR>
-    nmap <leader>n :Translate --target_lang="en"<CR>
-    vmap <leader>n :Translate --target_lang="en"<CR>
-    vmap <leader>jj :TranslateR<CR>
-    vmap <leader>nn :TranslateR --target_lang="en"<CR>
-    g:translator_target_lang = 'es'
+	nmap <leader>j :Translate<CR>
+	vmap <leader>j :Translate<CR>
+	nmap <leader>n :Translate --target_lang="en"<CR>
+	vmap <leader>n :Translate --target_lang="en"<CR>
+	vmap <leader>jj :TranslateR<CR>
+	vmap <leader>nn :TranslateR --target_lang="en"<CR>
+	g:translator_target_lang = 'es'
+endif
+
+if g:HasPlugin('vim9-stargate')
+	# For 1 character to search before showing hints
+	noremap <leader>F <Cmd>call stargate#OKvim(1)<CR>
+	# For 2 consecutive characters to search
+	noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
 endif
 

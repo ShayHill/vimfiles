@@ -193,11 +193,13 @@ def PackInit(): void
 
 	# -------- trying out
 	minpac#add('junegunn/vim-easy-align')
-	
-	
+	minpac#add('monkoose/vim9-stargate')
+	minpac#add('felipec/vim-sanegx')
+
 	# -------- vimwiki
 	# minpac#add('vimwiki/vimwiki')
 enddef
+
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
 command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
