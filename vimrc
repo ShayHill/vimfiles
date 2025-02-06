@@ -398,6 +398,7 @@ g:line_mode_map = {
 	"t": "T" }
 
 g:use_pmenu_to_shade = [
+	'default',
 	'delek',
 	'habamax',
 	'industry',

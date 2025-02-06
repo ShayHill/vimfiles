@@ -87,8 +87,9 @@ endif
 
 
 if g:HasPlugin("fuzzyy")
-	nnoremap <C-P> :FuzzyGitFiles<CR>
-	inoremap <C-P> <ESC>:FuzzyGitFiles<CR>
+	g:fuzzyy_enable_mappings = 0
+	nnoremap <C-P> :FuzzyFiles<CR>
+	inoremap <C-P> <ESC>:FuzzyFiles<CR>
 endif
 
 
