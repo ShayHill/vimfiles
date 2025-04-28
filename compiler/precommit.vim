@@ -1,6 +1,6 @@
 vim9script
 
-CompilerSet makeprg=pre-commit\ run\ -a
+CompilerSet makeprg=pre-commit\ run
 
 # errorformats:
 # 1. ruff

@@ -26,6 +26,10 @@ def FindModule(module: string): string
 	if executable(venv_python)
 		return venv_python
 	endif
+	var dot_venv_python = './.venv/Scripts/' .. module
+	if executable(dot_venv_python)
+		return dot_venv_python
+	endif
 	var global_python = &pythonthreehome .. '/Scripts/' .. module
 	if executable(global_python)
 		return global_python
@@ -128,7 +132,7 @@ var python_binary = FindPython()
 g:AAA = FindPython()
 if g:HasPlugin("vim9-scratchterm")
 	# execute Python or Pytest in scratch terminals
-	g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' % <CR>'
+	g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' %'
 	nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
 	# imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
 
