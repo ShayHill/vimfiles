@@ -198,6 +198,7 @@ def PackInit(): void
 	minpac#add('junegunn/vim-easy-align')
 	minpac#add('monkoose/vim9-stargate')
 	minpac#add('felipec/vim-sanegx')
+	minpac#add('tmhedberg/SimpylFold')
 
 	# -------- vimwiki
 	# minpac#add('vimwiki/vimwiki')
@@ -332,7 +333,7 @@ nmap <Leader>h :syntax sync fromstart<CR>
 # does it with autoshift.
 command! W w
 
-# my 40% keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
+# my 40% Keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
 # won't work without this mapping.
 map <C-k6> <C-6>
 
@@ -417,13 +418,55 @@ augroup ResetStatuslineHiGroups
 	autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
 augroup END
 
+# def LogWindowEvent(event: string): void
+# 	var log_file = expand('~/.vim_window_log')
+# 	echo "Logging " .. event .. " event to " .. log_file
+# 	var timestamp = strftime('%Y-%m-%d %H:%M:%S')
+# 	var window_info = 'Window ID: ' .. win_getid()
+# 	var log_entry = timestamp .. ' | ' .. event .. ' | ' .. window_info
+# 	if event == 'WinEnter'
+# 		setl wincolor=Normal
+# 	else
+# 		setl wincolor=NormalNC
+# 	endif
+# 	call writefile([log_entry], log_file, 'a') 
+# enddef
+
+# augroup ShadeNotCurrentWindow
+# 	autocmd!
+# 	autocmd WinEnter * call LogWindowEvent('WinEnter')
+# 	autocmd WinLeave * call LogWindowEvent('WinLeave')
+# augroup END
+
 augroup ShadeNotCurrentWindow
 	autocmd!
 	autocmd WinEnter * setl wincolor=Normal
 	autocmd WinLeave * setl wincolor=NormalNC
 augroup END
 
-@a = ':s/,/        ,        /g:s/\s*\([^,]\{8}\)\s*/ \1/g:s/^\s*/        /:s/\s*$//:s/,\s\+/, /g'
+# format keymap.c files for qmk
+@a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
+@b = ':s/&/                &/g :s/\(&..............\)\s*/\1/g :s/^\s*/        / :s/\s*$// '
+
+def g:MoveRightChars(count: number): void
+    var pos = getpos('.')
+    var line = pos[1]
+    var col = pos[2]
+    var totalMoved = 0
+    while totalMoved < count
+        if col >= col([line, '$'])
+            line += 1
+            col = 1
+            if line > line('$')
+                break
+            endif
+        else
+            col += 1
+        endif
+        totalMoved += 1
+    endwhile
+    setpos('.', [0, line, col])
+enddef
 
 def g:GenerateStatusline(winid: number): string
 	var stl = ""
@@ -442,7 +485,7 @@ def g:GenerateStatusline(winid: number): string
 
 	# show branch (requires fugitive)
 	if exists('g:loaded_fugitive')
-	 stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
+		stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
 	endif
 
 	# relative file path
@@ -451,7 +494,7 @@ def g:GenerateStatusline(winid: number): string
 	stl ..= '%='
 
 	# line and column numbers
-	stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%c '
+	stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%v %c '
 	stl ..= sep
 
 	# buffer number
