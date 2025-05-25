@@ -38,11 +38,27 @@ def FindModule(module: string): string
 enddef
 
 
+def g:RunPrecommit(): void
+	compiler precommit
+	update
+	vert Make
+	update
+enddef
+
+
+def g:RunPrecommitAll(): void
+	compiler precommit_all
+	update
+	vert Make
+	update
+enddef
+
+
 var precommit = FindModule('pre-commit')
 if executable(precommit) && g:HasPlugin("vim-dispatch")
 	compiler precommit
-	nmap <buffer> <leader>l :update<CR>:vert Make<CR>:update<CR>
-	# imap <buffer> <leader>l <ESC>:update<CR>:vert Make<CR>:update<CR>
+	nmap <buffer> <leader>l :call RunPrecommit()<CR>
+	nmap <buffer> <leader>L :call RunPrecommitAll()<CR>
 else
 	echo "pre-commit not found or cannot run asynchronously"
 endif
