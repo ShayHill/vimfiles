@@ -41,6 +41,7 @@ if has("windows")
 
 	if executable('rg')
 		set grepprg=rg\ --vimgrep\ --no-heading\ --glob\ !binaries\ --glob\ !resources
+		set grepformat^=%f:%l:%c:%m
 	else
 		echoerr "rg not found. Install ripgrep to use :grep"
 	endif
@@ -267,6 +268,9 @@ set hlsearch # highlight search results
 # T-pope mapping to un-highlight search results and call :diffupdate
 nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
 
+# Load grep onto the command line with silent and the last search pattern
+nnoremap <Leader>g :silent grep <C-R>=getreg('/')<CR>
+
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
 set cursorline # highlight the line under the cursor
@@ -413,36 +417,21 @@ g:use_pmenu_to_shade = [
 	'torte',
 	'wildcharm' ]
 
+
+# don't leave any traces when changing colorschemes
 augroup ResetStatuslineHiGroups
 	autocmd!
 	autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
 augroup END
 
-# def LogWindowEvent(event: string): void
-# 	var log_file = expand('~/.vim_window_log')
-# 	echo "Logging " .. event .. " event to " .. log_file
-# 	var timestamp = strftime('%Y-%m-%d %H:%M:%S')
-# 	var window_info = 'Window ID: ' .. win_getid()
-# 	var log_entry = timestamp .. ' | ' .. event .. ' | ' .. window_info
-# 	if event == 'WinEnter'
-# 		setl wincolor=Normal
-# 	else
-# 		setl wincolor=NormalNC
-# 	endif
-# 	call writefile([log_entry], log_file, 'a') 
-# enddef
 
-# augroup ShadeNotCurrentWindow
-# 	autocmd!
-# 	autocmd WinEnter * call LogWindowEvent('WinEnter')
-# 	autocmd WinLeave * call LogWindowEvent('WinLeave')
-# augroup END
-
+# gray out the background of the not-current window using vim focalpoint
 augroup ShadeNotCurrentWindow
 	autocmd!
 	autocmd WinEnter * setl wincolor=Normal
 	autocmd WinLeave * setl wincolor=NormalNC
 augroup END
+
 
 # format keymap.c files for qmk
 @a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
