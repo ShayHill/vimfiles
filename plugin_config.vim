@@ -135,10 +135,27 @@ if g:HasPlugin("vim-translator")
 	g:translator_target_lang = 'es'
 endif
 
+
 if g:HasPlugin('vim9-stargate')
 	# For 1 character to search before showing hints
 	noremap <leader>F <Cmd>call stargate#OKvim(1)<CR>
 	# For 2 consecutive characters to search
 	noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
 endif
+
+
+if g:HasPlugin('coverage-highlight.vim')
+	g:coverage_script = 'python -m coverage'
+	# Highlight coverage in the current buffer
+	nnoremap <leader>c :CoverageHighlight<CR>
+	# Clear coverage highlights
+	nnoremap <leader>C :CoverageClear<CR>
+	# Toggle coverage highlights
+	nnoremap <leader>ct :CoverageToggle<CR>
+	# Show coverage summary
+	nnoremap <leader>cs :CoverageSummary<CR>
+	# Show coverage report in a new tab
+	nnoremap <leader>cr :CoverageReport<CR>
+endif
+	
 

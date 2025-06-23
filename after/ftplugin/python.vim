@@ -11,6 +11,8 @@ setlocal textwidth=85  # wrapping for gq
 
 setlocal nowrap
 
+packadd SimpylFold
+packadd coverage-highlight.vim
 
 # ---------------------------------------------------------------------------- #
 #

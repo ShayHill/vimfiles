@@ -199,7 +199,8 @@ def PackInit(): void
 	minpac#add('junegunn/vim-easy-align')
 	minpac#add('monkoose/vim9-stargate')
 	minpac#add('felipec/vim-sanegx')
-	minpac#add('tmhedberg/SimpylFold')
+	minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
+	minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
 
 	# -------- vimwiki
 	# minpac#add('vimwiki/vimwiki')
