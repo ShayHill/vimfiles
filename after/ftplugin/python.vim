@@ -14,6 +14,15 @@ setlocal nowrap
 packadd SimpylFold
 packadd coverage-highlight.vim
 
+if g:HasPlugin('coverage-highlight.vim')
+	g:coverage_script = 'python -m coverage'
+	nnoremap <leader>c :HighlightCoverage<CR>
+	nnoremap <leader>C :HighlightCoverageOff<CR>
+	nnoremap <leader>ct :ToggleCoverage<CR>
+	nnoremap <leader>cn :NextUncovered<CR>
+	nnoremap <leader>cp :PrevUncovered<CR>
+endif
+
 # ---------------------------------------------------------------------------- #
 #
 #  build commands as strings to run formatters

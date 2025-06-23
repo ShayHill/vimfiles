@@ -143,19 +143,3 @@ if g:HasPlugin('vim9-stargate')
 	noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
 endif
 
-
-if g:HasPlugin('coverage-highlight.vim')
-	g:coverage_script = 'python -m coverage'
-	# Highlight coverage in the current buffer
-	nnoremap <leader>c :CoverageHighlight<CR>
-	# Clear coverage highlights
-	nnoremap <leader>C :CoverageClear<CR>
-	# Toggle coverage highlights
-	nnoremap <leader>ct :CoverageToggle<CR>
-	# Show coverage summary
-	nnoremap <leader>cs :CoverageSummary<CR>
-	# Show coverage report in a new tab
-	nnoremap <leader>cr :CoverageReport<CR>
-endif
-	
-
