@@ -16,11 +16,11 @@ packadd coverage-highlight.vim
 
 if g:HasPlugin('coverage-highlight.vim')
 	g:coverage_script = 'python -m coverage'
-	nnoremap <leader>c :HighlightCoverage<CR>
-	nnoremap <leader>C :HighlightCoverageOff<CR>
-	nnoremap <leader>ct :ToggleCoverage<CR>
-	nnoremap <leader>cn :NextUncovered<CR>
-	nnoremap <leader>cp :PrevUncovered<CR>
+	nnoremap <buffer> <leader>c :HighlightCoverage<CR>
+	nnoremap <buffer> <leader>C :HighlightCoverageOff<CR>
+	nnoremap <buffer> <leader>ct :ToggleCoverage<CR>
+	nnoremap <buffer> <leader>cn :NextUncovered<CR>
+	nnoremap <buffer> <leader>cp :PrevUncovered<CR>
 endif
 
 # ---------------------------------------------------------------------------- #
