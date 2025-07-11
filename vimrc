@@ -176,7 +176,7 @@ def PackInit(): void
 	minpac#add('tpope/vim-surround')  # surround text objects
 	minpac#add('tpope/vim-vinegar')  # netrw enhancement
 	minpac#add('tpope/vim-dispatch')  # async build
-	minpac#add('airblade/vim-gitgutter')  # show git changes
+	minpac#add('mhinz/vim-signify')  # show/undo git changes
 
 	# -------- refactoring
 	minpac#add('dyng/ctrlsf.vim')  # like :CocSearch

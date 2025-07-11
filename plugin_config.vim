@@ -143,3 +143,18 @@ if g:HasPlugin('vim9-stargate')
 	noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
 endif
 
+
+if g:HasPlugin("vim-signify")
+	# Faster sign updates on CursorHold/CursorHoldI
+	set updatetime=100
+
+	nnoremap <leader>hp :SignifyHunkDiff<cr>
+	nnoremap <leader>hu :SignifyHunkUndo<cr>
+	nnoremap <leader>ht :SignifyToggle<cr>
+
+	# hunk text object
+	omap ic <plug>(signify-motion-inner-pending)
+	xmap ic <plug>(signify-motion-inner-visual)
+	omap ac <plug>(signify-motion-outer-pending)
+	xmap ac <plug>(signify-motion-outer-visual)
+endif
