@@ -58,6 +58,7 @@ if g:HasPlugin("vim-lsp")
 	g:lsp_diagnostics_signs_warning = {'text': '🔶'}
 	g:lsp_diagnostics_signs_information = {'text': 'ℹ'}
 	g:lsp_diagnostics_signs_hint = {'text': '💡'}
+	# hide the background color around the signs
 	hi lspErrorText ctermbg=NONE guibg=NONE
 endif
 
@@ -89,6 +90,7 @@ endif
 if g:HasPlugin("fuzzyy")
 	g:fuzzyy_enable_mappings = 0
 	nnoremap <C-P> :FuzzyFiles<CR>
+	nnoremap <leader>p :FuzzyBuffers<CR>
 	inoremap <C-P> <ESC>:FuzzyFiles<CR>
 endif
 
