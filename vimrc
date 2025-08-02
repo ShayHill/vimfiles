@@ -50,18 +50,6 @@ if has("windows")
 	set termguicolors
 endif
 
-if has("patch-9.1.831")
-	# Use the 'git ls-files' output
-	def FindGitFiles(cmdarg: string, cmdcomplete: bool): list<string>
-		fnames = systemlist('git ls-files')
-		return filter(fnames, (_, x) => x =~? cmdarg)
-	enddef
-
-	set findfunc=FindGitFiles
-endif
-
-# var cmdarg = "noise"
-# g:cmd = 'Get-ChildItem -Recurse -File -Filter "*' .. cmdarg .. '*"'
 # ---------------------------------------------------------------------------- #
 #
 #   source other local config files
