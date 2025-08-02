@@ -262,20 +262,20 @@ nnoremap <Leader>g :silent grep <C-R>=getreg('/')<CR>
 
 # Vim Options
 set synmaxcol=176 # speed up by only highlighting first 176 chars
-set cursorline # highlight the line under the cursor
-set noshowmode # showing modes in statusline, so no need for the status popup
+set cursorline cursorlineopt=number # highlight only the line number under the cursor
+set smoothscroll # improve scrolling for long wrapped lines
+set noshowmode # showing kodes in statusline, so no need for the status popup
 set shortmess-=S # show match counts below statusline
 set number # line numbers
 set relativenumber # number lines relative to cursor
 set autoread # read file changes without asking if no unsaved changes
 set visualbell # flash instead of beeping for errors
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-set formatoptions-=t  # do not autowrap text
 set completeopt=menu,popup,fuzzy completepopup=highlight:Pmenu  # fuzzy completion
 set signcolumn=number # show signs in the number column, providing one extra column for text
-set breakindent breakindentopt=sbr,list:-1 linebreak  # indent
+set breakindent breakindentopt=list:-1 linebreak  # indent
 set nojoinspaces  # eliminate "complimentary typing" when joining lines with punctuation
-set diffopt+=vertical,algorithm:patience,indent-heuristic  # expirimenting with options
+set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with options
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
 
