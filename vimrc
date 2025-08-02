@@ -360,6 +360,10 @@ def g:CStrR(text: string): string
 	return escaped_string
 enddef
 
+# Example registers to format keymap.c files for qmk
+@a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
+@b = ':s/&/                &/g :s/\(&..............\)\s*/\1/g :s/^\s*/        / :s/\s*$// '
+
 # ---------------------------------------------------------------------------- #
 #
 #  Statusline
@@ -421,10 +425,6 @@ augroup ShadeNotCurrentWindow
 	autocmd WinLeave * setl wincolor=NormalNC
 augroup END
 
-
-# format keymap.c files for qmk
-@a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
-@b = ':s/&/                &/g :s/\(&..............\)\s*/\1/g :s/^\s*/        / :s/\s*$// '
 
 def g:MoveRightChars(count: number): void
     var pos = getpos('.')
