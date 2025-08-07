@@ -7,6 +7,7 @@ nnoremap <Space> <Nop>
 vnoremap <Space> <Nop>
 g:mapleader = " "
 
+
 # ---------------------------------------------------------------------------- #
 #
 #  Vimspector Cheat Sheet
@@ -50,14 +51,16 @@ if has("windows")
 	set termguicolors
 endif
 
+
 # ---------------------------------------------------------------------------- #
 #
 #   source other local config files
 #
 # ---------------------------------------------------------------------------- #
 
-# source this before loading the plugins
+
 source $MYVIMDIR/plugin_config.vim
+source $MYVIMDIR/limelight_config.vim
 
 
 # ---------------------------------------------------------------------------- #
@@ -69,29 +72,16 @@ source $MYVIMDIR/plugin_config.vim
 #
 # ---------------------------------------------------------------------------- #
 
-def g:RestoreLspHighlights(): void
-	highlight link LspErrorHighlight Error
-	highlight link LspWarningHighlight Todo
-	highlight link LspInformationHighlight Normal
-	highlight link LspHintHighlight Normal
-enddef
-
-# Must set colorscheme before vim9-focalpoint defines an autogroup for the vim
-# `colorscheme` command.
-
-set t_Co=256 # enable 256 colors
 
 g:gruvbox_italics = 0 # disable italic comments and keywords
 
-var _dark_colorscheme = "habamax"
+var _dark_colorscheme = "sorbet"
 var _light_colorscheme = "PaperColor"
 
 if !exists('g:colors_name')
 	execute "colorscheme" _dark_colorscheme
 	set background=dark
 endif
-
-var _toggle = 1
 
 
 # set colorscheme if exists, else set fallback. If fallback does not exist,
@@ -104,20 +94,19 @@ def TrySetColorscheme(colorscheme: string, fallback: string)
 	endtry
 enddef
 
-
-# toggle between my two preferred colorschemes
-# will default to dark when starting vim, but will leave light when sourcing
-# vimrc if current colorscheme is set.
+var colorscheme_toggle = 1
 def g:ToggleColorScheme()
-	_toggle = _toggle ? 0 : 1
-	if _toggle == 1
+        # toggle between my two preferred colorschemes will default to dark
+        # when starting vim, but will leave light when sourcing vimrc if
+        # current colorscheme is set.
+	colorscheme_toggle = _toggle ? 0 : 1
+	if colorscheme_toggle == 1
 		TrySetColorscheme(_dark_colorscheme, "habamax")
 		set background=dark
 	else
 		TrySetColorscheme(_light_colorscheme, "default")
 		set background=light
 	endif
-	call g:RestoreLspHighlights()
 enddef
 
 nnoremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
@@ -175,13 +164,14 @@ def PackInit(): void
 	# -------- colorschemes
 	minpac#add('lifepillar/vim-solarized8')
 	minpac#add('NLKNguyen/papercolor-theme')
+	minpac#add('nikolvs/vim-sunbather')
 
 	# -------- translation
 	minpac#add('voldikss/vim-translator')
 
 	# -------- my plugins
 	minpac#add('shayhill/vim9-scratchterm')
-	minpac#add('shayhill/vim9-focalpoint')
+	minpac#add('shayhill/vim9-limelight')
 
 	# -------- trying out
 	minpac#add('junegunn/vim-easy-align')
@@ -189,10 +179,9 @@ def PackInit(): void
 	minpac#add('felipec/vim-sanegx')
 	minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
 	minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
-
-	# -------- vimwiki
-	# minpac#add('vimwiki/vimwiki')
+	
 enddef
+
 
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
@@ -204,6 +193,7 @@ xmap ga <Plug>(EasyAlign)
 
 # Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
 
 # ---------------------------------------------------------------------------- #
 #
@@ -237,11 +227,11 @@ silent! call MakeDirIfNoExists(&directory)
 #
 # ---------------------------------------------------------------------------- #
 
-# remove "You discovered the command-line window!" message from defaults.vim.
+# remove 'You discovered the command-line window!' message from defaults.vim.
 augroup vimHints | exe 'au!' | augroup END
 
-# source any local .vimrc file in the current directory (for project-specific
-# Vim configuration)
+# source any local .vimrc file in the current directory
+# (for project-specific Vim configuration)
 set exrc
 
 # opening files
@@ -274,14 +264,11 @@ set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set completeopt=menu,popup,fuzzy completepopup=highlight:Pmenu  # fuzzy completion
 set signcolumn=number # show signs in the number column, providing one extra column for text
 set breakindent breakindentopt=list:-1 linebreak  # indent
-set nojoinspaces  # eliminate "complimentary typing" when joining lines with punctuation
+set nojoinspaces  # eliminate 'complimentary typing' when joining lines with punctuation
 set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with options
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
-
-# jk to escape
-inoremap jk <Esc>
-inoremap kj <Esc>
+set formatoptions-=t # don't auto-wrap text
 
 # ---------------------------------------------------------------------------- #
 #
@@ -364,124 +351,18 @@ enddef
 @a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
 @b = ':s/&/                &/g :s/\(&..............\)\s*/\1/g :s/^\s*/        / :s/\s*$// '
 
+
 # ---------------------------------------------------------------------------- #
 #
 #  Statusline
 #
-#  This statusline configuration requires plugin vim9-focalpoint
+#  This statusline configuration requires plugin vim9-limelight
 #
 # ---------------------------------------------------------------------------- #
 
-# for debugging syntax highlighting
-nnoremap <C-F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+source $MYVIMDIR/limelight_config.vim
 
-
-set laststatus=2
-
-g:line_mode_map = {
-	"n": "N",
-	"v": "V",
-	"V": "V",
-	"\<c-v>": "V",
-	"i": "I",
-	"R": "R",
-	"r": "R",
-	"Rv": "R",
-	"c": "C",
-	"s": "S",
-	"S": "S",
-	"\<c-s>": "S",
-	"t": "T" }
-
-g:use_pmenu_to_shade = [
-	'default',
-	'delek',
-	'habamax',
-	'industry',
-	'koehler',
-	'lunaperche',
-	'morning',
-	'pablo',
-	'peachpuff',
-	'quiet',
-	'retrobox',
-	'torte',
-	'wildcharm' ]
-
-
-# don't leave any traces when changing colorschemes
-augroup ResetStatuslineHiGroups
-	autocmd!
-	autocmd colorscheme * g:focalpoint_use_pmenu = index(g:use_pmenu_to_shade, g:colors_name) != -1 ? v:true : v:false | g:FPReset()
-augroup END
-
-
-# gray out the background of the not-current window using vim focalpoint
-augroup ShadeNotCurrentWindow
-	autocmd!
-	autocmd WinEnter * setl wincolor=Normal
-	autocmd WinLeave * setl wincolor=NormalNC
-augroup END
-
-
-def g:MoveRightChars(count: number): void
-    var pos = getpos('.')
-    var line = pos[1]
-    var col = pos[2]
-    var totalMoved = 0
-    while totalMoved < count
-        if col >= col([line, '$'])
-            line += 1
-            col = 1
-            if line > line('$')
-                break
-            endif
-        else
-            col += 1
-        endif
-        totalMoved += 1
-    endwhile
-    setpos('.', [0, line, col])
-enddef
-
-def g:GenerateStatusline(winid: number): string
-	var stl = ""
-
-	# inline highlight group strings
-	var bold_f = g:FPHiSelect(winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
-	var weak = g:FPHiSelect(winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
-	var weak_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
-	var bold_u = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNCHard', 'StatusLineCN')
-	var plain = g:FPHiSelect(winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
-
-	var sep = plain .. '|'
-
-	# show current mode in bold
-	stl ..= bold_f .. ' %{g:line_mode_map[mode()]} ' .. sep
-
-	# show branch (requires fugitive)
-	if exists('g:loaded_fugitive')
-		stl ..= weak_u .. ' %{FugitiveHead()} ' .. sep
-	endif
-
-	# relative file path
-	stl ..= plain .. ' %f %M'
-	# empty space to right-anchor remaining items
-	stl ..= '%='
-
-	# line and column numbers
-	stl ..= plain .. ' %l' .. ':' .. '%L' .. ' ☰ ' .. '%v %c '
-	stl ..= sep
-
-	# buffer number
-	stl ..= weak .. ' b' .. bold_u .. '%n'
-
-	# window number
-	stl ..= weak .. ' w' .. bold_u .. '%{win_getid()} '
-	return stl
-enddef
-
-set statusline=%!GenerateStatusline(g:statusline_winid)
-
+# # for debugging syntax highlighting
+# nnoremap <C-F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+# \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+# \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
