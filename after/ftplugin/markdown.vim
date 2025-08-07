@@ -1,9 +1,9 @@
 
 function! MarkdownLevel()
-    if getline(v:lnum) =~ '^#.*$'
-        return ">1"
-    endif
-    return "="
+  if getline(v:lnum) =~ '^#.*$'
+    return ">1"
+  endif
+  return "="
 endfunction
 
 setlocal foldexpr=MarkdownLevel()

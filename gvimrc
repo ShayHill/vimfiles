@@ -20,9 +20,9 @@ set renderoptions=type:directx,gamma:1.0,geom:0,renmode:5,taamode:1
 
 # open at a useful size
 if !exists('g:vimrc_sourced')
-	g:vimrc_sourced = 1
-	set lines=50
-	set columns=120
+  g:vimrc_sourced = 1
+  set lines=50
+  set columns=120
 endif
 
 set go-=T  # hide the toolbar
@@ -36,9 +36,9 @@ set go-=h  # hide the scrollbars
 
 g:GvimFullscreenDll = $MYVIMDIR .. 'gvim_fullscreen.dll'
 if filereadable(g:GvimFullscreenDll)
-	inoremap <C-F11> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
-	noremap <C-F11> :call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
-	inoremap <C-F12> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
-	noremap <C-F12> :call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
+  inoremap <C-F11> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
+  noremap <C-F11> :call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
+  inoremap <C-F12> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
+  noremap <C-F12> :call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
 endif
 
