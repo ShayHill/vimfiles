@@ -143,6 +143,8 @@ if g:HasPlugin('vim9-stargate')
 	noremap <leader>F <Cmd>call stargate#OKvim(1)<CR>
 	# For 2 consecutive characters to search
 	noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
+	# jump to another window
+	noremap <leader>w <Cmd>call stargate#Galaxy()<CR>
 endif
 
 
