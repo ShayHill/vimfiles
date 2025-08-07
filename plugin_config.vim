@@ -63,12 +63,11 @@ if g:HasPlugin('vim-lsp')
 endif
 
 
-
 if g:HasPlugin('asyncomplete.vim')
-  inoremap <expr> <Tab>   pumvisible() ? '\<C-n>' : '\<Tab>'
-  inoremap <expr> <S-Tab> pumvisible() ? '\<C-p>' : '\<S-Tab>'
+  inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
+  inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
   # enter always enters, will not autocomplete.
-  inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() .. '\<cr>' : '\<cr>'
+  inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() .. '<cr>' : '<cr>'
 endif
 
 
