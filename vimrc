@@ -151,7 +151,6 @@ def PackInit(): void
   minpac#add('tpope/vim-fugitive')  # git integration
   minpac#add('tpope/vim-obsession')  # session management
   minpac#add('tpope/vim-surround')  # surround text objects
-  minpac#add('tpope/vim-vinegar')  # netrw enhancement
   minpac#add('tpope/vim-dispatch')  # async build
   minpac#add('mhinz/vim-signify')  # show/undo git changes
 
@@ -179,6 +178,7 @@ def PackInit(): void
   minpac#add('felipec/vim-sanegx')
   minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
+  minpac#add('habamax/vim-dir')
 enddef
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
