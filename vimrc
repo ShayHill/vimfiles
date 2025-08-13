@@ -36,6 +36,9 @@ g:mapleader = ' '
 if has('windows')
   set shell=pwsh
   var local_programs = expand('$HOME/AppData/Local/Programs')
+  # 'Expand-Archive' is a PowerShell cmdlet to unzip files. This will not work
+  # unless my feature request to allow cmdlets is accepted:
+  g:zip_unzipcmd = 'Expand-Archive'
   execute 'set pythonthreehome=' .. local_programs .. '/Python/Python312'
   execute 'set pythonthreedll=' .. local_programs .. '/Python/Python312/python312.dll'
   execute 'set luadll=' .. local_programs .. '/Lua/bin/lua54.dll'
