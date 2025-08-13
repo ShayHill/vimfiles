@@ -32,15 +32,29 @@ g:limelight_cn_candidates = ['IncSearch', 'Search', 'ErrorMsg']
 g:limelight_text_fade = 0.65
 g:limelight_bg_fade = 0.1
 
+def HlgetOrEmpty(hi_group: string): dict<any>
+  # Get a highlight group dictionary. If the highlight group does not exist,
+  # return an empty dictionary.
+  var hi_dict: dict<any>
+  try
+    hi_dict = hlget(hi_group, v:true)[0]
+  catch /^Vim\%((\a\+)\)\=:E684:/
+    hi_dict = {}
+  endtry
+  return hi_dict
+enddef
+
+
 
 # colorscheme-specific settings
 g:limelight_config = {
   PaperColor: {cn: 'DiffAdd', bg: 'MatchParen', bg_fade: 0.25},
-  blue: {bg_fade: 0.2},
+  blue: {cn: 'Search', bg: 'TabPanel'},
   darkblue: {bg_fade: 0.2},
   default: {cn: 'ErrorMsg', bg: 'Pmenu', bg_fade: 0.1},
   delek: {bg: 'Pmenu', bg_fade: 0.0},
-  elflord: {bg: 'Pmenu', bg_fade: 0.2},
+  desert: {bg: 'Pmenu', bg_fade: 0.0},
+  elflord: {bg_fade: 0.2},
   habamax: {bg: 'Pmenu', bg_fade: 0.0},
   industry: {bg: 'Pmenu', bg_fade: 0.0},
   koehler: {bg: 'Pmenu', bg_fade: 0.0},
