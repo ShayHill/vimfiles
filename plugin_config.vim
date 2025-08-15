@@ -86,7 +86,7 @@ if g:HasPlugin('ultisnips')
 endif
 
 
-if g:HasPlugin('fuzzyy')
+if g:HasPlugin('fuzzbox.vim')
   g:fuzzyy_enable_mappings = 0
   nnoremap <C-P> :FuzzyFiles<CR>
   nnoremap <leader>p :FuzzyBuffers<CR>

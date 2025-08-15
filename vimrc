@@ -145,7 +145,7 @@ def PackInit(): void
   minpac#add('SirVer/ultisnips')
 
   # -------- fuzzy finder
-  minpac#add('Donaldttt/fuzzyy')
+  minpac#add('vim-fuzzbox/fuzzbox.vim')
 
   # -------- debugging
   minpac#add('puremourning/vimspector', {do: '!py -m pip install setuptools'})
