@@ -181,7 +181,7 @@ def PackInit(): void
   minpac#add('felipec/vim-sanegx')
   minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
-  minpac#add('habamax/vim-dir')
+  # minpac#add('habamax/vim-dir')
 enddef
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
@@ -263,6 +263,7 @@ set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with 
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
 set formatoptions-=t # don't auto-wrap text
+set fillchars=vert:\│ # cleaner looking vertical splits
 
 # ---------------------------------------------------------------------------- #
 #
