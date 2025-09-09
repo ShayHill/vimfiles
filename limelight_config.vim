@@ -44,6 +44,15 @@ def HlgetOrEmpty(hi_group: string): dict<any>
   return hi_dict
 enddef
 
+augroup LimelightSunbather
+  autocmd!
+  autocmd ColorScheme *sunbather {
+    var normal_nc = HlgetOrEmpty('PmenuSel')
+    normal_nc.name = 'NormalNC'
+    normal_nc.guibg = '#ffe4eb'
+    hlset([normal_nc])
+augroup END
+
 
 
 # colorscheme-specific settings
@@ -67,9 +76,9 @@ g:limelight_config = {
   retrobox: {bg: 'Pmenu', bg_fade: 0.0},
   ron: {bg_fade: 0.2},
   solarized8: {bg_fade: 0.25},
-  sunbather: {cn: 'Search'},
+  sunbather: {cn: 'Search', bg_fade: 0.0},
   torte: {bg: 'Pmenu', bg_fade: 0.0},
-  wildcharm: {bg: 'Pmenu', bg_fade: 0.0},
+  wildcharm: {bg: 'Pmenu', bg_fade: 5.0},
   zaibatsu: {set_pmenu: v:true}
 }
 
