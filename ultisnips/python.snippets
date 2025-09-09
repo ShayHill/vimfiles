@@ -75,3 +75,34 @@ def pytest_assertrepr_compare(
         return [f"{left} {op} {right}"]
     return None
 endsnippet
+
+
+snippet golden_master "boilerplate for golden master tests" b
+"""Test svg output against master copies.
+
+:author: Shay Hill
+:created: `!v strftime("%Y-%m-%d")`
+"""
+
+# from local_helpers.golden_master import assert_golden_master
+
+# class TestGoldenMaster:
+#     def test_function(self):
+#         assert_golden_master(function())
+endsnippet
+
+snippet app_paths "module for svg_drawings/apps/app/src/app/paths.py" b
+"""Project local paths.
+
+:author: Shay Hill
+:created: `!v strftime("%Y-%m-%d")`
+"""
+
+from pathlib import Path
+
+PROJECT_DIR = Path(__file__).parents[2]
+OUTPUT_DIR = PROJECT_DIR / "output"
+
+for d in [OUTPUT_DIR]:
+    d.mkdir(exist_ok=True)
+endsnippet
