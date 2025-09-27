@@ -46,11 +46,7 @@ enddef
 
 augroup LimelightSunbather
   autocmd!
-  autocmd ColorScheme *sunbather {
-    var normal_nc = HlgetOrEmpty('PmenuSel')
-    normal_nc.name = 'NormalNC'
-    normal_nc.guibg = '#ffe4eb'
-    hlset([normal_nc])
+  autocmd ColorScheme *sunbather highlight NormalNC guibg=#ffe4eb
 augroup END
 
 
