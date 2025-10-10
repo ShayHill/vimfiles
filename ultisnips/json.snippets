@@ -9,7 +9,7 @@ snippet vimspector
                 "request": "launch",
                 "type": "python",
                 "cwd": "${workspaceRoot}",
-                "python": "${workspaceRoot}/venv/Scripts/python.exe",
+                "python": "${workspaceRoot}/.venv/Scripts/python.exe",
                 "program": "${file}",
                 "stopOnEntry": false
             },
@@ -29,7 +29,7 @@ snippet vimspector
                 "request": "launch",
                 "type": "python",
                 "cwd": "${workspaceRoot}",
-                "python": "${workspaceRoot}/venv/Scripts/python.exe",
+                "python": "${workspaceRoot}/.venv/Scripts/python.exe",
                 "program": "${workspaceRoot}/src/$1/main.py",
                 "stopOnEntry": false
             },
@@ -49,7 +49,7 @@ snippet vimspector
                 "module": "pytest",
                 "type": "python",
                 "request": "launch",
-                "python": "${workspaceRoot}/venv/Scripts/python.exe",
+                "python": "${workspaceRoot}/.venv/Scripts/python.exe",
                 "args": [
                     "-q",
                     "${file}"
