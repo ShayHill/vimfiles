@@ -35,9 +35,10 @@ g:mapleader = ' '
 
 if has('windows')
   set shell=pwsh
+  set termguicolors # PowerShell is capable of TrueColor.
+
   var local_programs = expand('$HOME/AppData/Local/Programs')
-  # 'Expand-Archive' is a PowerShell cmdlet to unzip files. This will not work
-  # unless my feature request to allow cmdlets is accepted:
+
   execute 'set pythonthreehome=' .. local_programs .. '/Python/Python312'
   execute 'set pythonthreedll=' .. local_programs .. '/Python/Python312/python312.dll'
   execute 'set luadll=' .. local_programs .. '/Lua/bin/lua54.dll'
@@ -49,8 +50,6 @@ if has('windows')
     echoerr 'rg not found. Install ripgrep to use :grep'
   endif
 
-  # PowerShell is capable of TrueColor.
-  set termguicolors
 endif
 
 
@@ -194,7 +193,6 @@ command! PackStatus packadd minpac | minpac#status()
 #
 # ---------------------------------------------------------------------------- #
 
-set undofile  # undo changes even after closing vim
 set backup  # write unsaved changes to a backup file
 
 $TMPDIR = expand('~/AppData/Local/Temp/vim')
@@ -219,6 +217,11 @@ silent! call MakeDirIfNoExists(&directory)
 #  behaviors
 #
 # ---------------------------------------------------------------------------- #
+
+# keep viminfo out of my home directory. Don't forget to gitignore it.
+set viminfofile=~/vimfiles/.viminfo
+
+set undofile  # undo changes even after closing vim
 
 # remove 'You discovered the command-line window!' message from defaults.vim.
 augroup vimHints | exe 'au!' | augroup END
