@@ -34,22 +34,15 @@ profile = "black"
 endsnippet
 
 
-snippet tox
+snippet pytest
 [tool.pytest.ini_options]
 addopts = "--doctest-modules"
 pythonpath = ["tests"]
 log_cli = 1
+endsnippet
 
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-envlist = py{$1}
 
-[testenv]
-deps = pytest
-commands = pytest
-"""
-
+snippet ruff
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
 endsnippet
