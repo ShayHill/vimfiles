@@ -89,7 +89,7 @@ endif
 if g:HasPlugin('fuzzbox.vim')
   g:fuzzbox_enable_mappings = 0
   nnoremap <C-P> :FuzzyFiles<CR>
-  nnoremap <leader>p :FuzzyBuffers<CR>
+  nnoremap <leader>p :FuzzyArglist<CR>
   inoremap <C-P> <ESC>:FuzzyFiles<CR>
 endif
 
