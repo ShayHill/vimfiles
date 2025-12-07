@@ -145,7 +145,7 @@ def PackInit(): void
   minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
 
   # -------- snippets
-  minpac#add('SirVer/ultisnips')
+  # minpac#add('SirVer/ultisnips')
 
   # -------- fuzzy finder
   minpac#add('vim-fuzzbox/fuzzbox.vim')
@@ -179,13 +179,21 @@ def PackInit(): void
   minpac#add('shayhill/vim9-limelight')
 
   # -------- trying out
-  minpac#add('junegunn/vim-easy-align')
-  minpac#add('monkoose/vim9-stargate')
+  # minpac#add('junegunn/vim-easy-align')
   minpac#add('felipec/vim-sanegx')
-  minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
+  # minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
+  minpac#add('DanBradbury/github-actions.vim')
+  minpac#add('girishji/easyjump.vim')
+  minpac#add('girishji/fFtT.vim')
+  # minpac#add('monkoose/vim9-stargate')
   # minpac#add('habamax/vim-dir')
 enddef
+
+g:easyjump_default_keymap = false
+nmap , <Plug>EasyjumpJump;
+omap , <Plug>EasyjumpJump;
+vmap , <Plug>EasyjumpJump;
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
 command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
