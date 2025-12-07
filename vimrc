@@ -62,6 +62,11 @@ endif
 
 source $MYVIMDIR/plugin_config.vim
 
+augroup LimelightSunbather
+  autocmd!
+  autocmd ColorScheme *sunbather highlight NormalNC guibg=#ffe4eb
+augroup END
+
 
 # ---------------------------------------------------------------------------- #
 #

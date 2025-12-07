@@ -44,12 +44,20 @@ def HlgetOrEmpty(hi_group: string): dict<any>
   return hi_dict
 enddef
 
-augroup LimelightSunbather
+# augroup LimelightSunbather
+#   autocmd!
+#   autocmd ColorScheme *sunbather highlight NormalNC guibg=#ffe4eb
+# augroup END
+
+def DefineCustomHiGroups(): void
+  hi SunbatherNC guibg=#ffe4eb
+enddef
+
+augroup RefreshCustomHiGroups
   autocmd!
-  autocmd ColorScheme *sunbather highlight NormalNC guibg=#ffe4eb
-augroup END
+  autocmd ColorScheme * DefineCustomHiGroups()
 
-
+DefineCustomHiGroups()
 
 # colorscheme-specific settings
 g:limelight_config = {
@@ -72,7 +80,7 @@ g:limelight_config = {
   retrobox: {bg: 'Pmenu', bg_fade: 0.0},
   ron: {bg_fade: 0.2},
   solarized8: {bg_fade: 0.25},
-  sunbather: {cn: 'Search', bg_fade: 0.0},
+  sunbather: {cn: 'Search', bg: 'SunbatherNC', bg_fade: 0.0},
   torte: {bg: 'Pmenu', bg_fade: 0.0},
   wildcharm: {bg: 'Pmenu', bg_fade: 5.0},
   zaibatsu: {set_pmenu: v:true}
