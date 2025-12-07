@@ -24,6 +24,16 @@
 #
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
+snippet impelem "import EtreeElement" b
+from lxml.etree import _Element as EtreeElement  # pyright: ignore[reportPrivateUsage]
+endsnippet
+
+snippet typelem "import EtreeElement indented within TYPE_CHECKING block" b
+    from lxml.etree import (
+        _Element as EtreeElement,  # pyright: ignore[reportPrivateUsage]
+    )
+endsnippet
+
 snippet docmod "module docstring" b
 """$1
 
