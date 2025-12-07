@@ -2,11 +2,11 @@ vim9script
 
 CompilerSet makeprg=pre-commit\ run\ --all-files
 
-# errorformat
-# ruff: %E\ \ \ -->\ %f:%l:%c
-# ruff: %E\ \ -->\ %f:%l:%c,%E%f:%l:\ %m
-# ruff: %E%f:%l:%c:\ %m
-# mypy: %E%f:%l:\ %m
-# pyright: %E\ \ %f:%l:%c\ -\ %m
+# # mypy
+CompilerSet errorformat=%f:%l:\ error:\ %m
 
-CompilerSet errorformat=%E\ \ \ -->\ %f:%l:%c,%E\ \ -->\ %f:%l:%c,%E%f:%l:%c:\ %m,%E%f:%l:\ %m,%E\ %f:%l:%c\ -\ %m
+# ruff
+CompilerSet errorformat+=%.%#-->\ %f:%l:%c
+
+# pyright
+CompilerSet errorformat+=%f:%l:%c\ -\ error:\ %m
