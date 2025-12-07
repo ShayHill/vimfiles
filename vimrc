@@ -231,6 +231,9 @@ silent! call MakeDirIfNoExists(&directory)
 #
 # ---------------------------------------------------------------------------- #
 
+# turn off syntax on large files
+autocmd Filetype * if getfsize(@%) > 1048576 | setlocal syntax=OFF | endif
+
 # keep viminfo out of my home directory. Don't forget to gitignore it.
 set viminfofile=~/vimfiles/.viminfo
 
