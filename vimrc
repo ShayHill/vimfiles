@@ -19,7 +19,7 @@ g:mapleader = ' '
 # F6           <Plug>VimspectorPause                        Pause debuggee.
 # F9           <Plug>VimspectorToggleBreakpoint             Toggle line breakpoint on the current line.
 # <leader>F9   <Plug>VimspectorToggleConditionalBreakpoint  Toggle conditional line breakpoint or logpoint on the current line.
-# F8           <Plug>VimspectorAddFunctionBreakpoint        Add a function breakpoint for the expression under cursor
+# F8           <Plug>VimspectorAddFunctionBreakpoint        Add a function breakpoint for the rxpression under cursor
 # <leader>F8   <Plug>VimspectorRunToCursor                  Run to Cursor
 # F10          <Plug>VimspectorStepOver                     Step Over
 # F11          <Plug>VimspectorStepInto                     Step Into
@@ -277,8 +277,9 @@ set nojoinspaces  # eliminate 'complimentary typing' when joining lines with pun
 set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with options
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
-set formatoptions-=t # don't auto-wrap text
+et formatoptions-=t # don't auto-wrap text
 set fillchars=vert:\│ # cleaner looking vertical splits
+set foldmethod=manual
 
 # ---------------------------------------------------------------------------- #
 #
@@ -359,5 +360,8 @@ command! W w
 # my keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
 # won't work without this mapping.
 map <C-k6> <C-6>
+
+# nmap <C-b> "+p0i- <ESC>o<CR><ESC>:w<CR>
+# imap <C-b> <ESC>"+p0i- <ESC>o<CR><ESC>:w<CR>
 
 
