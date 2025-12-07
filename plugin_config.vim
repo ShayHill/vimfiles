@@ -15,7 +15,7 @@ def g:HasPlugin(name: string): bool
   endfor
   if ! has_plugin
     echo finddir(plugin_roots[0] .. name)
-    echo 'Cannot find plugin ' .. name .. '. Skipping configuration.'
+    # echo 'Cannot find plugin ' .. name .. '. Skipping configuration.'
   endif
   return has_plugin
 enddef
@@ -137,14 +137,14 @@ if g:HasPlugin('vim-translator')
 endif
 
 
-if g:HasPlugin('vim9-stargate')
-  # For 1 character to search before showing hints
-  noremap <leader>F <Cmd>call stargate#OKvim(1)<CR>
-  # For 2 consecutive characters to search
-  noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
-  # jump to another window
-  noremap <leader>w <Cmd>call stargate#Galaxy()<CR>
-endif
+# if g:HasPlugin('vim9-stargate')
+#   # For 1 character to search before showing hints
+#   noremap <leader>F <Cmd>call stargate#OKvim(1)<CR>
+#   # For 2 consecutive characters to search
+#   noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
+#   # jump to another window
+#   noremap <leader>w <Cmd>call stargate#Galaxy()<CR>
+# endif
 
 
 if g:HasPlugin('vim-signify')
