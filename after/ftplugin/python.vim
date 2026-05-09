@@ -11,8 +11,27 @@ setlocal textwidth=85  # wrapping for gq
 
 setlocal nowrap
 
+
 packadd SimpylFold
 packadd coverage-highlight.vim
+
+
+if g:HasPlugin('lsp')
+  hi ErrorMsg guibg=NONE
+  nmap <buffer> <leader>gd :LspGotoDefinition<CR>
+  nmap <buffer> <leader>gr :LspShowReferences<CR>
+  nmap <buffer> <leader>rn :LspRename<CR>
+  nmap <buffer> <leader>gg :LspDiag current<CR>
+  nmap <buffer> [g :LspDiag prevWrap<CR>
+  nmap <buffer> ]g :LspDiag nextWrap<CR>
+  nmap <buffer> K :LspHover<CR>
+
+  augroup CustomColors
+    autocmd!
+    autocmd ColorScheme * hi ErrorMsg guibg=NONE
+  augroup END
+endif
+
 
 if g:HasPlugin('coverage-highlight.vim')
   g:coverage_script = 'python -m coverage'
