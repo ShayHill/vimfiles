@@ -7,7 +7,6 @@ nnoremap <Space> <Nop>
 vnoremap <Space> <Nop>
 g:mapleader = ' '
 
-
 # ---------------------------------------------------------------------------- #
 #
 #  Vimspector Cheat Sheet
@@ -141,11 +140,12 @@ def PackInit(): void
   minpac#add('prabirshrestha/asyncomplete-lsp.vim')
 
   # -------- ai completion and chat
-  minpac#add('github/copilot.vim')
+  minpac#add('ShayHill/copilot.vim')
   minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
+  minpac#add('rishi-opensource/vim-claude-code')
 
   # -------- snippets
-  # minpac#add('SirVer/ultisnips')
+  minpac#add('SirVer/ultisnips')
 
   # -------- fuzzy finder
   minpac#add('vim-fuzzbox/fuzzbox.vim')
@@ -177,6 +177,7 @@ def PackInit(): void
   # -------- my plugins
   minpac#add('shayhill/vim9-scratchterm')
   minpac#add('shayhill/vim9-limelight')
+  minpac#add('shayhill/vim9-socialfmt')
 
   # -------- trying out
   # minpac#add('junegunn/vim-easy-align')
@@ -186,6 +187,7 @@ def PackInit(): void
   minpac#add('DanBradbury/github-actions.vim')
   minpac#add('girishji/easyjump.vim')
   minpac#add('girishji/fFtT.vim')
+  minpac#add('jeetsukumaran/vim-pythonsense')
   # minpac#add('monkoose/vim9-stargate')
   # minpac#add('habamax/vim-dir')
 enddef
@@ -198,6 +200,27 @@ vmap , <Plug>EasyjumpJump;
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
 command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
+
+
+var lspServers = [{
+  name: 'pyright',
+  filetype: ['python'],
+  path: 'pyright-langserver',
+  args: ['--stdio'],
+  workspaceConfig: {python: {pythonPath: exepath('python')}}
+}]
+autocmd User LspSetup lsp#lsp#AddServer(lspServers)
+
+var lspOptions = {
+  diagSignErrorText: '❌',
+  diagSignWarningText: '🔶',
+  diagSignInfoText: 'ℹ',
+  diagSignHintText: '💡',
+  highlightDiagInline: false
+}
+autocmd User LspSetup lsp#options#OptionsSet(lspOptions)
+
+g:is_pythonsense_suppress_motion_keymaps = 1
 
 
 # ---------------------------------------------------------------------------- #
@@ -274,13 +297,12 @@ set autoread # read file changes without asking if no unsaved changes
 set belloff=all # flash instead of beeping for errors
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set completeopt=menu,popup,fuzzy completepopup=highlight:Pmenu  # fuzzy completion
-set signcolumn=number # show signs in the number column, providing one extra column for text
 set breakindent breakindentopt=list:-1 linebreak  # indent
 set nojoinspaces  # eliminate 'complimentary typing' when joining lines with punctuation
 set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with options
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
-et formatoptions-=t # don't auto-wrap text
+set formatoptions-=t # don't auto-wrap text
 set fillchars=vert:\│ # cleaner looking vertical splits
 set foldmethod=manual
 
