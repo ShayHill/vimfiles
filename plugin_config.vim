@@ -22,6 +22,11 @@ enddef
 
 
 if g:HasPlugin('vim-lsp')
+
+  if executable('ruff')
+    au User lsp_setup lsp#register_server({name: 'ruff', cmd: (server_info) => ['ruff', 'server'], allowlist: ['python'], workspace_config: {}})
+  endif
+
   def OnLspBufferEnabled(): void
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
@@ -39,6 +44,12 @@ if g:HasPlugin('vim-lsp')
 
     g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    # https://docs.astral.sh/ruff/editors/setup/?referrer=grok.com#vim
+    var capabilities = lsp#get_server_capabilities('ruff')
+    if !empty(capabilities)
+      capabilities.hoverProvider = v:false
+    endif
   enddef
 
   augroup lsp_install
