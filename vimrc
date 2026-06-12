@@ -134,10 +134,6 @@ def PackInit(): void
   minpac#add('k-takata/minpac', {'type': 'opt'})
 
   # -------- everything needed for lsp and completion
-  # minpac#add('prabirshrestha/vim-lsp')
-  # minpac#add('mattn/vim-lsp-settings')
-  # minpac#add('prabirshrestha/asyncomplete.vim')
-  # minpac#add('prabirshrestha/asyncomplete-lsp.vim')
   minpac#add('yegappan/lsp')
 
   # -------- ai completion and chat
@@ -159,7 +155,6 @@ def PackInit(): void
   minpac#add('tpope/vim-obsession')  # session management
   minpac#add('tpope/vim-surround')  # surround text objects
   minpac#add('tpope/vim-dispatch')  # async build
-  # minpac#add('mhinz/vim-signify')  # show/undo git changes
 
   # -------- refactoring
   minpac#add('dyng/ctrlsf.vim')  # like :CocSearch

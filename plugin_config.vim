@@ -15,7 +15,7 @@ def g:HasPlugin(name: string): bool
   endfor
   if ! has_plugin
     echo finddir(plugin_roots[0] .. name)
-    # echo 'Cannot find plugin ' .. name .. '. Skipping configuration.'
+    echo 'Cannot find plugin ' .. name .. '. Skipping configuration.'
   endif
   return has_plugin
 enddef
@@ -51,92 +51,6 @@ if g:HasPlugin('lsp')
     lsp#lsp#AddServer(lspServers)
   enddef
   autocmd User LspSetup call RegisterLspServers()
-endif
-
-# if g:HasPlugin('lsp')
-#   def RegisterLspServers()
-#     # Python servers via pip in ~/AppData/.../Python313/Scripts (in PATH)
-#     g:LspAddServer([
-#       {
-#        name: 'pyright',
-#        filetype: 'python',
-#        path: 'pyright-langserver',
-#        args: ['--stdio'],
-#        # will not identify errors without this empty workspaceConfig.
-#        workspaceConfig: {python: {}},
-#        debug: v:true
-#      },
-#      {
-#        name: 'ruff',
-#        filetype: ['python'],
-#        path: 'ruff.exe',
-#        args: ['server'],
-#        features: {hover: false}
-#      },
-#    ])
-#    g:LspOptionsSet({
-#      diagSignErrorText: '❌',
-#      diagSignHintText: '💡',
-#      diagSignInfoText: 'ℹ',
-#      diagSignWarningText: '🔶',
-#    })
-#  enddef
-#  autocmd VimEnter * RegisterLspServers()
-
-
-#endif
-
-
-if g:HasPlugin('vim-lsp')
-
-  if executable('ruff')
-    au User lsp_setup lsp#register_server({name: 'ruff', cmd: (server_info) => ['ruff', 'server'], allowlist: ['python'], workspace_config: {}})
-  endif
-
-  def OnLspBufferEnabled(): void
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> <leader>gd <plug>(lsp-definition)
-    nmap <buffer> <leader>gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> <leader>gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> <leader>gr <plug>(lsp-references)
-    nmap <buffer> <leader>gi <plug>(lsp-implementation)
-    nmap <buffer> <leader>gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-
-    g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-
-    # https://docs.astral.sh/ruff/editors/setup/?referrer=grok.com#vim
-    var capabilities = lsp#get_server_capabilities('ruff')
-    if !empty(capabilities)
-      capabilities.hoverProvider = v:false
-    endif
-  enddef
-
-  augroup lsp_install
-    au!
-    # call OnLspBufferEnabled (set the lsp shortcuts) when an lsp server
-    # is registered for a buffer.
-    autocmd User lsp_buffer_enabled call OnLspBufferEnabled()
-  augroup END
-
-  # show error information on statusline, no virtual text
-  g:lsp_diagnostics_echo_cursor = 1
-  g:lsp_diagnostics_virtual_text_enabled = 0
-  g:lsp_settings_filetype_python = ['pyright-langserver']
-
-  # use symbols instead of W>, E>, etc.
-  g:lsp_diagnostics_signs_error = {'text': '❌'}
-  g:lsp_diagnostics_signs_warning = {'text': '🔶'}
-  g:lsp_diagnostics_signs_information = {'text': 'ℹ'}
-  g:lsp_diagnostics_signs_hint = {'text': '💡'}
-  # hide the background color around the signs
-  hi lspErrorText ctermbg=NONE guibg=NONE
 endif
 
 
@@ -211,38 +125,6 @@ if g:HasPlugin('vim-translator')
   vmap <leader>jj :TranslateR<CR>
   vmap <leader>nn :TranslateR --target_lang='en'<CR>
   g:translator_target_lang = 'es'
-endif
-
-
-# if g:HasPlugin('vim9-stargate')
-#   # For 1 character to search before showing hints
-#   noremap <leader>F <Cmd>call stargate#OKvim(1)<CR>
-#   # For 2 consecutive characters to search
-#   noremap <leader>f <Cmd>call stargate#OKvim(2)<CR>
-#   # jump to another window
-#   noremap <leader>w <Cmd>call stargate#Galaxy()<CR>
-# endif
-
-
-if g:HasPlugin('vim-signify')
-  # Faster sign updates on CursorHold/CursorHoldI
-  set updatetime=100
-
-  nnoremap <leader>hp :SignifyHunkDiff<cr>
-  nnoremap <leader>hu :SignifyHunkUndo<cr>
-  nnoremap <leader>ht :SignifyToggle<cr>
-
-  # hunk text object
-  omap ic <plug>(signify-motion-inner-pending)
-  xmap ic <plug>(signify-motion-inner-visual)
-  omap ac <plug>(signify-motion-outer-pending)
-  xmap ac <plug>(signify-motion-outer-visual)
-endif
-
-
-if g:HasPlugin('vim-easy-align')
-  xmap ga <Plug>(EasyAlign)
-  nmap ga <Plug>(EasyAlign)
 endif
 
 
