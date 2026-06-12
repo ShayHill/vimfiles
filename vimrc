@@ -159,7 +159,7 @@ def PackInit(): void
   minpac#add('tpope/vim-obsession')  # session management
   minpac#add('tpope/vim-surround')  # surround text objects
   minpac#add('tpope/vim-dispatch')  # async build
-  minpac#add('mhinz/vim-signify')  # show/undo git changes
+  # minpac#add('mhinz/vim-signify')  # show/undo git changes
 
   # -------- refactoring
   minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
@@ -203,23 +203,24 @@ command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
 
 
-var lspServers = [{
-  name: 'pyright',
-  filetype: ['python'],
-  path: 'pyright-langserver',
-  args: ['--stdio'],
-  workspaceConfig: {python: {pythonPath: exepath('python')}}
-}]
-autocmd User LspSetup lsp#lsp#AddServer(lspServers)
+# var lspOptions = {
+#   diagSignErrorText: '❌',
+#   diagSignWarningText: '🔶',
+#   diagSignInfoText: 'ℹ',
+#   diagSignHintText: '💡',
+#   highlightDiagInline: true
+# }
+# autocmd User LspSetup lsp#options#OptionsSet(lspOptions)
 
-var lspOptions = {
-  diagSignErrorText: '❌',
-  diagSignWarningText: '🔶',
-  diagSignInfoText: 'ℹ',
-  diagSignHintText: '💡',
-  highlightDiagInline: false
-}
-autocmd User LspSetup lsp#options#OptionsSet(lspOptions)
+# var lspServers = [{
+#   name: 'pyright',
+#   filetype: ['python'],
+#   path: 'pyright-langserver',
+#   args: ['--stdio'],
+#   workspaceConfig: {python: {pythonPath: exepath('python')}}
+# }]
+# autocmd User LspSetup lsp#lsp#AddServer(lspServers)
+
 
 g:is_pythonsense_suppress_motion_keymaps = 1
 
