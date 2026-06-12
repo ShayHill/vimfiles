@@ -176,16 +176,11 @@ def PackInit(): void
   minpac#add('shayhill/vim9-socialfmt')
 
   # -------- trying out
-  # minpac#add('junegunn/vim-easy-align')
-  minpac#add('felipec/vim-sanegx')
-  # minpac#add('tmhedberg/SimpylFold', {type: 'opt'})
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
   minpac#add('DanBradbury/github-actions.vim')
   minpac#add('girishji/easyjump.vim')
   minpac#add('girishji/fFtT.vim')
   minpac#add('jeetsukumaran/vim-pythonsense')
-  # minpac#add('monkoose/vim9-stargate')
-  # minpac#add('habamax/vim-dir')
 enddef
 
 g:easyjump_default_keymap = false
