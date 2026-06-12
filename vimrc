@@ -177,7 +177,6 @@ def PackInit(): void
 
   # -------- trying out
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
-  minpac#add('DanBradbury/github-actions.vim')
   minpac#add('girishji/easyjump.vim')
   minpac#add('girishji/fFtT.vim')
   minpac#add('jeetsukumaran/vim-pythonsense')
@@ -193,23 +192,7 @@ command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
 
 
-# var lspOptions = {
-#   diagSignErrorText: '❌',
-#   diagSignWarningText: '🔶',
-#   diagSignInfoText: 'ℹ',
-#   diagSignHintText: '💡',
-#   highlightDiagInline: true
-# }
-# autocmd User LspSetup lsp#options#OptionsSet(lspOptions)
 
-# var lspServers = [{
-#   name: 'pyright',
-#   filetype: ['python'],
-#   path: 'pyright-langserver',
-#   args: ['--stdio'],
-#   workspaceConfig: {python: {pythonPath: exepath('python')}}
-# }]
-# autocmd User LspSetup lsp#lsp#AddServer(lspServers)
 
 
 g:is_pythonsense_suppress_motion_keymaps = 1
