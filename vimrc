@@ -38,8 +38,8 @@ if has('windows')
 
   var local_programs = expand('$HOME/AppData/Local/Programs')
 
-  execute 'set pythonthreehome=' .. local_programs .. '/Python/Python312'
-  execute 'set pythonthreedll=' .. local_programs .. '/Python/Python312/python312.dll'
+  execute 'set pythonthreehome=' .. local_programs .. '/Python/Python313'
+  execute 'set pythonthreedll=' .. local_programs .. '/Python/Python313/python313.dll'
   execute 'set luadll=' .. local_programs .. '/Lua/bin/lua54.dll'
 
   if executable('rg')
