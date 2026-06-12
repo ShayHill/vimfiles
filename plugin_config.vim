@@ -21,6 +21,72 @@ def g:HasPlugin(name: string): bool
 enddef
 
 
+if g:HasPlugin('lsp')
+  def RegisterLspServers(): void
+    var lspOptions = {
+      diagSignErrorText: '❌',
+      diagSignWarningText: '🔶',
+      diagSignInfoText: 'ℹ',
+      diagSignHintText: '💡',
+      highlightDiagInline: false
+    }
+    lsp#options#OptionsSet(lspOptions)
+
+    var lspServers = [
+      {
+        name: 'pyright',
+        filetype: ['python'],
+        path: 'pyright-langserver',
+        args: ['--stdio'],
+        workspaceConfig: {python: {pythonPath: exepath('python')}}
+      },
+      {
+        name: 'ruff',
+        filetype: ['python'],
+        path: 'ruff.exe',
+        args: ['server'],
+        features: {hover: false}
+      }
+    ]
+    lsp#lsp#AddServer(lspServers)
+  enddef
+  autocmd User LspSetup call RegisterLspServers()
+endif
+
+# if g:HasPlugin('lsp')
+#   def RegisterLspServers()
+#     # Python servers via pip in ~/AppData/.../Python313/Scripts (in PATH)
+#     g:LspAddServer([
+#       {
+#        name: 'pyright',
+#        filetype: 'python',
+#        path: 'pyright-langserver',
+#        args: ['--stdio'],
+#        # will not identify errors without this empty workspaceConfig.
+#        workspaceConfig: {python: {}},
+#        debug: v:true
+#      },
+#      {
+#        name: 'ruff',
+#        filetype: ['python'],
+#        path: 'ruff.exe',
+#        args: ['server'],
+#        features: {hover: false}
+#      },
+#    ])
+#    g:LspOptionsSet({
+#      diagSignErrorText: '❌',
+#      diagSignHintText: '💡',
+#      diagSignInfoText: 'ℹ',
+#      diagSignWarningText: '🔶',
+#    })
+#  enddef
+#  autocmd VimEnter * RegisterLspServers()
+
+
+#endif
+
+
 if g:HasPlugin('vim-lsp')
 
   if executable('ruff')

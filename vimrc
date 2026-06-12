@@ -134,10 +134,11 @@ def PackInit(): void
   minpac#add('k-takata/minpac', {'type': 'opt'})
 
   # -------- everything needed for lsp and completion
-  minpac#add('prabirshrestha/vim-lsp')
-  minpac#add('mattn/vim-lsp-settings')
-  minpac#add('prabirshrestha/asyncomplete.vim')
-  minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+  # minpac#add('prabirshrestha/vim-lsp')
+  # minpac#add('mattn/vim-lsp-settings')
+  # minpac#add('prabirshrestha/asyncomplete.vim')
+  # minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+  minpac#add('yegappan/lsp')
 
   # -------- ai completion and chat
   minpac#add('ShayHill/copilot.vim')
