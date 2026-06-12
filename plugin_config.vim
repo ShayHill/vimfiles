@@ -132,8 +132,15 @@ if g:HasPlugin('vim9-limelight')
   source $MYVIMDIR/limelight_config.vim
 endif
 
+
 if g:HasPlugin('easyjump')
-g:easyjump_default_keymap = false
-nmap , <Plug>EasyjumpJump;
-omap , <Plug>EasyjumpJump;
-vmap , <Plug>EasyjumpJump;
+  g:easyjump_default_keymap = false
+  nmap , <Plug>EasyjumpJump;
+  omap , <Plug>EasyjumpJump;
+  vmap , <Plug>EasyjumpJump;
+endif
+
+
+if g:HasPlugin('vim-pythonsense')
+  g:is_pythonsense_suppress_motion_keymaps = 1
+endif

@@ -182,10 +182,6 @@ def PackInit(): void
   minpac#add('jeetsukumaran/vim-pythonsense')
 enddef
 
-g:easyjump_default_keymap = false
-nmap , <Plug>EasyjumpJump;
-omap , <Plug>EasyjumpJump;
-vmap , <Plug>EasyjumpJump;
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
 command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
@@ -195,7 +191,6 @@ command! PackStatus packadd minpac | minpac#status()
 
 
 
-g:is_pythonsense_suppress_motion_keymaps = 1
 
 
 # ---------------------------------------------------------------------------- #
@@ -356,6 +351,9 @@ enddef
 # it's so easy to mistype :w that even my mech keyboard somehow occasionally
 # does it with autoshift.
 command! W w
+command! Wq wq
+command! Wqa wqa
+command! Wa wa
 
 # my keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
 # won't work without this mapping.
