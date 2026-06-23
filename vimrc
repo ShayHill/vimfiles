@@ -32,7 +32,7 @@ g:mapleader = ' '
 #
 # ---------------------------------------------------------------------------- #
 
-if has('windows')
+if has('win32') || has('win64')
   set shell=pwsh
   set termguicolors # PowerShell is capable of TrueColor.
 

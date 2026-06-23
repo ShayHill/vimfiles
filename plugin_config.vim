@@ -22,6 +22,18 @@ enddef
 
 
 if g:HasPlugin('lsp')
+  def RemoveBgFromLspGutterSymbols(): void
+    hi LspDiagSignErrorText    guibg=NONE
+    hi LspDiagSignWarningText  guibg=NONE
+    hi LspDiagSignInfoText     guibg=NONE
+    hi LspDiagSignHintText     guibg=NONE
+  enddef
+
+  augroup ClearLspGutterSymbolBackgrounds
+    autocmd!
+    autocmd ColorScheme * call RemoveBgFromLspGutterSymbols()
+  augroup END
+
   def RegisterLspServers(): void
     var lspOptions = {
       diagSignErrorText: '❌',
@@ -49,16 +61,11 @@ if g:HasPlugin('lsp')
       }
     ]
     lsp#lsp#AddServer(lspServers)
+
+    RemoveBgFromLspGutterSymbols()
   enddef
+
   autocmd User LspSetup call RegisterLspServers()
-endif
-
-
-if g:HasPlugin('asyncomplete.vim')
-  inoremap <expr> <Tab>   pumvisible() ? '<C-n>' : '<Tab>'
-  inoremap <expr> <S-Tab> pumvisible() ? '<C-p>' : '<S-Tab>'
-  # enter always enters, will not autocomplete.
-  inoremap <expr> <cr> pumvisible() ? asyncomplete#close_popup() .. '<cr>' : '<cr>'
 endif
 
 
