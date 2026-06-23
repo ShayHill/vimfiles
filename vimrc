@@ -290,11 +290,14 @@ nnoremap <leader><leader> <cmd>exec 'normal `' .. toupper(getcharstr()) .. '`"'<
 nnoremap <leader>_ :%s/\s\+$//g<CR>
 
 # save as root with :w!!
-cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
-cmap w!! w !Start-Process vim % > NUL<CR>:e!<CR><CR>
+if has('win32') || has('win64')
+  cmap w!! w !Start-Process vim % > NUL<CR>:e!<CR><CR>
+else
+  cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
+endif
 
 # print the date and time
-if has('windows')
+if has('win32') || has('win64')
   nnoremap <leader>dt "=strftime('%y%m%d %H:%M:%S ')<CR>P
 else
   nnoremap <leader>dt "=strftime('%y%m%d %T ')<CR>P
