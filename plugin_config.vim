@@ -135,7 +135,7 @@ if g:HasPlugin('vim9-limelight')
 endif
 
 
-if g:HasPlugin('easyjump')
+if g:HasPlugin('easyjump.vim')
   g:easyjump_default_keymap = false
   nmap , <Plug>EasyjumpJump;
   omap , <Plug>EasyjumpJump;
