@@ -34,11 +34,6 @@ set go-=L  # hide the scrollbars
 set go-=b  # hide the scrollbars
 set go-=h  # hide the scrollbars
 
-g:GvimFullscreenDll = $MYVIMDIR .. 'gvim_fullscreen.dll'
-if filereadable(g:GvimFullscreenDll)
-  inoremap <C-F11> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
-  noremap <C-F11> :call libcallnr(g:GvimFullscreenDll, 'ToggleFullscreen', 0)<cr>
-  inoremap <C-F12> <Esc>:call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
-  noremap <C-F12> :call libcallnr(g:GvimFullscreenDll, 'ToggleTransparency', '255,180')<cr>
-endif
+# toggle fullscreen
+map <expr> <F11> &go =~# 's' ? ":se go-=s<CR>" : ":se go+=s<CR>"
 
