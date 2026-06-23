@@ -87,7 +87,9 @@ endif
 
 if g:HasPlugin('vimspector')
   g:vimspector_enable_mappings = 'HUMAN'
-  g:vimspector_base_dir = $MYVIMDIR .. 'pack\minpac\start\vimspector'
+  # g:vimspector_base_dir = $MYVIMDIR .. '\pack\minpac\start\vimspector'
+  nmap <C-F10> <Plug>VimspectorStepOver
+  nmap <C-F11> <Plug>VimspectorStepInto
 endif
 
 
