@@ -11,7 +11,7 @@ snippet vimspector
                 "cwd": "${workspaceRoot}",
                 "python": "${workspaceRoot}/.venv/Scripts/python.exe",
                 "program": "${file}",
-                "stopOnEntry": false
+                "pythonArgs": ["-Xfrozen_modules=off"]
             },
             "breakpoints": {
                 "exception": {
@@ -31,7 +31,7 @@ snippet vimspector
                 "cwd": "${workspaceRoot}",
                 "python": "${workspaceRoot}/.venv/Scripts/python.exe",
                 "program": "${workspaceRoot}/src/$1/main.py",
-                "stopOnEntry": false
+                "pythonArgs": ["-Xfrozen_modules=off"]
             },
             "breakpoints": {
                 "exception": {
@@ -49,7 +49,9 @@ snippet vimspector
                 "module": "pytest",
                 "type": "python",
                 "request": "launch",
+                "cwd": "${workspaceRoot}",
                 "python": "${workspaceRoot}/.venv/Scripts/python.exe",
+                "pythonArgs": ["-Xfrozen_modules=off"],
                 "args": [
                     "-q",
                     "${file}"
