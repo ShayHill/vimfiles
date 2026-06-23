@@ -138,8 +138,8 @@ def PackInit(): void
 
   # -------- ai completion and chat
   minpac#add('ShayHill/copilot.vim')
-  minpac#add('madox2/vim-ai', {do: '!py -m pip install "openai>=0.27"'})
-  minpac#add('rishi-opensource/vim-claude-code')
+  minpac#add('madox2/vim-ai', {do: '!python -m pip install "openai>=0.27"'})
+  minpac#add('rishi-opensource/vim-claude-code', {type: 'opt'})
 
   # -------- snippets
   minpac#add('SirVer/ultisnips')
@@ -148,7 +148,7 @@ def PackInit(): void
   minpac#add('vim-fuzzbox/fuzzbox.vim')
 
   # -------- debugging
-  minpac#add('puremourning/vimspector', {do: '!py -m pip install setuptools'})
+  minpac#add('puremourning/vimspector')
 
   # -------- the usual suspects
   minpac#add('tpope/vim-fugitive')  # git integration
