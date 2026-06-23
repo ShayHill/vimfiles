@@ -35,6 +35,7 @@ g:mapleader = ' '
 if has('win32') || has('win64')
   set shell=pwsh
   set termguicolors # PowerShell is capable of TrueColor.
+  &t_8u = "\<Esc>[58:2::%lu:%lu:%lum"  # kludge for https://github.com/vim/vim/issues/20413
 
   var local_programs = expand('$HOME/AppData/Local/Programs')
 

@@ -35,13 +35,6 @@ if g:HasPlugin('lsp')
     hi LspDiagSignWarningText  guibg=NONE
     hi LspDiagSignInfoText     guibg=NONE
     hi LspDiagSignHintText     guibg=NONE
-
-    if !has('gui_running')
-      highlight LspDiagInlineError   cterm=underline
-      highlight LspDiagInlineWarning cterm=underline
-      highlight LspDiagInlineInfo    cterm=underline
-      highlight LspDiagInlineHint    cterm=underline
-    endif
   enddef
 
   augroup ClearLspGutterSymbolBackgrounds
@@ -55,7 +48,6 @@ if g:HasPlugin('lsp')
       diagSignWarningText: '🔶',
       diagSignInfoText: 'ℹ',
       diagSignHintText: '💡',
-      highlightDiagInline: true
     }
     lsp#options#OptionsSet(lspOptions)
 
