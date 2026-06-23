@@ -22,6 +22,14 @@ enddef
 
 
 if g:HasPlugin('lsp')
+  nmap <leader>gd :LspGotoDefinition<CR>
+  nmap <leader>gr :LspShowReferences<CR>
+  nmap <leader>rn :LspRename<CR>
+  nmap <leader>gg :LspDiag current<CR>
+  nmap [g :LspDiag prevWrap<CR>
+  nmap ]g :LspDiag nextWrap<CR>
+  nmap K :LspHover<CR>
+
   def RemoveBgFromLspGutterSymbols(): void
     hi LspDiagSignErrorText    guibg=NONE
     hi LspDiagSignWarningText  guibg=NONE
