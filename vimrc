@@ -188,11 +188,6 @@ command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
 
 
-
-
-
-
-
 # ---------------------------------------------------------------------------- #
 #
 #  keep the working directory clean
@@ -228,7 +223,7 @@ silent! call MakeDirIfNoExists(&directory)
 autocmd Filetype * if getfsize(@%) > 1048576 | setlocal syntax=OFF | endif
 
 # keep viminfo out of my home directory. Don't forget to gitignore it.
-set viminfofile=~/vimfiles/.viminfo
+execute 'set viminfofile=' .. $MYVIMDIR .. '/.viminfo'
 
 set undofile  # undo changes even after closing vim
 
@@ -274,7 +269,6 @@ set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
 set formatoptions-=t # don't auto-wrap text
 set fillchars=vert:\│ # cleaner looking vertical splits
-set foldmethod=manual
 
 # ---------------------------------------------------------------------------- #
 #
@@ -351,7 +345,7 @@ enddef
 # \ . synIDattr(synID(line('.'),col('.'),0),'name') . '> lo<'
 # \ . synIDattr(synIDtrans(synID(line('.'),col('.'),1)),'name') . '>'<CR>
 
-# it's so easy to mistype :w that even my mech keyboard somehow occasionally
+# It's so easy to mistype :w that even my mech keyboard somehow occasionally
 # does it with autoshift.
 command! W w
 command! Wq wq
