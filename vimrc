@@ -337,8 +337,8 @@ enddef
 # ---------------------------------------------------------------------------- #
 
 # Example registers to format keymap.c files for qmk
-@a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
-@b = ':s/&/                &/g :s/\(&..............\)\s*/\1/g :s/^\s*/        / :s/\s*$// '
+# @a = ':s/,/        ,        /g :s/\s*\([^,]\{8}\)\s*/ \1/g :s/^\s*/        / :s/\s*$// :s/,\s\+/, /g '
+# @b = ':s/&/                &/g :s/\(&..............\)\s*/\1/g :s/^\s*/        / :s/\s*$// '
 
 # # for debugging syntax highlighting
 # nnoremap <C-F10> :echo 'hi<' . synIDattr(synID(line('.'),col('.'),1),'name') . '> trans<'
@@ -355,8 +355,5 @@ command! Wa wa
 # my keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
 # won't work without this mapping.
 map <C-k6> <C-6>
-
-# nmap <C-b> "+p0i- <ESC>o<CR><ESC>:w<CR>
-# imap <C-b> <ESC>"+p0i- <ESC>o<CR><ESC>:w<CR>
 
 
