@@ -152,14 +152,16 @@ MapAutoflakeIfFound()
 #
 # ---------------------------------------------------------------------------- #
 
-def FindPython(): string
+def g:FindPython(): string
   # Find the Python executable in the global python environment or in the venv.
   # Returns the path to the Python executable or 'false' if not found.
   if executable("venv/Scripts/python.exe")
     return 'venv/Scripts/python.exe'
-  else
-    return 'py'
   endif
+  if executable(".venv/Scripts/python.exe")
+    return '.venv/Scripts/python.exe'
+  endif
+  return 'py'
 enddef
 
 
@@ -174,7 +176,7 @@ def! g:LoadCommand(cmd: string)
 enddef
 
 
-var python_binary = FindPython()
+var python_binary = g:FindPython()
 if g:HasPlugin("vim9-scratchterm")
   # execute Python or Pytest in scratch terminals
   g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' %'
