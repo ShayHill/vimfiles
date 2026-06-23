@@ -11,30 +11,10 @@ setlocal textwidth=85  # wrapping for gq
 
 setlocal nowrap
 
-
 packadd SimpylFold
-packadd coverage-highlight.vim
-
-
-if g:HasPlugin('lsp')
-  hi ErrorMsg guibg=NONE
-  nmap <buffer> <leader>gd :LspGotoDefinition<CR>
-  nmap <buffer> <leader>gr :LspShowReferences<CR>
-  nmap <buffer> <leader>rn :LspRename<CR>
-  nmap <buffer> <leader>gg :LspDiag current<CR>
-  nmap <buffer> [g :LspDiag prevWrap<CR>
-  nmap <buffer> ]g :LspDiag nextWrap<CR>
-  nmap <buffer> K :LspHover<CR>
-
-  augroup CustomColors
-    autocmd!
-    autocmd ColorScheme * hi ErrorMsg guibg=NONE
-  augroup END
-endif
-
 
 if g:HasPlugin('coverage-highlight.vim')
-  g:coverage_script = 'python -m coverage'
+  packadd coverage-highlight.vim
   nnoremap <buffer> <leader>c :HighlightCoverage<CR>
   nnoremap <buffer> <leader>C :HighlightCoverageOff<CR>
   nnoremap <buffer> <leader>ct :ToggleCoverage<CR>
@@ -72,7 +52,6 @@ def g:RunPrecommit(): void
   compiler precommit
   update
   vert Make
-  update
 enddef
 
 
@@ -80,7 +59,6 @@ def g:RunPrecommitAll(): void
   compiler precommit_all
   update
   vert Make
-  update
 enddef
 
 
@@ -89,8 +67,6 @@ if executable(precommit) && g:HasPlugin("vim-dispatch")
   compiler precommit
   nmap <buffer> <leader>l :call RunPrecommit()<CR>
   nmap <buffer> <leader>L :call RunPrecommitAll()<CR>
-else
-  echo "pre-commit not found or cannot run asynchronously"
 endif
 
 
@@ -108,36 +84,44 @@ enddef
 
 
 def MapBlackIfFound(): void
-  var black = FindModule('black')
-  var cmd = UpdateAround(MarkAndReturn(':!' .. black .. ' % -q<CR>'))
-  if executable(black)
-    execute 'nmap <buffer> <leader>b ' .. cmd
-  else
-    echo "black not found"
+  if g:HasPlugin('lsp')
+    execute 'nmap <buffer> <leader>b :LspFormat<CR>'
+    return
   endif
+  var black = FindModule('black')
+  if executable(black)
+    var cmd = UpdateAround(MarkAndReturn(':!' .. black .. ' % -q<CR>'))
+    execute 'nmap <buffer> <leader>b ' .. cmd
+    return
+  endif
+  execute 'nmap <buffer> <leader>b :echo "no formatter found"<CR>'
 enddef
 
 
 def MapIsortIfFound(): void
-  var isort = FindModule('isort')
-  var cmd = UpdateAround(MarkAndReturn(':!' .. isort .. ' % -q<CR>'))
-  if executable(isort)
-    execute 'nmap <buffer> <leader>i ' .. cmd
-  else
-    echo "isort not found"
+  if g:HasPlugin('lsp')
+    execute 'nmap <buffer> <leader>i :LspOrganizeImports<CR>'
+    return
   endif
+  var isort = FindModule('isort')
+  if executable(isort)
+    var cmd = UpdateAround(MarkAndReturn(':!' .. isort .. ' % -q<CR>'))
+    execute 'nmap <buffer> <leader>i ' .. cmd
+    return
+  endif
+  execute 'nmap <buffer> <leader>i :echo "isort not found"<CR>'
 enddef
 
 
 def MapAutoflakeIfFound(): void
   var autoflake = FindModule('autoflake')
   var af_cmd = ':!' .. autoflake .. ' --in-place --remove-all-unused-imports %<CR>'
-  var cmd = UpdateAround(MarkAndReturn(af_cmd))
   if executable(autoflake)
+    var cmd = UpdateAround(MarkAndReturn(af_cmd))
     execute 'nmap <buffer> <leader>ii ' .. cmd
-  else
-    echo "autoflake not found"
+    return
   endif
+  execute 'nmap <buffer> <leader>ii :echo "no autoflake found"<CR>'
 enddef
 
 
@@ -152,7 +136,7 @@ MapAutoflakeIfFound()
 #
 # ---------------------------------------------------------------------------- #
 
-def g:FindPython(): string
+def FindPython(): string
   # Find the Python executable in the global python environment or in the venv.
   # Returns the path to the Python executable or 'false' if not found.
   if executable("venv/Scripts/python.exe")
@@ -161,7 +145,7 @@ def g:FindPython(): string
   if executable(".venv/Scripts/python.exe")
     return '.venv/Scripts/python.exe'
   endif
-  return 'py'
+  return &pythonthreehome .. '/python.exe' 
 enddef
 
 
@@ -176,26 +160,23 @@ def! g:LoadCommand(cmd: string)
 enddef
 
 
-var python_binary = g:FindPython()
+var python_binary = FindPython()
 if g:HasPlugin("vim9-scratchterm")
   # execute Python or Pytest in scratch terminals
   g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' %'
   nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
-  # imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
 
   # last :term pytest command, if any. No <CR>
   g:pt_cmd = ':ScratchTermReplaceUV ' .. python_binary .. ' -m pytest'
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
   nmap <buffer> <leader>T :call g:LoadCommand(g:pt_cmd .. ' ' .. expand('%'))<CR>
-  # imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
 else
   g:py_cmd = ':term ' .. python_binary .. ' % <CR>'
   nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
-  # imap <buffer> <leader>e <ESC>:update<CR>:execute g:py_cmd<CR>
 
   # last :term pytest command, if any. No <CR>
   g:pt_cmd = ':vert term ' .. python_binary .. ' -m pytest'
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
-  # imap <buffer> <leader>t <ESC>:call g:LoadCommand(g:pt_cmd)<CR>
 endif
+
 
