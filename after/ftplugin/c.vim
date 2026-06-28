@@ -1,11 +1,7 @@
 vim9script
 
-setlocal expandtab  # spaces instead of tabs
-setlocal tabstop=4  # a tab = four spaces
-setlocal shiftwidth=4  # number of spaces for auto-indent
-setlocal softtabstop=4  # a soft-tab of four spaces
-setlocal autoindent  # turn on auto-indent
+autocmd FileType vim setlocal expandtab
+autocmd FileType vim setlocal tabstop=2
+autocmd FileType vim setlocal softtabstop=2
+autocmd FileType vim setlocal shiftwidth=2
 
-setlocal textwidth=85  # wrapping for gq
-
-setlocal nowrap

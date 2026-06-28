@@ -220,6 +220,9 @@ silent! call MakeDirIfNoExists(&directory)
 #
 # ---------------------------------------------------------------------------- #
 
+# do not wrap unless I ask for it
+set nowrap
+
 # turn off syntax on large files
 autocmd Filetype * if getfsize(@%) > 1048576 | setlocal syntax=OFF | endif
 
