@@ -26,25 +26,6 @@ endif
 #
 # ---------------------------------------------------------------------------- #
 
-def FindModule(module: string): string
-  # Find a module in a local venv. Failing that search for
-  # module in vimthreehome. Return the path to the module
-  # or 'false' if not found.
-  var venv_python = './venv/Scripts/' .. module
-  if executable(venv_python)
-    return venv_python
-  endif
-  var dot_venv_python = './.venv/Scripts/' .. module
-  if executable(dot_venv_python)
-    return dot_venv_python
-  endif
-  var global_python = &pythonthreehome .. '/Scripts/' .. module
-  if executable(global_python)
-    return global_python
-  endif
-  return 'false'
-enddef
-
 
 def g:RunPrecommit(): void
   compiler precommit
@@ -60,8 +41,7 @@ def g:RunPrecommitAll(): void
 enddef
 
 
-var precommit = FindModule('pre-commit')
-if executable(precommit) && g:HasPlugin("vim-dispatch")
+if executable('pre-commit') && g:HasPlugin("vim-dispatch")
   compiler precommit
   nmap <buffer> <leader>l :call RunPrecommit()<CR>
   nmap <buffer> <leader>L :call RunPrecommitAll()<CR>
@@ -86,9 +66,8 @@ def MapBlackIfFound(): void
     execute 'nmap <buffer> <leader>b :LspFormat<CR>'
     return
   endif
-  var black = FindModule('black')
-  if executable(black)
-    var cmd = UpdateAround(MarkAndReturn(':!' .. black .. ' % -q<CR>'))
+  if executable('black')
+    var cmd = UpdateAround(MarkAndReturn(':!black % -q<CR>'))
     execute 'nmap <buffer> <leader>b ' .. cmd
     return
   endif
@@ -101,9 +80,8 @@ def MapIsortIfFound(): void
     execute 'nmap <buffer> <leader>i :LspOrganizeImports<CR>'
     return
   endif
-  var isort = FindModule('isort')
-  if executable(isort)
-    var cmd = UpdateAround(MarkAndReturn(':!' .. isort .. ' % -q<CR>'))
+  if executable('isort')
+    var cmd = UpdateAround(MarkAndReturn(':!isort % -q<CR>'))
     execute 'nmap <buffer> <leader>i ' .. cmd
     return
   endif
@@ -112,9 +90,8 @@ enddef
 
 
 def MapAutoflakeIfFound(): void
-  var autoflake = FindModule('autoflake')
-  var af_cmd = ':!' .. autoflake .. ' --in-place --remove-all-unused-imports %<CR>'
-  if executable(autoflake)
+  var af_cmd = ':!autoflake --in-place --remove-all-unused-imports %<CR>'
+  if executable('autoflake')
     var cmd = UpdateAround(MarkAndReturn(af_cmd))
     execute 'nmap <buffer> <leader>ii ' .. cmd
     return
