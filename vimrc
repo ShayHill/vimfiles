@@ -20,8 +20,8 @@ g:mapleader = ' '
 # <leader>F9   <Plug>VimspectorToggleConditionalBreakpoint  Toggle conditional line breakpoint or logpoint on the current line.
 # F8           <Plug>VimspectorAddFunctionBreakpoint        Add a function breakpoint for the rxpression under cursor
 # <leader>F8   <Plug>VimspectorRunToCursor                  Run to Cursor
-# F10          <Plug>VimspectorStepOver                     Step Over
-# F11          <Plug>VimspectorStepInto                     Step Into
+# <C-F10>      <Plug>VimspectorStepOver                     Step Over
+# <C-F11>      <Plug>VimspectorStepInto                     Step Into
 # F12          <Plug>VimspectorStepOut                      Step out of current function scope
 #
 # ---------------------------------------------------------------------------- #
