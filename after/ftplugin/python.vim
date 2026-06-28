@@ -148,19 +148,18 @@ enddef
 
 if g:HasPlugin("vim9-scratchterm")
   # execute Python or Pytest in scratch terminals
-  g:py_cmd = ':ScratchTermReplaceU ' .. python .. ' %'
-  nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
+  nmap <buffer> <leader>e :update<CR>:ScratchTermReplaceU python %<CR>
 
   # last :term pytest command, if any. No <CR>
-  g:pt_cmd = ':ScratchTermReplaceUV ' .. python .. ' -m pytest'
+  g:pt_cmd = ':ScratchTermReplaceUV python -m pytest'
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
   nmap <buffer> <leader>T :call g:LoadCommand(g:pt_cmd .. ' ' .. expand('%'))<CR>
 else
   g:py_cmd = ':term ' .. python .. ' % <CR>'
-  nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
+  nmap <buffer> <leader>e :update<CR>:term python %<CR>
 
   # last :term pytest command, if any. No <CR>
-  g:pt_cmd = ':vert term ' .. python .. ' -m pytest'
+  g:pt_cmd = ':vert term python -m pytest'
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
 endif
 
