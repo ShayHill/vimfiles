@@ -11,8 +11,6 @@ setlocal textwidth=85  # wrapping for gq
 
 setlocal nowrap
 
-packadd SimpylFold
-
 if g:HasPlugin('coverage-highlight.vim')
   packadd coverage-highlight.vim
   nnoremap <buffer> <leader>c :HighlightCoverage<CR>
