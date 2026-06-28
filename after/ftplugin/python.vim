@@ -136,18 +136,6 @@ MapAutoflakeIfFound()
 #
 # ---------------------------------------------------------------------------- #
 
-def FindPython(): string
-  # Find the Python executable in the global python environment or in the venv.
-  # Returns the path to the Python executable or 'false' if not found.
-  if executable("venv/Scripts/python.exe")
-    return 'venv/Scripts/python.exe'
-  endif
-  if executable(".venv/Scripts/python.exe")
-    return '.venv/Scripts/python.exe'
-  endif
-  return &pythonthreehome .. '/python.exe' 
-enddef
-
 
 def! g:LoadCommand(cmd: string)
   # Write a command onto the command line.
@@ -160,22 +148,21 @@ def! g:LoadCommand(cmd: string)
 enddef
 
 
-var python_binary = FindPython()
 if g:HasPlugin("vim9-scratchterm")
   # execute Python or Pytest in scratch terminals
-  g:py_cmd = ':ScratchTermReplaceU ' .. python_binary .. ' %'
+  g:py_cmd = ':ScratchTermReplaceU ' .. python .. ' %'
   nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
 
   # last :term pytest command, if any. No <CR>
-  g:pt_cmd = ':ScratchTermReplaceUV ' .. python_binary .. ' -m pytest'
+  g:pt_cmd = ':ScratchTermReplaceUV ' .. python .. ' -m pytest'
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
   nmap <buffer> <leader>T :call g:LoadCommand(g:pt_cmd .. ' ' .. expand('%'))<CR>
 else
-  g:py_cmd = ':term ' .. python_binary .. ' % <CR>'
+  g:py_cmd = ':term ' .. python .. ' % <CR>'
   nmap <buffer> <leader>e :update<CR>:execute g:py_cmd<CR>
 
   # last :term pytest command, if any. No <CR>
-  g:pt_cmd = ':vert term ' .. python_binary .. ' -m pytest'
+  g:pt_cmd = ':vert term ' .. python .. ' -m pytest'
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
 endif
 
