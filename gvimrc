@@ -2,7 +2,6 @@ vim9script
 
 # if you can't see the below characters, get a better font
 set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶
-set fillchars+=vert:│  # for a better looking windows separator
 
 set guifont=DejaVu_Sans_Mono:h10:cANSI:qDRAFT
 

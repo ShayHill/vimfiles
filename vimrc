@@ -272,7 +272,7 @@ set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with 
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
 set formatoptions-=t # don't auto-wrap text
-set fillchars=vert:\│ # cleaner looking vertical splits
+set fillchars=vert:\│ # cleaner looking vertical splits (eliminate other fillchars)
 
 # ---------------------------------------------------------------------------- #
 #
