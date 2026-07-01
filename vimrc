@@ -84,7 +84,7 @@ colorscheme retrobox
 
 var diff_colorscheme = 'sorbet'
 var diff_background = 'dark'
-var cache_colorscheme = g:colors_name
+var cache_colorscheme = get(g:, 'colors_name', '')
 var cache_background = &background
 
 
@@ -110,7 +110,7 @@ enddef
 
 
 def InDiffColors(): bool
-  var in_diff_colors = g:colors_name == diff_colorscheme
+  var in_diff_colors = get(g:, 'colors_name', '') == diff_colorscheme
   in_diff_colors = in_diff_colors && &background == diff_background
   in_diff_colors = in_diff_colors && CompHighlights('NormalNC', 'Normal')
   return in_diff_colors
@@ -120,7 +120,7 @@ enddef
 def g:ToggleDiffColors(): void
   # toggle to a colorscheme with bright diff highlights and turn off bg fade
   # in Vim9-Limelight. Will not cause an error if not using Vim9-Limelight.
-  var in_diff_colors = g:colors_name == diff_colorscheme
+  var in_diff_colors = get(g:, 'colors_name', '') == diff_colorscheme
   in_diff_colors = in_diff_colors && &background == diff_background
   in_diff_colors = in_diff_colors && hlget('NormalNC', v:true) == hlget('Normal', v:true)
   g:bbb = in_diff_colors
@@ -128,7 +128,7 @@ def g:ToggleDiffColors(): void
     execute 'colorscheme' cache_colorscheme
     execute 'set background=' .. cache_background
   else
-    cache_colorscheme = g:colors_name
+    cache_colorscheme = get(g:, 'colors_name', '')
     cache_background = &background
     execute 'colorscheme' diff_colorscheme
     execute 'set background=' .. diff_background
