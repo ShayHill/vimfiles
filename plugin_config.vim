@@ -40,22 +40,25 @@ if g:HasPlugin('lsp')
   augroup ClearLspGutterSymbolBackgrounds
     autocmd!
     autocmd ColorScheme * call RemoveBgFromLspGutterSymbols()
+    autocmd User LspAttached call RemoveBgFromLspGutterSymbols()
+    autocmd User LspDiagsUpdated call RemoveBgFromLspGutterSymbols()
   augroup END
 
   def RegisterLspServers(): void
     var lspOptions = {
       diagSignErrorText: '❌',
       diagSignWarningText: '🔶',
-      diagSignInfoText: 'ℹ',
+      diagSignInfoText: '🔵',
       diagSignHintText: '💡',
+      semanticHighlight: 1,
     }
     lsp#options#OptionsSet(lspOptions)
 
     var lspServers = [
       {
-        name: 'pyright',
+        name: 'basedpyright',
         filetype: ['python'],
-        path: 'pyright-langserver',
+        path: 'basedpyright-langserver',
         args: ['--stdio'],
         workspaceConfig: {python: {pythonPath: exepath('python')}}
       },

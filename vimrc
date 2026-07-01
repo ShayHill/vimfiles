@@ -80,7 +80,7 @@ augroup END
 
 g:gruvbox_italics = 0 # disable italic comments and keywords
 
-var _dark_colorscheme = 'sorbet'
+var _dark_colorscheme = 'retrobox'
 var _light_colorscheme = 'PaperColor'
 
 if !exists('g:colors_name')
