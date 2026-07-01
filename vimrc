@@ -140,7 +140,7 @@ def PackInit(): void
   # -------- ai completion and chat
   minpac#add('ShayHill/copilot.vim')
   minpac#add('madox2/vim-ai', {do: '!python -m pip install "openai>=0.27"'})
-  minpac#add('rishi-opensource/vim-claude-code', {type: 'opt'})
+  minpac#add('rishi-opensource/vim-claude-code')
 
   # -------- snippets
   minpac#add('SirVer/ultisnips')
