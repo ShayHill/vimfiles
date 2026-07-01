@@ -58,11 +58,10 @@ convention = "pep257"
 
 [tool.ruff.format]
 docstring-code-line-length = 88
+skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
-
 select = ["ALL"]
-
 ignore = [
     "PLR",  # magic values
     "COM",  # trailing commas
