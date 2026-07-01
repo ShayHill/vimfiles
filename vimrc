@@ -72,50 +72,72 @@ augroup END
 #
 #  colorscheme
 #
-#  Toggle between two preferred colorschemes to switch without distraction
-#  when I'm on my laptop in certain lighting conditions.
+#  Toggle to a different colorscheme for viewing diffs. Few have the bright
+#  bars that Sorbet has. In using vim9-limelight, turn off background fading.
 #
 # ---------------------------------------------------------------------------- #
 
 
 g:gruvbox_italics = 0 # disable italic comments and keywords
 
-var _dark_colorscheme = 'retrobox'
-var _light_colorscheme = 'PaperColor'
+colorscheme retrobox
 
-if !exists('g:colors_name')
-  execute 'colorscheme' _dark_colorscheme
-  set background=dark
-endif
+var diff_colorscheme = 'sorbet'
+var diff_background = 'dark'
+var cache_colorscheme = g:colors_name
+var cache_background = &background
 
 
-# set colorscheme if exists, else set fallback. If fallback does not exist,
-# this will fail, so fallback should be a built-in colorscheme.
-def TrySetColorscheme(colorscheme: string, fallback: string)
-  try
-    execute 'colorscheme' colorscheme
-  catch /^Vim\%((\a\+)\)\=:E185/
-    execute 'colorscheme' fallback
-  endtry
+def CompHighlights(high_a: string, high_b: string): bool
+  # Compare two colorschemes. Return true if every attrib except id is the
+  # same.
+  var list_a = hlget(high_a, v:true)
+  if empty(list_a)
+    return v:false
+  endif
+  var list_b = hlget(high_b, v:true)
+  if empty(list_b)
+    return v:false
+  endif
+  var dict_a = list_a[0]
+  var dict_b = list_b[0]
+  remove(dict_a, 'id')
+  remove(dict_a, 'name')
+  remove(dict_b, 'id')
+  remove(dict_b, 'name')
+  return dict_a ==# dict_b
 enddef
 
 
-var colorscheme_toggle = 1
-def g:ToggleColorScheme()
-  # toggle between my two preferred colorschemes will default to dark when
-  # starting vim, but will leave light when sourcing vimrc if current
-  # colorscheme is set.
-  colorscheme_toggle = colorscheme_toggle ? 0 : 1
-  if colorscheme_toggle == 1
-    TrySetColorscheme(_dark_colorscheme, 'habamax')
-    set background=dark
+def InDiffColors(): bool
+  var in_diff_colors = g:colors_name == diff_colorscheme
+  in_diff_colors = in_diff_colors && &background == diff_background
+  in_diff_colors = in_diff_colors && CompHighlights('NormalNC', 'Normal')
+  return in_diff_colors
+enddef
+
+
+def g:ToggleDiffColors(): void
+  # toggle to a colorscheme with bright diff highlights and turn off bg fade
+  # in Vim9-Limelight. Will not cause an error if not using Vim9-Limelight.
+  var in_diff_colors = g:colors_name == diff_colorscheme
+  in_diff_colors = in_diff_colors && &background == diff_background
+  in_diff_colors = in_diff_colors && hlget('NormalNC', v:true) == hlget('Normal', v:true)
+  g:bbb = in_diff_colors
+  if InDiffColors()
+    execute 'colorscheme' cache_colorscheme
+    execute 'set background=' .. cache_background
   else
-    TrySetColorscheme(_light_colorscheme, 'default')
-    set background=light
+    cache_colorscheme = g:colors_name
+    cache_background = &background
+    execute 'colorscheme' diff_colorscheme
+    execute 'set background=' .. diff_background
+    highlight clear NormalNC
+    highlight! link NormalNC Normal
   endif
 enddef
 
-nnoremap <silent> <Leader>ll :call g:ToggleColorScheme()<CR>
+nnoremap <silent> <Leader>ll :call g:ToggleDiffColors()<CR>
 
 
 # ---------------------------------------------------------------------------- #
