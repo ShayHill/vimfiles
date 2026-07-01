@@ -3,7 +3,7 @@ vim9script
 # if you can't see the below characters, get a better font
 set listchars=tab:→\ ,eol:↵,trail:·,extends:↷,precedes:↶
 
-set guifont=DejaVu_Sans_Mono:h10:cANSI:qDRAFT
+set guifont=DejaVu_Sans_Mono:h11:cANSI:qDRAFT
 
 # symbols for render test
 # 🌸 (U+1F338) 🌼 (U+1F33C) 🌻 (U+1F33B) 🌺 (U+1F33A) 🌹 (U+1F339)
