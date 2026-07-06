@@ -1,7 +1,4 @@
 vim9script
 
-autocmd FileType vim setlocal expandtab
-autocmd FileType vim setlocal tabstop=2
-autocmd FileType vim setlocal softtabstop=2
-autocmd FileType vim setlocal shiftwidth=2
+setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
