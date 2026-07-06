@@ -51,6 +51,7 @@ if g:HasPlugin('lsp')
       diagSignInfoText: '🔵',
       diagSignHintText: '💡',
       semanticHighlight: 1,
+      usePopupInCodeAction: 1,  # numpad and nav require popup version
     }
     lsp#options#OptionsSet(lspOptions)
 
