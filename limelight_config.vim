@@ -1,5 +1,7 @@
 vim9script
 
+import autoload 'plugins.vim'
+
 # ---------------------------------------------------------------------------- #
 #
 #  Statusline with vim9-limelight
@@ -27,64 +29,39 @@ set laststatus=2
 #    set_pmenu: bool - replace Pmenu with faded bg color.
 # --------------------------------------------------------------------------- #
 
-# the defaults, just to show the config variables
-g:limelight_cn_candidates = ['IncSearch', 'Search', 'ErrorMsg']
-g:limelight_text_fade = 0.65
-g:limelight_bg_fade = 0.1
+if plugins.IsInstalled('vim9-limelight')
+  # the defaults, just to show the config variables
+  g:limelight_cn_candidates = ['IncSearch', 'Search', 'ErrorMsg']
+  g:limelight_text_fade = 0.65
+  g:limelight_bg_fade = 0.1
 
-def HlgetOrEmpty(hi_group: string): dict<any>
-  # Get a highlight group dictionary. If the highlight group does not exist,
-  # return an empty dictionary.
-  var hi_dict: dict<any>
-  try
-    hi_dict = hlget(hi_group, v:true)[0]
-  catch /^Vim\%((\a\+)\)\=:E684:/
-    hi_dict = {}
-  endtry
-  return hi_dict
-enddef
-
-# augroup LimelightSunbather
-#   autocmd!
-#   autocmd ColorScheme *sunbather highlight NormalNC guibg=#ffe4eb
-# augroup END
-
-def DefineCustomHiGroups(): void
-  hi SunbatherNC guibg=#ffe4eb
-enddef
-
-augroup RefreshCustomHiGroups
-  autocmd!
-  autocmd ColorScheme * DefineCustomHiGroups()
-
-DefineCustomHiGroups()
-
-# colorscheme-specific settings
-g:limelight_config = {
-  PaperColor: {cn: 'DiffAdd', bg: 'MatchParen', bg_fade: 0.25},
-  blue: {cn: 'Search', bg: 'TabPanel'},
-  darkblue: {bg_fade: 0.2},
-  default: {cn: 'ErrorMsg', bg: 'Pmenu', bg_fade: 0.1},
-  delek: {bg: 'Pmenu', bg_fade: 0.0},
-  desert: {bg: 'Pmenu', bg_fade: 0.0},
-  elflord: {bg_fade: 0.2},
-  habamax: {bg: 'Pmenu', bg_fade: 0.0},
-  industry: {bg: 'Pmenu', bg_fade: 0.0},
-  koehler: {bg: 'Pmenu', bg_fade: 0.0},
-  lunaperche: {bg: 'Pmenu', bg_fade: 0.0},
-  morning: {bg: 'Pmenu', bg_fade: 0.0},
-  murphy: {bg_fade: 0.2},
-  pablo: {bg: 'Pmenu', bg_fade: 0.0},
-  peachpuff: {bg: 'Pmenu', bg_fade: 0},
-  quiet: {bg: 'Pmenu', bg_fade: 0.0},
-  retrobox: {bg: 'Pmenu', bg_fade: 0.0},
-  ron: {bg_fade: 0.2},
-  solarized8: {bg_fade: 0.25},
-  sunbather: {cn: 'Search', bg: 'SunbatherNC', bg_fade: 0.0},
-  torte: {bg: 'Pmenu', bg_fade: 0.0},
-  wildcharm: {bg: 'Pmenu', bg_fade: 5.0},
-  zaibatsu: {set_pmenu: v:true}
-}
+  # colorscheme-specific settings
+  g:limelight_config = {
+    PaperColor: {cn: 'DiffAdd', bg: 'MatchParen', bg_fade: 0.25},
+    blue: {cn: 'Search', bg: 'TabPanel'},
+    darkblue: {bg_fade: 0.2},
+    default: {cn: 'ErrorMsg', bg: 'Pmenu', bg_fade: 0.1},
+    delek: {bg: 'Pmenu', bg_fade: 0.0},
+    desert: {bg: 'Pmenu', bg_fade: 0.0},
+    elflord: {bg_fade: 0.2},
+    habamax: {bg: 'Pmenu', bg_fade: 0.0},
+    industry: {bg: 'Pmenu', bg_fade: 0.0},
+    koehler: {bg: 'Pmenu', bg_fade: 0.0},
+    lunaperche: {bg: 'Pmenu', bg_fade: 0.0},
+    morning: {bg: 'Pmenu', bg_fade: 0.0},
+    murphy: {bg_fade: 0.2},
+    pablo: {bg: 'Pmenu', bg_fade: 0.0},
+    peachpuff: {bg: 'Pmenu', bg_fade: 0},
+    quiet: {bg: 'Pmenu', bg_fade: 0.0},
+    retrobox: {bg: 'Pmenu', bg_fade: 0.0},
+    ron: {bg_fade: 0.2},
+    solarized8: {bg_fade: 0.25},
+    sunbather: {cn: 'Search', bg: 'SunbatherNC', bg_fade: 0.0},
+    torte: {bg: 'Pmenu', bg_fade: 0.0},
+    wildcharm: {bg: 'Pmenu', bg_fade: 5.0},
+    zaibatsu: {set_pmenu: v:true}
+  }
+endif
 
 
 # ---------------------------------------------------------------------------- #
@@ -116,14 +93,26 @@ def g:MyStatusLine(): string
   # a string that will hold the entire statusline argument
   var stl = ""
 
-  # hard when focused, whether split or unsplit, normal otherwise
-  var hard_when_focused = g:LimelightHiSelect(g:statusline_winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
-  # soft always
-  var soft = g:LimelightHiSelect(g:statusline_winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
-  # soft only when shaded, normal otherwise
-  var soft_when_shaded = g:LimelightHiSelect(g:statusline_winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
-  # normal always
-  var plain = g:LimelightHiSelect(g:statusline_winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
+  var hard_when_focused: string
+  var soft: string
+  var soft_when_shaded: string
+  var plain: string
+
+  if plugins.IsLoaded('vim9-limelight')
+    # hard when focused, whether split or unsplit, normal otherwise
+    hard_when_focused = g:LimelightHiSelect(g:statusline_winid, 'StatusLineHard', 'StatusLineNCSoft', 'StatusLineCNHard')
+    # soft always
+    soft = g:LimelightHiSelect(g:statusline_winid, 'StatusLineSoft', 'StatusLineNCSoft', 'StatusLineCNSoft')
+    # soft only when shaded, normal otherwise
+    soft_when_shaded = g:LimelightHiSelect(g:statusline_winid, 'StatusLine', 'StatusLineNCSoft', 'StatusLineCN')
+    # normal always
+    plain = g:LimelightHiSelect(g:statusline_winid, 'StatusLine', 'StatusLineNC', 'StatusLineCN')
+  else
+    hard_when_focused = ''
+    soft = ''
+    soft_when_shaded = ''
+    plain = ''
+  endif
 
   # use plain hi group for all separators
   var sep = plain .. '|'

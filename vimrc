@@ -60,12 +60,9 @@ endif
 # ---------------------------------------------------------------------------- #
 
 
-source $MYVIMDIR/plugin_config.vim
-
-augroup LimelightSunbather
-  autocmd!
-  autocmd ColorScheme *sunbather highlight NormalNC guibg=#ffe4eb
-augroup END
+# This must be sourced TWICE. Once before the plugins are loaded, and again
+# after.
+source $MYVIMDIR/after/plugin/plugin_config.vim
 
 
 # ---------------------------------------------------------------------------- #
@@ -157,7 +154,7 @@ def PackInit(): void
   minpac#add('k-takata/minpac', {'type': 'opt'})
 
   # -------- everything needed for lsp and completion
-  minpac#add('yegappan/lsp')
+  minpac#add('yegappan/lsp', {'type': 'opt'})
 
   # -------- ai completion and chat
   minpac#add('ShayHill/copilot.vim')
@@ -171,7 +168,7 @@ def PackInit(): void
   minpac#add('vim-fuzzbox/fuzzbox.vim')
 
   # -------- debugging
-  minpac#add('puremourning/vimspector')
+  minpac#add('puremourning/vimspector', {'type': 'opt'})
 
   # -------- the usual suspects
   minpac#add('tpope/vim-fugitive')  # git integration
@@ -202,7 +199,7 @@ def PackInit(): void
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
   minpac#add('girishji/easyjump.vim')
   minpac#add('girishji/fFtT.vim')
-  minpac#add('jeetsukumaran/vim-pythonsense')
+  minpac#add('jeetsukumaran/vim-pythonsense', {type: 'opt'})
 enddef
 
 
@@ -381,5 +378,4 @@ command! Wa wa
 # my keyboard has no 6, only k6 (numpad 6), so the built in C-6 command
 # won't work without this mapping.
 map <C-k6> <C-6>
-
 

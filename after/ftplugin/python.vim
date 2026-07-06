@@ -1,18 +1,17 @@
 vim9script
 
+import autoload 'plugins.vim'
+
 setlocal colorcolumn=89  # max cols in black is 88
 setlocal textwidth=85  # wrapping for gq
 
 setlocal nowrap
 
-if g:HasPlugin('coverage-highlight.vim')
-  packadd coverage-highlight.vim
-  nnoremap <buffer> <leader>c :HighlightCoverage<CR>
-  nnoremap <buffer> <leader>C :HighlightCoverageOff<CR>
-  nnoremap <buffer> <leader>ct :ToggleCoverage<CR>
-  nnoremap <buffer> <leader>cn :NextUncovered<CR>
-  nnoremap <buffer> <leader>cp :PrevUncovered<CR>
-endif
+packadd coverage-highlight.vim
+packadd lsp
+packadd vim-pythonsense
+packadd vimspector
+source $MYVIMDIR/after/plugin/plugin_config.vim
 
 # ---------------------------------------------------------------------------- #
 #
@@ -35,7 +34,7 @@ def g:RunPrecommitAll(): void
 enddef
 
 
-if executable('pre-commit') && g:HasPlugin("vim-dispatch")
+if executable('pre-commit') && plugins.IsLoaded("vim-dispatch")
   compiler precommit
   nmap <buffer> <leader>l :call RunPrecommit()<CR>
   nmap <buffer> <leader>L :call RunPrecommitAll()<CR>
@@ -56,7 +55,7 @@ enddef
 
 
 def MapBlackIfFound(): void
-  if g:HasPlugin('lsp')
+  if plugins.IsLoaded('lsp')
     execute 'nmap <buffer> <leader>b :LspFormat<CR>'
     return
   endif
@@ -70,7 +69,7 @@ enddef
 
 
 def MapIsortIfFound(): void
-  if g:HasPlugin('lsp')
+  if plugins.IsLoaded('lsp')
     execute 'nmap <buffer> <leader>i :LspOrganizeImports<CR>'
     return
   endif
@@ -117,7 +116,7 @@ def! g:LoadCommand(cmd: string)
 enddef
 
 
-if g:HasPlugin("vim9-scratchterm")
+if plugins.IsLoaded("vim9-scratchterm")
   # execute Python or Pytest in scratch terminals
   nmap <buffer> <leader>e :update<CR>:ScratchTermReplaceU python %<CR>
 
