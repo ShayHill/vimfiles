@@ -1,71 +1,76 @@
 snippet vimspector
 {
-    "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
-    "configurations": {
-        "run": {
-            "adapter": "debugpy",
-            "configuration": {
-                "name": "run this Python file",
-                "request": "launch",
-                "type": "python",
-                "cwd": "${workspaceRoot}",
-                "python": "${workspaceRoot}/.venv/Scripts/python.exe",
-                "program": "${file}",
-                "pythonArgs": ["-Xfrozen_modules=off"]
-            },
-            "breakpoints": {
-                "exception": {
-                    "raised": "N",
-                    "caught": "N",
-                    "uncaught": "Y",
-                    "userUnhandled": "N"
-                }
-            }
-        },
-        "run - main.py": {
-            "adapter": "debugpy",
-            "configuration": {
-                "name": "run main.py",
-                "request": "launch",
-                "type": "python",
-                "cwd": "${workspaceRoot}",
-                "python": "${workspaceRoot}/.venv/Scripts/python.exe",
-                "program": "${workspaceRoot}/src/$1/main.py",
-                "pythonArgs": ["-Xfrozen_modules=off"]
-            },
-            "breakpoints": {
-                "exception": {
-                    "raised": "N",
-                    "caught": "N",
-                    "uncaught": "Y",
-                    "userUnhandled": "N"
-                }
-            }
-        },
-        "test": {
-            "adapter": "debugpy",
-            "configuration": {
-                "name": "run this test file",
-                "module": "pytest",
-                "type": "python",
-                "request": "launch",
-                "cwd": "${workspaceRoot}",
-                "python": "${workspaceRoot}/.venv/Scripts/python.exe",
-                "pythonArgs": ["-Xfrozen_modules=off"],
-                "args": [
-                    "-q",
-                    "${file}"
-                ]
-            },
-            "breakpoints": {
-                "exception": {
-                    "raised": "N",
-                    "caught": "N",
-                    "uncaught": "Y",
-                    "userUnhandled": "N"
-                }
-            }
+  "configurations": {
+    "run": {
+      "adapter": "debugpy",
+      "breakpoints": {
+        "exception": {
+          "caught": "N",
+          "raised": "N",
+          "uncaught": "Y",
+          "userUnhandled": "N"
         }
+      },
+      "configuration": {
+        "cwd": "${workspaceRoot}",
+        "name": "run this Python file",
+        "program": "${file}",
+        "python": "${workspaceRoot}/.venv/Scripts/python.exe",
+        "pythonArgs": [
+          "-Xfrozen_modules=off"
+        ],
+        "request": "launch",
+        "type": "python"
+      }
+    },
+    "run - main.py": {
+      "adapter": "debugpy",
+      "breakpoints": {
+        "exception": {
+          "caught": "N",
+          "raised": "N",
+          "uncaught": "Y",
+          "userUnhandled": "N"
+        }
+      },
+      "configuration": {
+        "cwd": "${workspaceRoot}",
+        "name": "run main.py",
+        "program": "${workspaceRoot}/src/$1/main.py",
+        "python": "${workspaceRoot}/.venv/Scripts/python.exe",
+        "pythonArgs": [
+          "-Xfrozen_modules=off"
+        ],
+        "request": "launch",
+        "type": "python"
+      }
+    },
+    "test": {
+      "adapter": "debugpy",
+      "breakpoints": {
+        "exception": {
+          "caught": "N",
+          "raised": "N",
+          "uncaught": "Y",
+          "userUnhandled": "N"
+        }
+      },
+      "configuration": {
+        "args": [
+          "-q",
+          "${file}"
+        ],
+        "cwd": "${workspaceRoot}",
+        "module": "pytest",
+        "name": "run this test file",
+        "python": "${workspaceRoot}/.venv/Scripts/python.exe",
+        "pythonArgs": [
+          "-Xfrozen_modules=off"
+        ],
+        "request": "launch",
+        "type": "python"
+      }
     }
+  }
 }
 endsnippet
