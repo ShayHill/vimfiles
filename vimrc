@@ -154,7 +154,7 @@ def PackInit(): void
   minpac#add('k-takata/minpac', {'type': 'opt'})
 
   # -------- everything needed for lsp and completion
-  minpac#add('yegappan/lsp', {'type': 'opt'})
+  minpac#add('ShayHill/lsp', {'type': 'opt'})
 
   # -------- ai completion and chat
   minpac#add('ShayHill/copilot.vim')
