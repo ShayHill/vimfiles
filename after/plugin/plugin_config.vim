@@ -184,3 +184,8 @@ if plugins.IsLoaded('coverage-highlight.vim')
   nnoremap <buffer> <leader>cn :NextUncovered<CR>
   nnoremap <buffer> <leader>cp :PrevUncovered<CR>
 endif
+
+
+if plugins.IsInstalled('vim-claude-code')
+  g:claude_code_diff_preview = 1
+endif

@@ -3,7 +3,7 @@
 " beginning of a line) will still be highlighted as strings.
 
 syn region pythonComment
-      \ start=+\%(:\n\s*\|\n\|^\)\@<=[rR]\{0,1}\z('''\|"""\)+ end=+\z1+ keepend
+      \ start=+\%(:\n\s*\|^\)\@<=\s*\%(\s*#.*\)\=\s*[rR]\{0,1}\z('''\|"""\)+
+      \ end=+\z1+ keepend
       \ contains=pythonEscape,pythonTodo,@Spell
-
 
