@@ -180,7 +180,9 @@ def PackInit(): void
   minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
 
   # -------- markdown
-  minpac#add('instant-markdown/vim-instant-markdown')  # requires node and curl
+  #  vim-instant-markdown requires node, curl, and pandoc?
+  #  winget install JohnMacFarlane.Pandoc
+  minpac#add('instant-markdown/vim-instant-markdown', {do: '!python -m pip install smdv'})  # node and curl
 
   # -------- colorschemes
   minpac#add('lifepillar/vim-solarized8')
