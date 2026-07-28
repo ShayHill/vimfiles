@@ -212,27 +212,26 @@ command! PackStatus packadd minpac | minpac#status()
 
 # ---------------------------------------------------------------------------- #
 #
-#  keep the working directory clean
+#  keep temporary files in ~/vimfiles
 #
 # ---------------------------------------------------------------------------- #
 
-set backup  # write unsaved changes to a backup file
+&directory = $'{$MYVIMDIR}.tmp/swap/'
+&backupdir = $'{$MYVIMDIR}.tmp/backup//'
+&undodir = $'{$MYVIMDIR}.tmp/undo//'
 
-$TMPDIR = expand('~/AppData/Local/Temp/vim')
-
-def MakeDirIfNoExists(path: string): void
-  if !isdirectory(expand(path))
-    call mkdir(expand(path), 'p')
+def MkdirIfNotExists(dir: string): void
+  if !isdirectory(dir)
+    mkdir(dir, "p")
   endif
 enddef
 
-set backupdir=$TMPDIR/backup
-set undodir=$TMPDIR/undo
-set directory=$TMPDIR/swap
+MkdirIfNotExists(&directory)
+MkdirIfNotExists(&backupdir)
+MkdirIfNotExists(&undodir)
 
-silent! call MakeDirIfNoExists(&undodir)
-silent! call MakeDirIfNoExists(&backupdir)
-silent! call MakeDirIfNoExists(&directory)
+set backup
+set undofile
 
 
 # ---------------------------------------------------------------------------- #

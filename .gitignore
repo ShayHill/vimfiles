@@ -4,4 +4,5 @@ vim-env/
 pack/
 gvim_fullscreen.dll
 .viminfo
+.tmp
 
