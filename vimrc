@@ -7,6 +7,12 @@ nnoremap <Space> <Nop>
 vnoremap <Space> <Nop>
 g:mapleader = ' '
 
+# 260721 - There is a bug in Vim or one of my plugins that is causing complete
+# to glitch out. The settings when it glitches are
+# :set completeopt=menu,popup,fuzzy
+# these fix it (at least for a while)
+# set completeopt=menuone,noinsert,noselect
+
 # ---------------------------------------------------------------------------- #
 #
 #  Vimspector Cheat Sheet
@@ -34,8 +40,10 @@ g:mapleader = ' '
 
 if has("win32")
   set shell=pwsh
-  set termguicolors # PowerShell is capable of TrueColor.
-  &t_8u = "\<Esc>[58:2::%lu:%lu:%lum"  # kludge for https://github.com/vim/vim/issues/20413
+  set termguicolors
+  &t_8f = "\<Esc>[38:2::%lu:%lu:%lum"
+  &t_8b = "\<Esc>[48:2::%lu:%lu:%lum"
+  &t_8u = "\<Esc>[58:2::%lu:%lu:%lum"
 
   var local_programs = expand('$HOME/AppData/Local/Programs')
 
@@ -49,9 +57,7 @@ if has("win32")
   else
     echoerr 'rg not found. Install ripgrep to use :grep'
   endif
-
 endif
-
 
 # ---------------------------------------------------------------------------- #
 #
@@ -77,7 +83,7 @@ source $MYVIMDIR/after/plugin/plugin_config.vim
 
 g:gruvbox_italics = 0 # disable italic comments and keywords
 
-colorscheme retrobox
+colorscheme everforest
 
 var diff_colorscheme = 'sorbet'
 var diff_background = 'dark'
@@ -188,6 +194,7 @@ def PackInit(): void
   minpac#add('lifepillar/vim-solarized8')
   minpac#add('NLKNguyen/papercolor-theme')
   minpac#add('nikolvs/vim-sunbather')
+  minpac#add('sainnhe/everforest')
 
   # -------- translation
   minpac#add('voldikss/vim-translator')
