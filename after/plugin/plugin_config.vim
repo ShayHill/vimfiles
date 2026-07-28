@@ -189,3 +189,4 @@ endif
 if plugins.IsInstalled('vim-claude-code')
   g:claude_code_diff_preview = 1
 endif
+
