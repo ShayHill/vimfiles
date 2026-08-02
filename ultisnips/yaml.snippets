@@ -139,7 +139,6 @@ jobs:
   # Deploy on test.pypi when branch is dev and commit message starts with 'bump'
   deploy-on-testpypi:
     runs-on: ubuntu-latest
-    continue-on-error: true
     needs: [tests]
     if: github.ref_name == 'dev' && startsWith(github.event.head_commit.message, 'bump:')
     steps:
@@ -155,16 +154,16 @@ jobs:
       - name: Build package
         run: python -m build
       - name: Publish package
-        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          repository_url: https://test.pypi.org/legacy/
-          user: __token__
+          repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
 
   # Deploy on pypi when branch is main and commit message starts with 'bump'
   deploy-on-pypi:
     runs-on: ubuntu-latest
-    continue-on-error: true
+    permissions:
+      id-token: write
     needs: [tests]
     if: github.ref_name == 'main' && startsWith(github.event.head_commit.message, 'bump:')
     steps:
@@ -180,7 +179,7 @@ jobs:
       - name: Build package
         run: python -m build
       - name: Publish package
-        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
@@ -234,9 +233,6 @@ repos:
   rev: v2.2.0
   hooks:
   - id: mypy
-    name: mypy
-    language: python
-    language_version: python 3.$2
     types: [python]
     require_serial: true
     verbose: true
@@ -304,9 +300,9 @@ repos:
       name: "ruff-format"
 
 # basedpyright config (select/ignore/fixable/target-version) lives in pyproject.toml
--   repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
-    rev: 1.39.9
-    hooks:
-    -   id: basedpyright
+- repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
+  rev: 1.39.9
+  hooks:
+  - id: basedpyright
 endsnippet
 
