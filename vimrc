@@ -85,7 +85,7 @@ g:gruvbox_italics = 0 # disable italic comments and keywords
 
 colorscheme everforest
 
-var diff_colorscheme = 'sorbet'
+var diff_colorscheme = 'quiet'
 var diff_background = 'dark'
 var cache_colorscheme = get(g:, 'colors_name', '')
 var cache_background = &background
@@ -113,20 +113,21 @@ enddef
 
 
 def InDiffColors(): bool
+  # Return true if the current colorscheme is the diff colorscheme and
+  # background fading is disables in vim9-limelight. This second condition
+  # ensures g:ToggleDiffColors() will toggle off background fading even if
+  # `quiet` (or whatever diff colorscheme you use) is used as a normal
+  # colorscheme.
   var in_diff_colors = get(g:, 'colors_name', '') == diff_colorscheme
   in_diff_colors = in_diff_colors && &background == diff_background
-  in_diff_colors = in_diff_colors && CompHighlights('NormalNC', 'Normal')
+  in_diff_colors = in_diff_colors && (!hlexists('NormalNC') || CompHighlights('NormalNC', 'Normal'))
   return in_diff_colors
 enddef
 
 
 def g:ToggleDiffColors(): void
-  # toggle to a colorscheme with bright diff highlights and turn off bg fade
+  # Toggle to a colorscheme with bright diff highlights and turn off bg fade
   # in Vim9-Limelight. Will not cause an error if not using Vim9-Limelight.
-  var in_diff_colors = get(g:, 'colors_name', '') == diff_colorscheme
-  in_diff_colors = in_diff_colors && &background == diff_background
-  in_diff_colors = in_diff_colors && hlget('NormalNC', v:true) == hlget('Normal', v:true)
-  g:bbb = in_diff_colors
   if InDiffColors()
     execute 'colorscheme' cache_colorscheme
     execute 'set background=' .. cache_background
@@ -135,8 +136,10 @@ def g:ToggleDiffColors(): void
     cache_background = &background
     execute 'colorscheme' diff_colorscheme
     execute 'set background=' .. diff_background
-    highlight clear NormalNC
-    highlight! link NormalNC Normal
+    if hlexists('NormalNC')  # only exists in Vim9-Limelight
+      highlight clear NormalNC
+      highlight! link NormalNC Normal
+    endif
   endif
 enddef
 
@@ -268,6 +271,7 @@ set exrc
 # opening files
 set path+=**
 set wildmode=list:longest,full
+set wildignorecase
 
 # aggresive autsave
 set autowriteall  # Save when switching buffers
@@ -293,13 +297,19 @@ set autoread # read file changes without asking if no unsaved changes
 set belloff=all # flash instead of beeping for errors
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set completeopt=menu,popup,fuzzy completepopup=highlight:Pmenu  # fuzzy completion
-set breakindent breakindentopt=list:-1 linebreak  # indent
+set showbreak=↪\
+set breakindent
+set breakindentopt=min:40,sbr,list:-1
 set nojoinspaces  # eliminate 'complimentary typing' when joining lines with punctuation
 set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with options
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
 set formatoptions-=t # don't auto-wrap text
 set fillchars=vert:\│ # cleaner looking vertical splits (eliminate other fillchars)
+set nostartofline # keep your column when jumping with `<C-d>` etc.
+set nomodeline # I don't use it. Possible security risk.
+set modelines=0
+
 
 # ---------------------------------------------------------------------------- #
 #
