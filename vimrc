@@ -83,7 +83,7 @@ source $MYVIMDIR/after/plugin/plugin_config.vim
 
 g:gruvbox_italics = 0 # disable italic comments and keywords
 
-colorscheme everforest
+colorscheme habamax
 
 var diff_colorscheme = 'quiet'
 var diff_background = 'dark'
@@ -163,7 +163,7 @@ def PackInit(): void
   minpac#add('k-takata/minpac', {'type': 'opt'})
 
   # -------- everything needed for lsp and completion
-  minpac#add('ShayHill/lsp', {'type': 'opt'})
+  minpac#add('yegappan/lsp', {'type': 'opt'})
 
   # -------- ai completion and chat
   minpac#add('ShayHill/copilot.vim')
@@ -302,6 +302,7 @@ set breakindent
 set breakindentopt=min:40,sbr,list:-1
 set nojoinspaces  # eliminate 'complimentary typing' when joining lines with punctuation
 set diffopt+=vertical,algorithm:patience,indent-heuristic  # experimenting with options
+set diffopt+=followwrap  # keep wrapping if wrap set
 set viminfo='200,<500,s32  # save more history
 set mouse=a  # enable mouse on the command line
 set formatoptions-=t # don't auto-wrap text
