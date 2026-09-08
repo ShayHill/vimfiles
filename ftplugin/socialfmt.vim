@@ -1,4 +1,11 @@
-packadd vim9-socialfmt
+vim9script
+
+if !exists("b:packadd_loaded")
+  packadd vim9-socialfmt
+  source $MYVIMDIR/after/plugin/plugin_config.vim
+endif
+
+b:packadd_loaded = 1
 
 xnoremap <buffer> <leader>nn :<C-u>call socialfmt#Normal()<CR>
 xnoremap <buffer> <leader>ii :<C-u>call socialfmt#Italic()<CR>
@@ -15,3 +22,7 @@ xnoremap <buffer> <leader>mm :<C-u>call socialfmt#Mono()<CR>
 xnoremap <buffer> <leader>sp :<C-u>call socialfmt#Sup()<CR>
 xnoremap <buffer> <leader>su :<C-u>call socialfmt#Sub()<CR>
 xnoremap <buffer> <leader>sc :<C-u>call socialfmt#SmallCaps()<CR>
+
+setlocal wrap
+setlocal spell
+setlocal linebreak

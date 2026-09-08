@@ -1,18 +1,5 @@
 vim9script
 
-# nice defaults from Bram and the The Vim Project
-source $VIMRUNTIME/defaults.vim
-
-nnoremap <Space> <Nop>
-vnoremap <Space> <Nop>
-g:mapleader = ' '
-
-# 260721 - There is a bug in Vim or one of my plugins that is causing complete
-# to glitch out. The settings when it glitches are
-# :set completeopt=menu,popup,fuzzy
-# these fix it (at least for a while)
-# set completeopt=menuone,noinsert,noselect
-
 # ---------------------------------------------------------------------------- #
 #
 #  Vimspector Cheat Sheet
@@ -31,6 +18,33 @@ g:mapleader = ' '
 # F12          <Plug>VimspectorStepOut                      Step out of current function scope
 #
 # ---------------------------------------------------------------------------- #
+
+
+packadd! copilot.vim
+packadd! vim-ai
+# packadd! vim-claude-code
+packadd! fuzzbox.vim
+packadd! vim-fugitive
+packadd! vim-obsession
+packadd! vim-surround
+packadd! ctrlsf.vim
+packadd! vim9-scratchterm
+packadd! vim9-limelight
+packadd! easyjump.vim
+packadd! fFtT.vim
+
+# nice defaults from Bram and the The Vim Project
+source $VIMRUNTIME/defaults.vim
+
+nnoremap <Space> <Nop>
+vnoremap <Space> <Nop>
+g:mapleader = ' '
+
+# 260721 - There is a bug in Vim or one of my plugins that is causing complete
+# to glitch out. The settings when it glitches are
+# :set completeopt=menu,popup,fuzzy
+# these fix it (at least for a while)
+# set completeopt=menuone,noinsert,noselect
 
 # ---------------------------------------------------------------------------- #
 #
@@ -160,38 +174,38 @@ def PackInit(): void
   packadd minpac
 
   minpac#init()
-  minpac#add('k-takata/minpac', {'type': 'opt'})
+  minpac#add('k-takata/minpac', {type: 'opt'})
 
   # -------- everything needed for lsp and completion
-  minpac#add('yegappan/lsp', {'type': 'opt'})
+  minpac#add('yegappan/lsp', {type: 'opt'})
 
   # -------- ai completion and chat
-  minpac#add('ShayHill/copilot.vim')
-  minpac#add('madox2/vim-ai', {do: '!python -m pip install "openai>=0.27"'})
-  minpac#add('rishi-opensource/vim-claude-code')
+  minpac#add('ShayHill/copilot.vim', {type: 'opt'})
+  minpac#add('madox2/vim-ai', {type: 'opt', do: '!python -m pip install "openai>=0.27"'})
+  minpac#add('rishi-opensource/vim-claude-code', {type: 'opt'})
 
   # -------- snippets
-  minpac#add('SirVer/ultisnips')
+  minpac#add('SirVer/ultisnips', {type: 'opt'})
 
   # -------- fuzzy finder
-  minpac#add('vim-fuzzbox/fuzzbox.vim')
+  minpac#add('vim-fuzzbox/fuzzbox.vim', {type: 'opt'})
 
   # -------- debugging
-  minpac#add('puremourning/vimspector', {'type': 'opt'})
+  minpac#add('puremourning/vimspector', {type: 'opt'})
 
   # -------- the usual suspects
-  minpac#add('tpope/vim-fugitive')  # git integration
-  minpac#add('tpope/vim-obsession')  # session management
-  minpac#add('tpope/vim-surround')  # surround text objects
-  minpac#add('tpope/vim-dispatch')  # async build
+  minpac#add('tpope/vim-fugitive', {type: 'opt'})  # git integration
+  minpac#add('tpope/vim-obsession', {type: 'opt'})  # session management
+  minpac#add('tpope/vim-surround', {type: 'opt'})  # surround text objects
+  minpac#add('tpope/vim-dispatch', {type: 'opt'})  # async build
 
   # -------- refactoring
-  minpac#add('dyng/ctrlsf.vim')  # like :CocSearch
+  minpac#add('dyng/ctrlsf.vim', {type: 'opt'})  # like :CocSearch
 
   # -------- markdown
   #  vim-instant-markdown requires node, curl, and pandoc?
   #  winget install JohnMacFarlane.Pandoc
-  minpac#add('instant-markdown/vim-instant-markdown', {do: '!python -m pip install smdv'})  # node and curl
+  minpac#add('instant-markdown/vim-instant-markdown', {type: 'opt', do: '!python -m pip install smdv'})  # node and curl
 
   # -------- colorschemes
   minpac#add('lifepillar/vim-solarized8')
@@ -200,24 +214,28 @@ def PackInit(): void
   minpac#add('sainnhe/everforest')
 
   # -------- translation
-  minpac#add('voldikss/vim-translator')
+  minpac#add('voldikss/vim-translator', {type: 'opt'})
 
   # -------- my plugins
-  minpac#add('shayhill/vim9-scratchterm')
-  minpac#add('shayhill/vim9-limelight')
-  minpac#add('shayhill/vim9-socialfmt')
+  minpac#add('shayhill/vim9-scratchterm', {type: 'opt'})
+  minpac#add('shayhill/vim9-limelight', {type: 'opt'})
+  minpac#add('shayhill/vim9-socialfmt', {type: 'opt'})
 
   # -------- trying out
   minpac#add('mgedmin/coverage-highlight.vim', {type: 'opt'})
-  minpac#add('girishji/easyjump.vim')
-  minpac#add('girishji/fFtT.vim')
+  minpac#add('girishji/easyjump.vim', {type: 'opt'})
+  minpac#add('girishji/fFtT.vim', {type: 'opt'})
   minpac#add('jeetsukumaran/vim-pythonsense', {type: 'opt'})
+
 enddef
 
 
 command! PackUpdate source $MYVIMRC | PackInit() | minpac#update()
 command! PackClean  source $MYVIMRC | PackInit() | minpac#clean()
 command! PackStatus packadd minpac | minpac#status()
+
+
+
 
 
 # ---------------------------------------------------------------------------- #

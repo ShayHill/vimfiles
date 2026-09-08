@@ -7,11 +7,6 @@ setlocal textwidth=85  # wrapping for gq
 
 setlocal nowrap
 
-packadd coverage-highlight.vim
-packadd lsp
-packadd vim-pythonsense
-packadd vimspector
-source $MYVIMDIR/after/plugin/plugin_config.vim
 
 # ---------------------------------------------------------------------------- #
 #
@@ -125,7 +120,7 @@ if plugins.IsLoaded("vim9-scratchterm")
   nmap <buffer> <leader>t :call g:LoadCommand(g:pt_cmd)<CR>
   nmap <buffer> <leader>T :call g:LoadCommand(g:pt_cmd .. ' ' .. expand('%'))<CR>
 else
-  g:py_cmd = ':term ' .. python .. ' % <CR>'
+  g:py_cmd = ':term ' .. 'python' .. ' % <CR>'
   nmap <buffer> <leader>e :update<CR>:term python %<CR>
 
   # last :term pytest command, if any. No <CR>
